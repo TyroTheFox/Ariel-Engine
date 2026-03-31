@@ -1,0 +1,8 @@
+{
+    "manifest": [
+        {
+            "id": "test",
+            "src": "resources/textures/texture_01.png"
+        }
+    ]
+}
