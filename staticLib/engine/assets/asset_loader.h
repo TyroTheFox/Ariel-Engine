@@ -9,7 +9,6 @@
 class AssetLoader
 {
     private:
-        /* data */
         JSONReader *jsonReader;
         std::map<std::string, Texture2D> assetCache;
     public:
