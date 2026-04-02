@@ -1,42 +1,56 @@
-#include "engine/assets/asset_loader.h";
+#pragma once
 
-AssetLoader::AssetLoader()
+#include <string>
+#include <mutex>
+#include <map>
+#include "engine/utility/json_reader.h"
+#include "raylib.h"
+
+class TextureAssetLoader
 {
-    this->jsonReader = new JSONReader();
-    this->assetCache = std::map<std::string, Texture2D>{};
-}
+    private:
+        JSONReader *jsonReader;
+        std::map<std::string, Texture2D> assetCache;
+    public:
+        TextureAssetLoader()
+        {
+            this->jsonReader = new JSONReader();
+            this->assetCache = std::map<std::string, Texture2D>{};
+        }
 
-AssetLoader::~AssetLoader()
-{
-    // When destroyed, unload all textures
-    for (const auto& [key, value] : this->assetCache) {
-        UnloadTexture(value);
-    }
+        ~TextureAssetLoader()
+        {
+            // When destroyed, unload all textures
+            for (const auto& [key, value] : this->assetCache) {
+                UnloadTexture(value);
+            }
 
-    this->assetCache = std::map<std::string, Texture2D>{};
-}
+            this->assetCache = std::map<std::string, Texture2D>{};
+        }
 
-// Load all textures into cache from manifest
-void AssetLoader::loadManifest(std::string path)
-{
-    const rapidjson::Document jsonData = this->jsonReader->readJSON(path);
-    const rapidjson::GenericArray<true, rapidjson::Value> manifest = jsonData["manifest"].GetArray();
+        void loadManifest(std::string path) {
+            const rapidjson::Document jsonData = this->jsonReader->readJSON(path);
+            const rapidjson::GenericArray<true, rapidjson::Value> manifest = jsonData["manifest"].GetArray();
 
-    for (rapidjson::Value::ConstValueIterator itr = manifest.Begin(); itr != manifest.End(); ++itr) {
-        const char *id = itr['id'].GetString();
-        const char *src = itr['src'].GetString();
+            for (rapidjson::Value::ConstValueIterator itr = manifest.Begin(); itr != manifest.End(); ++itr) {
+                const char *id = itr['id'].GetString();
+                const char *src = itr['src'].GetString();
 
-        const Texture2D foundTexture = LoadTexture(src);
+                const Texture2D foundTexture = LoadTexture(src);
 
-        this->assetCache.insert({id, foundTexture});
-    }
-}
+                this->assetCache.insert({id, foundTexture});
+            }
+        }
 
-// Unload all currently loaded textures
-void AssetLoader::unloadCurrentManifest() {
-    for (const auto& [key, value] : this->assetCache) {
-        UnloadTexture(value);
-    }
+        void unloadCurrentManifest() {
+            for (const auto& [key, value] : this->assetCache) {
+                UnloadTexture(value);
+            }
 
-    this->assetCache = std::map<std::string, Texture2D>{};
-}
+            this->assetCache = std::map<std::string, Texture2D>{};
+        }
+
+        Texture2D getTexture(std::string textureID) {
+            return this->assetCache.at(textureID);
+        }
+};
