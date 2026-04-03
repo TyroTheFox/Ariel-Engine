@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <typeinfo>
 #include <map>
@@ -7,37 +9,52 @@
 
 class Stage
 {
-private:
-    std::string id = "";
-    Scene* currentScene = nullptr;
-public:
-    sl::Signal<> onInit;
-    sl::Signal<> onEnter;
-    sl::Signal<float dT> onUpdate;
-    sl::Signal<> onRender;
-    sl::Signal<> onExit;
+    protected:
+        Scene* currentScene = nullptr;
+    public:
+        std::string id = "";
 
-    Stage(std::string id, Scene* scene) {
-        this->id = id;
-        this->transitionTo(scene);
-    }
+        Stage() {
+            this->id = "Stage";
+        }
 
-    ~Stage() {
-        delete this->currentScene;
-    }
+        Stage(std::string id, Scene* scene) {
+            this->id = id;
+            this->transitionTo(scene);
+        }
 
-    void transitionTo(Scene* scene) {
-        std::cout << "Context: Transition to " << typeid(*scene).name() << ".\n";
-
-        this->currentScene->onExit();
-
-        if (this->currentScene != nullptr)
+        ~Stage() {
             delete this->currentScene;
+        }
 
-        this->currentScene = scene;
-        this->currentScene->set_stage(this);
+        void transitionTo(Scene* scene) {
+            std::cout << "Context: Transition to " << typeid(*scene).name() << ".\n";
 
-        this->currentScene->onInit();
-        this->currentScene->onEnter();
-    }
+            this->currentScene->onExit();
+
+            if (this->currentScene != nullptr)
+                delete this->currentScene;
+
+            this->currentScene = scene;
+            this->currentScene->set_stage(this);
+
+            this->currentScene->onInit();
+            this->currentScene->onEnter();
+        }
+
+        void updateScene(float dT) {
+            if (this->currentScene == nullptr) {
+                return;
+            }
+
+            this->currentScene->onUpdate(dT);
+        }
+
+        void renderScene() {
+            if (this->currentScene == nullptr) {
+                return;
+            }
+
+            this->currentScene->onRender();
+        }
 };

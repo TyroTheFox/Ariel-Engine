@@ -44,7 +44,8 @@
                 "${workspaceFolder}/raylib-master/src/",
                 "${workspaceFolder}/game/**",
                 "${workspaceFolder}/staticLib/include",
-                "${workspaceFolder}/staticLib"
+                "${workspaceFolder}/staticLib",
+                "${workspaceFolder}/raylib-master/src"
             ],
             "defines": [
                 "_DEBUG",

@@ -17,6 +17,7 @@ public:
 
     Container(std::string id) {
         this->id = id;
+        this->children = std::map<std::string, BaseActor>{};
     }
 
     ~Container();
