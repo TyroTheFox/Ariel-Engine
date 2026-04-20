@@ -1,0 +1,10 @@
+{
+    "settings": {},
+    "actors": [
+        {
+            "id": "test_sprite",
+            "type": "sprite",
+            "texture": "test"
+        }
+    ]
+}

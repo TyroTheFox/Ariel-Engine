@@ -1,0 +1,8 @@
+{
+    "manifest": [
+        {
+            "id": "test",
+            "src": "resources/textures/wabbit_alpha.png"
+        }
+    ]
+}
