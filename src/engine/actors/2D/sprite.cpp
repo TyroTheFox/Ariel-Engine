@@ -6,9 +6,7 @@ Sprite::Sprite(std::string id, Texture2D* texturePtr) {
     this->textureID = this->texture->id;
 }
 
-Sprite::~Sprite() {
-    delete this->texture;
-};
+Sprite::~Sprite() {};
 
 void Sprite::setTexture(Texture2D* texturePtr) {
     this->texture = texturePtr;

@@ -4,7 +4,6 @@ Scene::Scene() {
     this->id = "scene";
     this->baseContainer = new Container("scene_Container");
     this->children = std::map<std::string, BaseActor*>{};
-    this->actorFactory = new ActorFactory();
 }
 
 Scene::Scene(std::string name, json sceneData, ActorFactory* actorFactoryPtr) {

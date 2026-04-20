@@ -2,7 +2,7 @@
 
 GameInstance::GameInstance() {
     this->textureAssetLoader = new TextureAssetLoader();
-    this->actorFactory = new ActorFactory();
+    this->actorFactory = new ActorFactory(this->textureAssetLoader);
     this->stageManager = new StageManager(this->actorFactory);
 
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
@@ -33,7 +33,7 @@ void GameInstance::startGame() {
         // Draw
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
             this->stageManager->renderStages();
 

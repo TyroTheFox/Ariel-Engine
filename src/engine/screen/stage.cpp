@@ -17,10 +17,10 @@ Stage::~Stage() {
 void Stage::transitionTo(Scene* scene) {
     std::cout << "Context: Transition to " << typeid(*scene).name() << ".\n";
 
-    this->currentScene->onExit();
-
-    if (this->currentScene != nullptr)
+    if (!this->currentScene) {
+        this->currentScene->onExit();
         delete this->currentScene;
+    }
 
     this->currentScene = scene;
 

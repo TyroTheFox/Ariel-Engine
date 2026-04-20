@@ -1,7 +1,8 @@
 #include <engine/actors/actor_factory.h>
 
-ActorFactory::ActorFactory() {
+ActorFactory::ActorFactory(TextureAssetLoader* textureAssetLoaderPtr) {
     SpriteCreator* spriteCreator = new SpriteCreator();
+    spriteCreator->textureAssetLoader = textureAssetLoaderPtr;
 
     this->jsonReader = new JSONHandler();
     this->actorCreators = std::map<std::string, void*>{};

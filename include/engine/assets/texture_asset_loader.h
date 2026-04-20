@@ -6,6 +6,7 @@
 #include <string>
 #include <mutex>
 #include <map>
+#include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 
@@ -17,7 +18,7 @@ class TextureAssetLoader
 {
     private:
         JSONHandler *jsonReader;
-        std::map<std::string, Texture2D*> assetCache;
+        std::map<std::string, Texture2D> assetCache;
     public:
         TextureAssetLoader();
         ~TextureAssetLoader();

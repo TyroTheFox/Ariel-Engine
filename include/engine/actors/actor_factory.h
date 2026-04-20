@@ -10,6 +10,7 @@
 #include <engine/utility/json_handler.h>
 
 #include <engine/creators/2D/sprite_creator.h>
+#include <engine/assets/texture_asset_loader.h>
 
 using json = nlohmann::json;
 
@@ -18,7 +19,7 @@ private:
     JSONHandler *jsonReader;
     std::map<std::string, void*> actorCreators;
 public:
-    ActorFactory();
+    ActorFactory(TextureAssetLoader* textureAssetLoaderPtr);
     ~ActorFactory();
 
     BaseActor* createActor(json* actorData);

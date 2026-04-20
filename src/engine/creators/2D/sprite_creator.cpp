@@ -11,5 +11,17 @@ Sprite* SpriteCreator::createActor(json* actorData) const {
 
     Sprite* sprite = new Sprite(id, texture);
 
+    if (actorData->contains("x")) {
+        sprite->x = actorData->at("x");
+    }
+
+    if (actorData->contains("y")) {
+        sprite->y = actorData->at("y");
+    }
+
+    if (actorData->contains("visible")) {
+        sprite->visible = actorData->at("visible");
+    }
+
     return sprite;
 }

@@ -3,17 +3,17 @@
 TextureAssetLoader::TextureAssetLoader()
 {
     this->jsonReader = new JSONHandler();
-    this->assetCache = std::map<std::string, Texture2D*>{};
+    this->assetCache = std::map<std::string, Texture2D>{};
 }
 
 TextureAssetLoader::~TextureAssetLoader()
 {
     // When destroyed, unload all textures
     for (const auto& [key, value] : this->assetCache) {
-        UnloadTexture(*value);
+        if (IsTextureValid(value)) {
+            UnloadTexture(value);
+        }
     }
-
-    this->assetCache = std::map<std::string, Texture2D*>{};
 }
 
 json TextureAssetLoader::loadJSONAsDocument(std::string path) {
@@ -30,20 +30,22 @@ void TextureAssetLoader::loadManifest(std::string path) {
 
         Texture2D foundTexture = LoadTexture(src.c_str());
 
-        this->assetCache.insert({id, &foundTexture});
+        this->assetCache.insert({id, foundTexture});
     }
 }
 
 void TextureAssetLoader::unloadCurrentManifest() {
     for (const auto& [key, value] : this->assetCache) {
-        UnloadTexture(*value);
+        if (IsTextureValid(value)) {
+            UnloadTexture(value);
+        }
     }
 
-    this->assetCache = std::map<std::string, Texture2D*>{};
+    this->assetCache = std::map<std::string, Texture2D>{};
 }
 
 Texture2D TextureAssetLoader::getTexture(std::string textureID) {
-    return *this->assetCache.at(textureID);
+    return this->assetCache.at(textureID);
 }
 
 Texture2D* TextureAssetLoader::getTexturePtr(std::string textureID) {
@@ -54,7 +56,7 @@ Texture2D* TextureAssetLoader::getTexturePtr(std::string textureID) {
         return nullptr;
     }
 
-    auto texturePtr = this->assetCache.at(textureID);
+    auto texturePtr = &this->assetCache.at(textureID);
 
     return texturePtr;
 }
