@@ -5,8 +5,41 @@
             "id": "test_sprite",
             "type": "sprite",
             "texture": "test",
-            "x": 10,
-            "y": 0
+            "x": 100,
+            "y": 100
+        },
+        {
+            "id": "test_text",
+            "type": "text",
+            "colour": "RED",
+            "text": "BADGER BADGER BADGER!",
+            "x": 100,
+            "y": 10
+        }, 
+        {
+            "id": "test_animated_sprite",
+            "type": "animatedSprite",
+            "texture": "card_atlas",
+            "animations": [
+                {
+                    "id": "default",
+                    "frames": [
+                        "cards_club_ace",
+                        "cards_club_2",
+                        "cards_club_3",
+                        "cards_club_4",
+                        "cards_club_5",
+                        "cards_club_6",
+                        "cards_club_7",
+                        "cards_club_8",
+                        "cards_club_9",
+                        "cards_club_10"
+                    ],
+                    "loop": -1
+                }
+            ],
+            "x": 100,
+            "y": 10
         }
     ]
 }

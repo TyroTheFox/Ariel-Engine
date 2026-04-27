@@ -1,16 +1,14 @@
 #include <engine/actors/2D/sprite.h>
 
-Sprite::Sprite(std::string id, Texture2D* texturePtr) {
+Sprite::Sprite(std::string id, raylib::Texture* texturePtr) {
     this->id = id;
     this->texture = texturePtr;
-    this->textureID = this->texture->id;
 }
 
 Sprite::~Sprite() {};
 
-void Sprite::setTexture(Texture2D* texturePtr) {
+void Sprite::setTexture(raylib::Texture2D* texturePtr) {
     this->texture = texturePtr;
-    this->textureID = this->texture->id;
 }
 
 void Sprite::update(float dT) {}
@@ -22,5 +20,7 @@ void Sprite::render() {
 
     this->calculateRenderedPosition();
 
-    DrawTexture(*this->texture, this->getX(), this->getY(), WHITE);
+    if (this->texture->IsValid()) {
+        this->texture->Draw(this->getX(), this->getY(), WHITE);
+    }
 }

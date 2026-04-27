@@ -2,14 +2,14 @@
 
 SpriteFontLoader::SpriteFontLoader() {
     this->jsonHandler = JSONHandler();
-    this->fontCache = std::map<std::string, Font>{};
+    this->fontCache = std::map<std::string, raylib::Font>{};
 }
 
 SpriteFontLoader::~SpriteFontLoader() {
     // When destroyed, unload all textures
     for (const auto& [key, value] : this->fontCache) {
-        if (IsFontValid(value)) {
-            UnloadFont(value);
+        if (value.IsValid()) {
+            ::UnloadFont(value);
         }
     }
 }
@@ -31,26 +31,36 @@ void SpriteFontLoader::loadManifest(std::string path) {
 void SpriteFontLoader::unloadCurrentManifest() {
     for (const auto& [key, value] : this->fontCache) {
         if (IsFontValid(value)) {
-            UnloadFont(value);
+            ::UnloadFont(value);
         }
     }
 
-    this->fontCache = std::map<std::string, Font>{};
+    this->fontCache = std::map<std::string, raylib::Font>{};
 }
 
-Font SpriteFontLoader::getFont(std::string fontID) {
-    return this->fontCache.at(fontID);
-}
+// raylib::Font SpriteFontLoader::getFont(std::string fontID) {
+//     auto searchedFontCount = this->fontCache.count(fontID);
 
-Font* SpriteFontLoader::getFontPtr(std::string fontID) {
-    auto it = this->fontCache.find(fontID);
+//     if (searchedFontCount == 0) {
+//         // Element Not Found
+//         return GetFontDefault();
+//     }
 
-    if (it == this->fontCache.end()) {
+//     auto font = &this->fontCache[fontID];
+
+//     return *font;
+// }
+
+raylib::Font* SpriteFontLoader::getFontPtr(std::string fontID) {
+    auto searchedFontCount = this->fontCache.count(fontID);
+
+    if (searchedFontCount == 0) {
         // Element Not Found
-        return nullptr;
+        raylib::Font defaultFont = ::GetFontDefault();
+        return &defaultFont;
     }
 
-    auto texturePtr = &this->fontCache.at(fontID);
+    auto fontPtr = &this->fontCache.at(fontID);
 
-    return texturePtr;
+    return fontPtr;
 }

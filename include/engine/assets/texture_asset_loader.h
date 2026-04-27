@@ -7,7 +7,9 @@
 #include <mutex>
 #include <map>
 #include <memory>
+#include <tuple>
 #include <nlohmann/json.hpp>
+#include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
 #include <engine/utility/json_handler.h>
@@ -18,7 +20,11 @@ class TextureAssetLoader
 {
     private:
         JSONHandler *jsonReader;
-        std::map<std::string, Texture2D> assetCache;
+        // ID, Texture
+        std::map<std::string, raylib::Texture2D*> assetCache;
+        // ID, <Frame Rectangle, Atlas Texture ID (from Asset Cache)>
+        std::map<std::string, std::tuple<raylib::Rectangle, std::string>> atlasFrameCache;
+        std::string defaultResourcePath;
     public:
         TextureAssetLoader();
         ~TextureAssetLoader();
@@ -29,9 +35,9 @@ class TextureAssetLoader
 
         void unloadCurrentManifest();
 
-        Texture2D getTexture(std::string textureID);
+        raylib::Texture2D* getTexturePtr(std::string textureID);
 
-        Texture2D* getTexturePtr(std::string textureID);
+        std::tuple<raylib::Rectangle, std::string>* getFrameData(std::string atlasID);
 };
 
 #endif

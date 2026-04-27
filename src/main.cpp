@@ -9,8 +9,6 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 #include <string>
 
-#include "raylib.h"
-
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
 
 #include "engine/utility/json_handler.h"

@@ -2,10 +2,10 @@
 
 GameInstance::GameInstance() {
     this->textureAssetLoader = new TextureAssetLoader();
-    this->actorFactory = new ActorFactory(this->textureAssetLoader);
+    this->spriteFontLoader = new SpriteFontLoader();
+    
+    this->actorFactory = new ActorFactory(this->textureAssetLoader, this->spriteFontLoader);
     this->stageManager = new StageManager(this->actorFactory);
-
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
 }
 
 GameInstance::~GameInstance() {
@@ -15,15 +15,16 @@ GameInstance::~GameInstance() {
 }
 
 void GameInstance::instantiateGame(std::string assetManifestPath) {
-    InitWindow(this->screenWidth, this->screenHeight, "Game");
-    SetTargetFPS(this->targetFPS);
+    this->gameWindow = new raylib::Window(this->screenWidth, this->screenHeight, "Game", FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
 
     this->textureAssetLoader->loadManifest(assetManifestPath);
 }
 
 void GameInstance::startGame() {
-    while (!WindowShouldClose()) {
-        float dT = GetFrameTime();
+    this->gameWindow->SetTargetFPS(this->targetFPS);
+
+    while (!this->gameWindow->ShouldClose()) {
+        float dT = this->gameWindow->GetFrameTime();
 
         // Update
         if (!this->stageManager->updateStages(dT)) {
@@ -31,14 +32,15 @@ void GameInstance::startGame() {
         }
 
         // Draw
+        // this->gameWindow.BeginDrawing();
         BeginDrawing();
 
-            ClearBackground(BLACK);
+            this->gameWindow->ClearBackground(raylib::Color::Black());
+            // ClearBackground(raylib::Color(0, 0, 0, 255));
 
             this->stageManager->renderStages();
 
+        // this->gameWindow.EndDrawing();
         EndDrawing();
     }
-
-    CloseWindow();
 }

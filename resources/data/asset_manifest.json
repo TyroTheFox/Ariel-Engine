@@ -1,8 +1,14 @@
 {
-    "manifest": [
+    "textures": [
         {
             "id": "test",
             "src": "resources/textures/wabbit_alpha.png"
+        }
+    ],
+    "atlases": [
+        {
+            "id": "card_atlas",
+            "src": "resources/atlases/cards.json"
         }
     ]
 }

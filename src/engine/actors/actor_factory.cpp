@@ -1,17 +1,26 @@
 #include <engine/actors/actor_factory.h>
 
-ActorFactory::ActorFactory(TextureAssetLoader* textureAssetLoaderPtr) {
-    SpriteCreator* spriteCreator = new SpriteCreator();
-    spriteCreator->textureAssetLoader = textureAssetLoaderPtr;
+ActorFactory::ActorFactory(TextureAssetLoader* textureAssetLoaderPtr, SpriteFontLoader* spriteFontLoaderPtr) {
+    this->textureAssetLoader = textureAssetLoaderPtr;
+    this->spriteFontLoader = spriteFontLoaderPtr;
 
     this->jsonReader = new JSONHandler();
     this->actorCreators = std::map<std::string, void*>{};
 
-    this->actorCreators.insert({ "sprite", spriteCreator });
+    this->addNewCreator("sprite", new SpriteCreator());
+    this->addNewCreator("text", new TextCreator());
+    this->addNewCreator("animatedSprite", new AnimatedSpriteCreator());
 }
 
 ActorFactory::~ActorFactory(){
     delete this->jsonReader;
+}
+
+void ActorFactory::addNewCreator(std::string actorType, BaseCreator* creatorPtr) {
+    creatorPtr->textureAssetLoader = this->textureAssetLoader;
+    creatorPtr->spriteFontLoader = this->spriteFontLoader;
+
+    this->actorCreators.insert({ actorType, creatorPtr });
 }
 
 BaseActor* ActorFactory::createActor(json* actorData) {

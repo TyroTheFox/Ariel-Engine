@@ -1,6 +1,10 @@
 #pragma once
 
+#ifndef STRING_H
+#define STRING_H
+
 #include <string>
+#include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
 #include <engine/actors/base_actor.h>
@@ -8,14 +12,15 @@
 class Sprite : public BaseActor
 {
     private:
-        std::string textureID;
-        Texture2D *texture;
+        raylib::Texture2D* texture;
     public:
-        Sprite(std::string id, Texture2D* texturePtr);
+        Sprite(std::string id, raylib::Texture* texturePtr);
 
         ~Sprite();
 
-        void setTexture(Texture2D* texturePtr);
+        void setTexture(raylib::Texture2D* texturePtr);
         void update(float dT) override;
         void render() override;
 };
+
+#endif
