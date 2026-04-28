@@ -24,6 +24,12 @@ void AnimatedSprite::setTexture(raylib::Texture2D* texturePtr) {
     this->texture = texturePtr;
 }
 
+void AnimatedSprite::setFrame(std::string frameName) {
+    if (this->frameMap.size() > 0) {
+        this->currentFrameID = frameName;
+    }
+}
+
 void AnimatedSprite::addFrame(std::string frameID, raylib::Rectangle frameRect) {
     this->frameMap.insert({frameID, frameRect});
 }
@@ -95,7 +101,7 @@ void AnimatedSprite::render() {
 
     this->calculateRenderedPosition();
 
-    if (this->texture->IsValid() && this->currentFrameID != "") {
+    if (this->texture->IsValid() && this->currentFrameID != "" && this->frameMap.size() > 0) {
         raylib::Rectangle frameRect = this->frameMap.at(this->currentFrameID);
         this->texture->Draw(frameRect, { this->getX(), this->getY() }, raylib::Color::White());
     }

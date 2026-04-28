@@ -13,6 +13,7 @@
 #include <raylib.h>
 
 #include <engine/utility/json_handler.h>
+#include <engine/data/texture_atlas.h>
 
 using json = nlohmann::json;
 
@@ -22,8 +23,7 @@ class TextureAssetLoader
         JSONHandler *jsonReader;
         // ID, Texture
         std::map<std::string, raylib::Texture2D*> assetCache;
-        // ID, <Frame Rectangle, Atlas Texture ID (from Asset Cache)>
-        std::map<std::string, std::tuple<raylib::Rectangle, std::string>> atlasFrameCache;
+        std::map<std::string, TextureAtlas*> textureAtlasCache;
         std::string defaultResourcePath;
     public:
         TextureAssetLoader();
@@ -37,7 +37,7 @@ class TextureAssetLoader
 
         raylib::Texture2D* getTexturePtr(std::string textureID);
 
-        std::tuple<raylib::Rectangle, std::string>* getFrameData(std::string atlasID);
+        TextureAtlas* getTextureAtlas(std::string atlasID);
 };
 
 #endif

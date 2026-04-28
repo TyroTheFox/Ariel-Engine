@@ -32,6 +32,7 @@ public:
     ~AnimatedSprite();
 
     void setTexture(raylib::Texture2D* texturePtr);
+    void setFrame(std::string frameName);
     void addFrame(std::string frameID, raylib::Rectangle frameRect);
     void addAnimation(std::string animationId, std::vector<std::string> animationFrames);
 

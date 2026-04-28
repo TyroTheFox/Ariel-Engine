@@ -4,7 +4,7 @@ TextureAssetLoader::TextureAssetLoader()
 {
     this->jsonReader = new JSONHandler();
     this->assetCache = std::map<std::string, raylib::Texture2D*>{};
-    this->atlasFrameCache = std::map<std::string, std::tuple<raylib::Rectangle, std::string>>{};
+    this->textureAtlasCache = std::map<std::string, TextureAtlas*>{};
 }
 
 TextureAssetLoader::~TextureAssetLoader()
@@ -43,19 +43,29 @@ void TextureAssetLoader::loadManifest(std::string path) {
 
         json metaData = atlasData.at("meta");
         json frameData = atlasData.at("frames");
+        json animationData = metaData.at("animations");
 
         raylib::Texture2D* foundTexture = new raylib::Texture2D(metaData.at("image"));
 
-        this->assetCache.insert({id, foundTexture});
+        TextureAtlas* newTextureAtlas = new TextureAtlas(id, foundTexture);
 
         for (auto& entry : frameData) {
             std::string frameName = entry.at("filename");
             json frame = entry.at("frame");
 
-            std::tuple<raylib::Rectangle, std::string> frameTuple(raylib::Rectangle(frame.at("x"), frame.at("y"), frame.at("w"), frame.at("h")), id);
-
-            this->atlasFrameCache.insert({frameName, frameTuple});
+            newTextureAtlas->addFrame(frameName, raylib::Rectangle(frame.at("x"), frame.at("y"), frame.at("w"), frame.at("h")));
         }
+
+        this->textureAtlasCache.insert({id, newTextureAtlas});
+        // if (animationData) {
+        //     for (auto& entry : animationData) {
+        //         std::string animationName = entry.at("id");
+
+        //         for (auto& frameName: entry.at("frames")) {
+        //             this->animationCache.insert({animationName, frameName});
+        //         }
+        //     }
+        // }
     }
 }
 
@@ -67,7 +77,7 @@ void TextureAssetLoader::unloadCurrentManifest() {
     }
 
     this->assetCache = std::map<std::string, raylib::Texture2D*>{};
-    this->atlasFrameCache = std::map<std::string, std::tuple<raylib::Rectangle, std::string>>{};
+    this->textureAtlasCache = std::map<std::string, TextureAtlas*>{};
 }
 
 raylib::Texture2D* TextureAssetLoader::getTexturePtr(std::string textureID) {
@@ -83,15 +93,15 @@ raylib::Texture2D* TextureAssetLoader::getTexturePtr(std::string textureID) {
     return texturePtr;
 }
 
-std::tuple<raylib::Rectangle, std::string>* TextureAssetLoader::getFrameData(std::string frameID) {
-    auto it = this->atlasFrameCache.find(frameID);
+TextureAtlas* TextureAssetLoader::getTextureAtlas(std::string atlasID) {
+    auto it = this->textureAtlasCache.find(atlasID);
 
-    if (it == this->atlasFrameCache.end()) {
+    if (it == this->textureAtlasCache.end()) {
         // Element Not Found
         return nullptr;
     }
 
-    auto frameTuple = this->atlasFrameCache.at(frameID);
+    auto textureAtlas = this->textureAtlasCache.at(atlasID);
 
-    return &frameTuple;
+    return textureAtlas;
 }

@@ -23,15 +23,16 @@ AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
         animatedSprite->visible = actorData->at("visible");
     }
 
-    if (actorData->contains("animations")) {
-        json animationsList = actorData->at("animations");
+    if (actorData->contains("builtAnimations")) {
+        json animationsList = actorData->at("builtAnimations");
 
         for (auto& animationEntry : animationsList) {
             if (animationEntry.contains("frames")) {
-                for (auto& frameEntry : animationEntry.at("frames")) {
-                    std::tuple<raylib::Rectangle, std::string>* frameTuple = this->textureAssetLoader->getFrameData(frameEntry);
+                auto frames = animationEntry.at("frames");
+                for (auto& frameEntry : frames) {
+                    std::tuple<raylib::Rectangle, std::string> frameTuple = this->textureAssetLoader->getFrameData(frameEntry);
 
-                    raylib::Rectangle frameRect = std::get<0>(*frameTuple);
+                    raylib::Rectangle frameRect = std::get<0>(frameTuple);
 
                     animatedSprite->addFrame(frameEntry, frameRect);
                 }

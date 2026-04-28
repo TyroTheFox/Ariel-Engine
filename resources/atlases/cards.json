@@ -419,10 +419,84 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
+	"animations": [
+		{
+			"id": "clubs",
+			"frames": [
+				"cards_club_ace",
+				"cards_club_2",
+				"cards_club_3",
+				"cards_club_4",
+				"cards_club_5",
+				"cards_club_6",
+				"cards_club_7",
+				"cards_club_8",
+				"cards_club_9",
+				"cards_club_10",
+				"cards_club_jack",
+				"cards_club_queen",
+				"cards_club_king"
+			]
+		},
+		{
+			"id": "hearts",
+			"frames": [
+			"cards_heart_ace",
+			"cards_heart_2",
+			"cards_heart_3",
+			"cards_heart_4",
+			"cards_heart_5",
+			"cards_heart_6",
+			"cards_heart_7",
+			"cards_heart_8",
+			"cards_heart_9",
+			"cards_heart_10",
+			"cards_heart_jack",
+			"cards_heart_queen",
+			"cards_heart_king"
+			]
+		},
+		{
+			"id": "diamonds",
+			"frames": [
+				"cards_diamond_ace",
+				"cards_diamond_2",
+				"cards_diamond_3",
+				"cards_diamond_4",
+				"cards_diamond_5",
+				"cards_diamond_6",
+				"cards_diamond_7",
+				"cards_diamond_8",
+				"cards_diamond_9",
+				"cards_diamond_10",
+				"cards_diamond_jack",
+				"cards_diamond_queen",
+				"cards_diamond_king"
+			]
+		},
+		{
+			"id": "spades",
+			"frames": [
+				"cards_spade_ace",
+				"cards_spade_2",
+				"cards_spade_3",
+				"cards_spade_4",
+				"cards_spade_5",
+				"cards_spade_6",
+				"cards_spade_7",
+				"cards_spade_8",
+				"cards_spade_9",
+				"cards_spade_10",
+				"cards_spade_jack",
+				"cards_spade_queen",
+				"cards_spade_king"
+			]
+		}
+	],
 	"image": "resources/atlases/cards.png",
 	"format": "RGBA8888",
 	"size": {"w":1014,"h":1945},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d04ab0c368775d4747dbe4ec2466c38b:14a261ad4d7ddbe6b6b9823d164b624f:8056528aade6b91f4a89f8c9da7f2d4c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2a4004e2fd7118c77e470ca141ceca1b:14a261ad4d7ddbe6b6b9823d164b624f:8056528aade6b91f4a89f8c9da7f2d4c$"
 }
 }
