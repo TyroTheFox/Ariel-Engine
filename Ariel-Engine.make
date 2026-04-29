@@ -137,6 +137,7 @@ GENERATED += $(OBJDIR)/test_scene.o
 GENERATED += $(OBJDIR)/text.o
 GENERATED += $(OBJDIR)/text_creator.o
 GENERATED += $(OBJDIR)/texture_asset_loader.o
+GENERATED += $(OBJDIR)/texture_atlas.o
 OBJECTS += $(OBJDIR)/actor_factory.o
 OBJECTS += $(OBJDIR)/animated_sprite.o
 OBJECTS += $(OBJDIR)/animated_sprite_creator.o
@@ -156,6 +157,7 @@ OBJECTS += $(OBJDIR)/test_scene.o
 OBJECTS += $(OBJDIR)/text.o
 OBJECTS += $(OBJDIR)/text_creator.o
 OBJECTS += $(OBJDIR)/texture_asset_loader.o
+OBJECTS += $(OBJDIR)/texture_atlas.o
 
 # Rules
 # #############################################
@@ -250,6 +252,9 @@ $(OBJDIR)/sprite_creator.o: src/engine/creators/2D/sprite_creator.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/text_creator.o: src/engine/creators/2D/text_creator.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/texture_atlas.o: src/engine/data/texture_atlas.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/game_instance.o: src/engine/game/game_instance.cpp

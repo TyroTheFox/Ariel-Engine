@@ -20,24 +20,8 @@
             "id": "test_animated_sprite",
             "type": "animatedSprite",
             "texture": "card_atlas",
-            "animations": [
-                {
-                    "id": "default",
-                    "frames": [
-                        "cards_club_ace",
-                        "cards_club_2",
-                        "cards_club_3",
-                        "cards_club_4",
-                        "cards_club_5",
-                        "cards_club_6",
-                        "cards_club_7",
-                        "cards_club_8",
-                        "cards_club_9",
-                        "cards_club_10"
-                    ],
-                    "loop": -1
-                }
-            ],
+            "loop": 3,
+            "frameSpeed": 24,
             "x": 100,
             "y": 10
         }

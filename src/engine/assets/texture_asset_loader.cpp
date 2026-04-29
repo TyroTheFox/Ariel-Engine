@@ -35,37 +35,43 @@ void TextureAssetLoader::loadManifest(std::string path) {
         this->assetCache.insert({id, foundTexture});
     }
 
-    for (auto& entry : atlasManifest) {
-        std::string id = entry.at("id");
-        std::string src = entry.at("src");
+    for (auto& atlasEntry : atlasManifest) {
+        std::string id = atlasEntry.at("id");
+        std::string src = atlasEntry.at("src");
 
         json atlasData = this->jsonReader->readJSON(src);
 
         json metaData = atlasData.at("meta");
         json frameData = atlasData.at("frames");
-        json animationData = metaData.at("animations");
+        
+        json defaultFrame = metaData.contains("defaultFrame") ? metaData.at("defaultFrame") : frameData.at(0).at("filename");
 
         raylib::Texture2D* foundTexture = new raylib::Texture2D(metaData.at("image"));
 
         TextureAtlas* newTextureAtlas = new TextureAtlas(id, foundTexture);
 
-        for (auto& entry : frameData) {
-            std::string frameName = entry.at("filename");
-            json frame = entry.at("frame");
+        for (auto& frameEntry : frameData) {
+            std::string frameName = frameEntry.at("filename");
+            json frame = frameEntry.at("frame");
 
             newTextureAtlas->addFrame(frameName, raylib::Rectangle(frame.at("x"), frame.at("y"), frame.at("w"), frame.at("h")));
         }
 
-        this->textureAtlasCache.insert({id, newTextureAtlas});
-        // if (animationData) {
-        //     for (auto& entry : animationData) {
-        //         std::string animationName = entry.at("id");
+        if (metaData.contains("animations")) {
+            json animationData = metaData.at("animations");
+            for (auto& entry : animationData) {
+                std::string animationName = entry.at("id");
+                std::vector<std::string> animationFrameList{};
+                
+                for (auto& frameName: entry.at("frames")) {
+                    animationFrameList.push_back(frameName);
+                }
 
-        //         for (auto& frameName: entry.at("frames")) {
-        //             this->animationCache.insert({animationName, frameName});
-        //         }
-        //     }
-        // }
+                newTextureAtlas->addAnimation(animationName, animationFrameList);
+            }
+        }
+
+        this->textureAtlasCache.insert({id, newTextureAtlas});
     }
 }
 
@@ -105,3 +111,5 @@ TextureAtlas* TextureAssetLoader::getTextureAtlas(std::string atlasID) {
 
     return textureAtlas;
 }
+
+

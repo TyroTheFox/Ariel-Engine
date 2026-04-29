@@ -1,11 +1,8 @@
 #include "engine/actors/2D/animated_sprite.h"
 
-AnimatedSprite::AnimatedSprite(std::string id, raylib::Texture2D* atlasTexture) {
+AnimatedSprite::AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultFrame) {
     this->id = id;
-    this->texture = atlasTexture;
-
-    this->frameMap = std::map<std::string, raylib::Rectangle>{};
-    this->animationMap = std::map<std::string, std::vector<std::string>>{};
+    this->textureAtlas = textureAtlas;
 
     this->currentFrameID = "";
     this->currentFrameIndex = -1;
@@ -15,34 +12,21 @@ AnimatedSprite::AnimatedSprite(std::string id, raylib::Texture2D* atlasTexture) 
     this->currentAnimation = "";
 
     this->playing = false;
+    this->defaultFrameID = defaultFrame;
 }
 
 AnimatedSprite::~AnimatedSprite() {
 }
 
-void AnimatedSprite::setTexture(raylib::Texture2D* texturePtr) {
-    this->texture = texturePtr;
-}
-
-void AnimatedSprite::setFrame(std::string frameName) {
-    if (this->frameMap.size() > 0) {
-        this->currentFrameID = frameName;
-    }
-}
-
-void AnimatedSprite::addFrame(std::string frameID, raylib::Rectangle frameRect) {
-    this->frameMap.insert({frameID, frameRect});
-}
-
-void AnimatedSprite::addAnimation(std::string animationId, std::vector<std::string> animationFrames) {
-    this->animationMap.insert({animationId, animationFrames});
+void AnimatedSprite::setTextureAtlas(TextureAtlas* textureAtlas) {
+    this->textureAtlas = textureAtlas;
 }
 
 void AnimatedSprite::playAnimation(std::string animationID) {
     this->playing = true;
     this->currentAnimation = animationID;
 
-    std::vector<std::string> animationFrames = this->animationMap.at(this->currentAnimation);
+    std::vector<std::string> animationFrames = this->textureAtlas->getAnimationFrames(this->currentAnimation);
 
     this->currentFrameID = animationFrames.at(0);
     this->frameSpeedCount = 0;
@@ -67,20 +51,19 @@ void AnimatedSprite::stopAnimation() {
 
 void AnimatedSprite::update(float dT) {
     if (!this->playing) {
+        this->currentFrameID = this->defaultFrameID;
         return;
     }
 
-    this->frameSpeedCount += dT;
+    this->frameSpeedCount++;
 
     if (this->frameSpeedCount >= 60/this->frameSpeed) {
         this->currentFrameIndex++;
         this->frameSpeedCount = 0;
 
-        std::vector<std::string> animationFrames = this->animationMap.at(this->currentAnimation);
+        std::vector<std::string> animationFrames = this->textureAtlas->getAnimationFrames(this->currentAnimation);
 
         if (this->currentFrameIndex >= animationFrames.size() - 1) {
-            this->currentFrameID = animationFrames.at(this->currentFrameIndex);
-
             if (this->loopCount == 0) {
                 this->stopAnimation();
                 return;
@@ -91,6 +74,8 @@ void AnimatedSprite::update(float dT) {
             this->currentFrameIndex = 0;
         }
 
+        this->currentFrameID = animationFrames.at(this->currentFrameIndex);
+
     }
 }
 
@@ -99,10 +84,12 @@ void AnimatedSprite::render() {
         return;
     }
 
+    raylib::Texture2D* atlasTexture = this->textureAtlas->getAtlasTexture();
+
     this->calculateRenderedPosition();
 
-    if (this->texture->IsValid() && this->currentFrameID != "" && this->frameMap.size() > 0) {
-        raylib::Rectangle frameRect = this->frameMap.at(this->currentFrameID);
-        this->texture->Draw(frameRect, { this->getX(), this->getY() }, raylib::Color::White());
+    if (atlasTexture->IsValid() && this->currentFrameID != "") {
+        raylib::Rectangle frameRect = this->textureAtlas->getFrameRect(this->currentFrameID);
+        atlasTexture->Draw(frameRect, { this->getX(), this->getY() }, raylib::Color::White());
     }
 }

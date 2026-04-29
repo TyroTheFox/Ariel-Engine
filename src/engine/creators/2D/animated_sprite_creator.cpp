@@ -6,10 +6,12 @@ AnimatedSpriteCreator::~AnimatedSpriteCreator() {}
 AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
     std::string id = actorData->at("id");
     std::string textureID = actorData->at("texture");
+    std::string firstFrameName = this->textureAssetLoader->getTextureAtlas(textureID)->getFrameList().at(0).id;
+    std::string defaultFrame = actorData->contains("defaultFrame") ? actorData->at("defaultFrame").get<std::string>() : firstFrameName;
 
-    raylib::Texture2D* texture = this->textureAssetLoader->getTexturePtr(textureID);
+    TextureAtlas* textureAtlas = this->textureAssetLoader->getTextureAtlas(textureID);
 
-    AnimatedSprite* animatedSprite = new AnimatedSprite(id, texture);
+    AnimatedSprite* animatedSprite = new AnimatedSprite(id, textureAtlas, defaultFrame);
 
     if (actorData->contains("x")) {
         animatedSprite->x = actorData->at("x");
@@ -22,26 +24,7 @@ AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
     if (actorData->contains("visible")) {
         animatedSprite->visible = actorData->at("visible");
     }
-
-    if (actorData->contains("builtAnimations")) {
-        json animationsList = actorData->at("builtAnimations");
-
-        for (auto& animationEntry : animationsList) {
-            if (animationEntry.contains("frames")) {
-                auto frames = animationEntry.at("frames");
-                for (auto& frameEntry : frames) {
-                    std::tuple<raylib::Rectangle, std::string> frameTuple = this->textureAssetLoader->getFrameData(frameEntry);
-
-                    raylib::Rectangle frameRect = std::get<0>(frameTuple);
-
-                    animatedSprite->addFrame(frameEntry, frameRect);
-                }
-
-                animatedSprite->addAnimation(animationEntry.at("id"), animationEntry.at("frames"));
-            }
-        }
-    }
-
+    
     if (actorData->contains("frameSpeed")) {
         animatedSprite->setFrameSpeed(actorData->at("frameSpeed"));
     }

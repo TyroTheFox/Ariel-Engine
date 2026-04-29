@@ -9,14 +9,14 @@
 #include <raylib.h>
 
 #include <engine/actors/base_actor.h>
+#include <engine/data/texture_atlas.h>
 
 class AnimatedSprite: public BaseActor {
 private:
-    raylib::Texture2D* texture;
-    std::map<std::string, raylib::Rectangle> frameMap;
-    std::map<std::string, std::vector<std::string>> animationMap;
+    TextureAtlas* textureAtlas;
 
     std::string currentFrameID;
+    std::string defaultFrameID;
     int currentFrameIndex;
 
     std::string currentAnimation;
@@ -24,17 +24,14 @@ private:
     bool playing;
 
     float frameSpeed;
-    float frameSpeedCount; 
+    int frameSpeedCount; 
 
     int loopCount = -1;
 public:
-    AnimatedSprite(std::string id, raylib::Texture2D* atlasTexture);
+    AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultFrame = "default");
     ~AnimatedSprite();
 
-    void setTexture(raylib::Texture2D* texturePtr);
-    void setFrame(std::string frameName);
-    void addFrame(std::string frameID, raylib::Rectangle frameRect);
-    void addAnimation(std::string animationId, std::vector<std::string> animationFrames);
+    void setTextureAtlas(TextureAtlas* textureAtlas);
 
     void playAnimation(std::string animationID);
     void stopAnimation();
