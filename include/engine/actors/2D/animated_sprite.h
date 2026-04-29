@@ -19,14 +19,12 @@ private:
     std::string defaultFrameID;
     int currentFrameIndex;
 
-    std::string currentAnimation;
+    SpriteAnimation* currentAnimation;
 
     bool playing;
 
-    float frameSpeed;
     int frameSpeedCount; 
-
-    int loopCount = -1;
+    int loopCount;
 public:
     AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultFrame = "default");
     ~AnimatedSprite();
@@ -35,9 +33,6 @@ public:
 
     void playAnimation(std::string animationID);
     void stopAnimation();
-
-    void setFrameSpeed(int speed);
-    void setLoopCount(int loop);
 
     void update(float dT) override;
     void render() override;

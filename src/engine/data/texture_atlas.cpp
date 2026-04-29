@@ -4,7 +4,7 @@ TextureAtlas::TextureAtlas(std::string id, raylib::Texture2D* atlasTexture) {
     this->id = id;
     this->atlasTexture = atlasTexture;
     this->frames = std::vector<AtlasFrame>{};
-    this->animationMap = std::map<std::string, std::vector<std::string>>{};
+    this->animationMap = std::map<std::string, SpriteAnimation*>{};
 }
 
 TextureAtlas::~TextureAtlas() {
@@ -39,19 +39,26 @@ std::vector<AtlasFrame> TextureAtlas::getFrameList() {
     return this->frames;
 }
 
-void TextureAtlas::addAnimation(std::string key, std::vector<std::string> frameList) {
-    this->animationMap.insert({key, frameList});
+void TextureAtlas::addAnimation(std::string key, std::vector<std::string> frameList, int playSpeed, int loopCount) {
+    struct SpriteAnimation* newAnimation = new SpriteAnimation;
+
+    newAnimation->id = key;
+    newAnimation->frames = frameList;
+    newAnimation->playSpeed = playSpeed;
+    newAnimation->loopCount = loopCount;
+
+    this->animationMap.insert({key, newAnimation});
 }
 
-std::vector<std::string> TextureAtlas::getAnimationFrames(std::string animationKey) {
-    auto it = this->animationMap.find(animationKey);
+SpriteAnimation* TextureAtlas::getAnimation(std::string animationId) {
+    auto it = this->animationMap.find(animationId);
 
     if (it == this->animationMap.end()) {
         // Element Not Found
-        return std::vector<std::string>{};
+        return nullptr;
     }
 
-    auto frameList = this->animationMap.at(animationKey);
+    SpriteAnimation* spriteAnimation = this->animationMap.at(animationId);
 
-    return frameList;
+    return spriteAnimation;
 }

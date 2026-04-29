@@ -14,12 +14,19 @@ struct AtlasFrame {
     raylib::Rectangle frameRect;
 };
 
+struct SpriteAnimation {
+    std::string id;
+    std::vector<std::string> frames;
+    float playSpeed;
+    int loopCount;
+};
+
 class TextureAtlas {
 private:
     std::string id;
     std::vector<AtlasFrame> frames;
     raylib::Texture2D* atlasTexture;
-    std::map<std::string, std::vector<std::string>> animationMap;
+    std::map<std::string, SpriteAnimation*> animationMap;
 public:
     TextureAtlas(std::string id, raylib::Texture2D* atlasTexture);
     ~TextureAtlas();
@@ -28,8 +35,8 @@ public:
     raylib::Rectangle getFrameRect(std::string frameID);
     raylib::Texture2D* getAtlasTexture();
     std::vector<AtlasFrame> getFrameList();
-    void addAnimation(std::string key, std::vector<std::string> frameList);
-    std::vector<std::string> getAnimationFrames(std::string animationKey);
+    void addAnimation(std::string key, std::vector<std::string> frameList, int playSpeed = 12, int loopCount = 0);
+    SpriteAnimation* getAnimation(std::string animationId);
 };
 
 #endif

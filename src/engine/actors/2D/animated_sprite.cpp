@@ -6,13 +6,13 @@ AnimatedSprite::AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::
 
     this->currentFrameID = "";
     this->currentFrameIndex = -1;
-    this->frameSpeed = 24;
     this->frameSpeedCount = 0;
 
-    this->currentAnimation = "";
+    this->currentAnimation = nullptr;
 
     this->playing = false;
     this->defaultFrameID = defaultFrame;
+    this->loopCount = -1;
 }
 
 AnimatedSprite::~AnimatedSprite() {
@@ -24,29 +24,24 @@ void AnimatedSprite::setTextureAtlas(TextureAtlas* textureAtlas) {
 
 void AnimatedSprite::playAnimation(std::string animationID) {
     this->playing = true;
-    this->currentAnimation = animationID;
+    SpriteAnimation* spriteAnimation = this->textureAtlas->getAnimation(animationID);
+    this->currentAnimation = spriteAnimation;
 
-    std::vector<std::string> animationFrames = this->textureAtlas->getAnimationFrames(this->currentAnimation);
+    std::vector<std::string> animationFrames = spriteAnimation->frames;
 
     this->currentFrameID = animationFrames.at(0);
     this->frameSpeedCount = 0;
-}
-
-void AnimatedSprite::setFrameSpeed(int speed) {
-    this->frameSpeed = speed;
-}
-
-void AnimatedSprite::setLoopCount(int loop) {
-    this->loopCount = loop;
+    this->loopCount = spriteAnimation->loopCount;
 }
 
 void AnimatedSprite::stopAnimation() {
     this->playing = false;
-    this->currentAnimation = "";
+    this->currentAnimation = nullptr;
 
     this->currentFrameID = "";
     this->currentFrameIndex = -1;
     this->frameSpeedCount = 0;
+    this->loopCount = -1;
 }
 
 void AnimatedSprite::update(float dT) {
@@ -57,11 +52,11 @@ void AnimatedSprite::update(float dT) {
 
     this->frameSpeedCount++;
 
-    if (this->frameSpeedCount >= 60/this->frameSpeed) {
+    if (this->frameSpeedCount >= 60/this->currentAnimation->playSpeed) {
         this->currentFrameIndex++;
         this->frameSpeedCount = 0;
 
-        std::vector<std::string> animationFrames = this->textureAtlas->getAnimationFrames(this->currentAnimation);
+        std::vector<std::string> animationFrames = this->currentAnimation->frames;
 
         if (this->currentFrameIndex >= animationFrames.size() - 1) {
             if (this->loopCount == 0) {
@@ -75,7 +70,6 @@ void AnimatedSprite::update(float dT) {
         }
 
         this->currentFrameID = animationFrames.at(this->currentFrameIndex);
-
     }
 }
 

@@ -24,14 +24,6 @@ AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
     if (actorData->contains("visible")) {
         animatedSprite->visible = actorData->at("visible");
     }
-    
-    if (actorData->contains("frameSpeed")) {
-        animatedSprite->setFrameSpeed(actorData->at("frameSpeed"));
-    }
-
-    if (actorData->contains("loop")) {
-        animatedSprite->setLoopCount(actorData->at("loop"));
-    }
 
     return animatedSprite;
 }
