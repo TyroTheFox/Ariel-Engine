@@ -16,6 +16,10 @@ class BaseActor {
         float renderedScaleX;
         float renderedScaleY;
         float renderedScaleZ;
+
+        float renderedRotation;
+
+        bool renderedVisible;
     public:
         std::string id;
         
@@ -32,6 +36,10 @@ class BaseActor {
         float scaleX;
         float scaleY;
         float scaleZ;
+
+        float anchorX;
+        float anchorY;
+        float anchorZ;
         
         float rotation;
         
@@ -45,6 +53,18 @@ class BaseActor {
         float getX();
         float getY();
         float getZ();
+
+        float getScaleX();
+        float getScaleY();
+        float getScaleZ();
+
+        float getAnchorX();
+        float getAnchorY();
+        float getAnchorZ();
+
+        float getRotation();
+
+        bool getVisible();
 
         virtual void update(float dT);
         virtual void render();

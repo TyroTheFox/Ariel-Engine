@@ -13,6 +13,7 @@
             "type": "text",
             "colour": "RED",
             "text": "BADGER BADGER BADGER!",
+            "anchor": 0,
             "x": 100,
             "y": 10
         }, 
@@ -22,7 +23,8 @@
             "texture": "card_atlas",
             "loop": 3,
             "frameSpeed": 24,
-            "x": 100,
+            "anchor": 0,
+            "x": 500,
             "y": 10
         }
     ]

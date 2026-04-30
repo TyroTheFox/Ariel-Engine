@@ -33,10 +33,12 @@ public:
 
     void addFrame(std::string id, raylib::Rectangle frameRect);
     raylib::Rectangle getFrameRect(std::string frameID);
+    void setAtlasTexture(raylib::Texture2D* texturePtr);
     raylib::Texture2D* getAtlasTexture();
     std::vector<AtlasFrame> getFrameList();
     void addAnimation(std::string key, std::vector<std::string> frameList, int playSpeed = 12, int loopCount = 0);
     SpriteAnimation* getAnimation(std::string animationId);
+    bool atlasTextureIsValid();
 };
 
 #endif

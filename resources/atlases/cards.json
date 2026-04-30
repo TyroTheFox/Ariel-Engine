@@ -436,7 +436,9 @@
 				"cards_club_jack",
 				"cards_club_queen",
 				"cards_club_king"
-			]
+			],
+			"loop": -1,
+			"speed": 6
 		},
 		{
 			"id": "hearts",

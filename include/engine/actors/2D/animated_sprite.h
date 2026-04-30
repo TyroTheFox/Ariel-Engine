@@ -7,6 +7,7 @@
 #include <vector>
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
+#include <sling.h>
 
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
@@ -26,6 +27,15 @@ private:
     int frameSpeedCount; 
     int loopCount;
 public:
+    // <Animation Name>
+    sl::Signal<std::string> animationStarted;
+    // <Animation Name>
+    sl::Signal<std::string> animationStopped;
+    // <Animation Name, Frame Index, DeltaTime>
+    sl::Signal<std::string, int, float> animationUpdating;
+    // <Animation Name, Loops Left>
+    sl::Signal<std::string, int> animationLooped;
+
     AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultFrame = "default");
     ~AnimatedSprite();
 

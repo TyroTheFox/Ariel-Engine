@@ -61,13 +61,15 @@ void TextureAssetLoader::loadManifest(std::string path) {
             json animationData = metaData.at("animations");
             for (auto& entry : animationData) {
                 std::string animationName = entry.at("id");
+                int loopCount = entry.contains("loop") ? entry.at("loop").get<int>() : -1;
+                int playSpeed = entry.contains("speed") ? entry.at("speed").get<int>() : 24;
                 std::vector<std::string> animationFrameList{};
                 
                 for (auto& frameName: entry.at("frames")) {
                     animationFrameList.push_back(frameName);
                 }
 
-                newTextureAtlas->addAnimation(animationName, animationFrameList);
+                newTextureAtlas->addAnimation(animationName, animationFrameList, playSpeed, loopCount);
             }
         }
 

@@ -32,9 +32,13 @@ void AnimatedSprite::playAnimation(std::string animationID) {
     this->currentFrameID = animationFrames.at(0);
     this->frameSpeedCount = 0;
     this->loopCount = spriteAnimation->loopCount;
+
+    this->animationStarted.emit(animationID);
 }
 
 void AnimatedSprite::stopAnimation() {
+    this->animationStopped.emit(this->currentAnimation->id);
+
     this->playing = false;
     this->currentAnimation = nullptr;
 
@@ -52,6 +56,8 @@ void AnimatedSprite::update(float dT) {
 
     this->frameSpeedCount++;
 
+    this->animationUpdating.emit(this->currentAnimation->id, this->currentFrameIndex, dT);
+
     if (this->frameSpeedCount >= 60/this->currentAnimation->playSpeed) {
         this->currentFrameIndex++;
         this->frameSpeedCount = 0;
@@ -66,6 +72,8 @@ void AnimatedSprite::update(float dT) {
                 this->loopCount--;                
             }
 
+            this->animationLooped.emit(this->currentAnimation->id, this->loopCount);
+
             this->currentFrameIndex = 0;
         }
 
@@ -74,7 +82,7 @@ void AnimatedSprite::update(float dT) {
 }
 
 void AnimatedSprite::render() {
-    if (!this->visible) {
+    if (!this->getVisible()) {
         return;
     }
 
@@ -84,6 +92,19 @@ void AnimatedSprite::render() {
 
     if (atlasTexture->IsValid() && this->currentFrameID != "") {
         raylib::Rectangle frameRect = this->textureAtlas->getFrameRect(this->currentFrameID);
-        atlasTexture->Draw(frameRect, { this->getX(), this->getY() }, raylib::Color::White());
+
+        raylib::Vector2 calculatedScale = raylib::Vector2(frameRect.GetWidth() * this->getScaleX(), frameRect.GetHeight() * this->getScaleY());
+
+        raylib::Rectangle destinationRect = raylib::Rectangle(
+            this->getX(), this->getY(), 
+            calculatedScale.x, calculatedScale.y
+        );
+
+        atlasTexture->Draw(
+            frameRect, destinationRect, 
+            { calculatedScale.x * this->getAnchorX(), calculatedScale.y * this->getAnchorY() }, 
+            this->getRotation(), 
+            raylib::Color::White()
+        );
     }
 }

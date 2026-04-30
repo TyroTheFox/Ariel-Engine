@@ -8,6 +8,12 @@ TextureAtlas::TextureAtlas(std::string id, raylib::Texture2D* atlasTexture) {
 }
 
 TextureAtlas::~TextureAtlas() {
+    for (auto const& [key, val] : this->animationMap)
+    {
+        delete val;
+    }
+
+    this->animationMap = std::map<std::string, SpriteAnimation*>{};
 }
 
 void TextureAtlas::addFrame(std::string id, raylib::Rectangle frameRect) {
@@ -29,6 +35,10 @@ raylib::Rectangle TextureAtlas::getFrameRect(std::string frameID) {
     }
 
     return returnRect;
+}
+
+void TextureAtlas::setAtlasTexture(raylib::Texture2D* texturePtr) {
+    this->atlasTexture = texturePtr;
 }
 
 raylib::Texture2D* TextureAtlas::getAtlasTexture() {
@@ -61,4 +71,8 @@ SpriteAnimation* TextureAtlas::getAnimation(std::string animationId) {
     SpriteAnimation* spriteAnimation = this->animationMap.at(animationId);
 
     return spriteAnimation;
+}
+
+bool TextureAtlas::atlasTextureIsValid() {
+    return this->atlasTexture->IsValid();
 }

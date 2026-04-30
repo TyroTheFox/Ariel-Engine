@@ -51,7 +51,7 @@ void Text::setSpacing(float spacing) {
 void Text::update(float dT) {}
 
 void Text::render() {
-    if (!this->visible) {
+    if (!this->getVisible()) {
         return;
     }
 
@@ -60,8 +60,11 @@ void Text::render() {
     if (this->wordWrap) {
         this->drawTextWithWordWrap();
     } else {
-        this->raylibText.Draw(this->getX(), this->getY());
-        // DrawText(this->text.c_str(), this->getX(), this->getY(), this->fontSize, this->colour);
+        this->raylibText.Draw(
+            raylib::Vector2(this->getX(), this->getY()), 
+            this->getRotation(), 
+            raylib::Vector2(this->raylibText.MeasureEx().x * this->getAnchorX(), this->raylibText.MeasureEx().y * this->getAnchorY())
+        );
     }
 }
 

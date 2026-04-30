@@ -60,5 +60,33 @@ Text* TextCreator::createActor(json* actorData) const {
         text->setSpacing(actorData->at("spacing"));
     }
 
+    if (actorData->contains("anchor")) {
+        if (actorData->at("anchor").is_number()) {
+            text->anchorX = actorData->at("anchor");
+            text->anchorY = actorData->at("anchor");
+            text->anchorZ = actorData->at("anchor");
+        }
+
+        if (actorData->at("anchor").is_object()) {
+            json anchorData = actorData->at("anchor");
+
+            if (anchorData.at("x")) {
+                text->anchorX = anchorData.at("x");
+            }
+
+            if (anchorData.at("y")) {
+                text->anchorY = anchorData.at("y");
+            }
+
+            if (anchorData.at("z")) {
+                text->anchorZ = anchorData.at("z");
+            }
+        }
+    }
+
+    if (actorData->contains("rotation")) {
+        text->rotation = actorData->at("rotation");
+    }
+
     return text;
 }
