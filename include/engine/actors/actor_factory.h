@@ -15,6 +15,7 @@
 #include <engine/creators/2D/sprite_creator.h>
 #include <engine/creators/2D/text_creator.h>
 #include <engine/creators/2D/animated_sprite_creator.h>
+#include <engine/creators/2D/shape_creator.h>
 
 using json = nlohmann::json;
 

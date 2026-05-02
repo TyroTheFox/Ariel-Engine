@@ -128,6 +128,8 @@ GENERATED += $(OBJDIR)/game_instance.o
 GENERATED += $(OBJDIR)/json_handler.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/scene.o
+GENERATED += $(OBJDIR)/shape.o
+GENERATED += $(OBJDIR)/shape_creator.o
 GENERATED += $(OBJDIR)/sprite.o
 GENERATED += $(OBJDIR)/sprite_creator.o
 GENERATED += $(OBJDIR)/sprite_font_loader.o
@@ -148,6 +150,8 @@ OBJECTS += $(OBJDIR)/game_instance.o
 OBJECTS += $(OBJDIR)/json_handler.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/scene.o
+OBJECTS += $(OBJDIR)/shape.o
+OBJECTS += $(OBJDIR)/shape_creator.o
 OBJECTS += $(OBJDIR)/sprite.o
 OBJECTS += $(OBJDIR)/sprite_creator.o
 OBJECTS += $(OBJDIR)/sprite_font_loader.o
@@ -224,6 +228,9 @@ endif
 $(OBJDIR)/animated_sprite.o: src/engine/actors/2D/animated_sprite.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/shape.o: src/engine/actors/2D/shape.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/sprite.o: src/engine/actors/2D/sprite.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -246,6 +253,9 @@ $(OBJDIR)/texture_asset_loader.o: src/engine/assets/texture_asset_loader.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/animated_sprite_creator.o: src/engine/creators/2D/animated_sprite_creator.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/shape_creator.o: src/engine/creators/2D/shape_creator.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/sprite_creator.o: src/engine/creators/2D/sprite_creator.cpp

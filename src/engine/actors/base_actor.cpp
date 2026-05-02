@@ -9,6 +9,9 @@ BaseActor::BaseActor() {
     this->renderedScaleY = 1;
     this->renderedScaleZ = 1;
 
+    this->renderedRotation = 0;
+    this->renderedVisible = true;
+
     this->x = 0;
     this->y = 0;
     this->z = 0;
@@ -86,28 +89,30 @@ void BaseActor::calculateRenderedPosition() {
     BaseActor* objectParent = this->parent;
 
     if (objectParent != nullptr) {
-        renderedX = objectParent->getX();
-        renderedY = objectParent->getY();
-        renderedZ = objectParent->getZ();
+        this->renderedX = objectParent->getX();
+        this->renderedY = objectParent->getY();
+        this->renderedZ = objectParent->getZ();
 
-        renderedScaleX = objectParent->getScaleX();
-        renderedScaleY = objectParent->getScaleY();
-        renderedScaleZ = objectParent->getScaleZ();
+        this->renderedScaleX = objectParent->getScaleX();
+        this->renderedScaleY = objectParent->getScaleY();
+        this->renderedScaleZ = objectParent->getScaleZ();
 
-        renderedRotation = objectParent->getRotation();
+        this->renderedRotation = objectParent->getRotation();
 
-        renderedVisible = objectParent->getRotation();
+        this->renderedVisible = objectParent->getVisible();
+    } else {
+        this->renderedVisible = true;
     }
 
-    renderedX += this->x + this->pivotX;
-    renderedY += this->y + this->pivotY;
-    renderedZ += this->z + this->pivotZ;
+    this->renderedX += this->x + this->pivotX;
+    this->renderedY += this->y + this->pivotY;
+    this->renderedZ += this->z + this->pivotZ;
 
-    renderedScaleX *= this->scaleX;
-    renderedScaleY *= this->scaleY;
-    renderedScaleZ *= this->scaleZ;
+    this->renderedScaleX *= this->scaleX;
+    this->renderedScaleY *= this->scaleY;
+    this->renderedScaleZ *= this->scaleZ;
 
-    renderedRotation += this->rotation;
+    this->renderedRotation += this->rotation;
 
-    renderedVisible = renderedVisible && this->visible;
+    this->renderedVisible = this->renderedVisible && this->visible;
 }

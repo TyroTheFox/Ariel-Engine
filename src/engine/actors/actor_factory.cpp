@@ -10,6 +10,7 @@ ActorFactory::ActorFactory(TextureAssetLoader* textureAssetLoaderPtr, SpriteFont
     this->addNewCreator("sprite", new SpriteCreator());
     this->addNewCreator("text", new TextCreator());
     this->addNewCreator("animatedSprite", new AnimatedSpriteCreator());
+    this->addNewCreator("shape", new ShapeCreator());
 }
 
 ActorFactory::~ActorFactory(){

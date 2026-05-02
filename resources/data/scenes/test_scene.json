@@ -26,6 +26,19 @@
             "anchor": 0,
             "x": 500,
             "y": 10
+        },
+        {
+            "id": "test_shape",
+            "type": "shape",
+            "x": 100,
+            "y": 300,
+            "draw": {
+                "shape": "circle",
+                "x": 0,
+                "y": 0,
+                "radius": 50,
+                "color": "RED"
+            }
         }
     ]
 }
