@@ -6,8 +6,7 @@
 #include <string>
 
 #include <engine/actors/base_actor.h>
-#include <engine/assets/texture_asset_loader.h>
-#include <engine/assets/sprite_font_loader.h>
+#include <engine/assets/asset_loader.h>
 
 class BaseCreator {
   /**
@@ -15,8 +14,7 @@ class BaseCreator {
    * factory method.
    */
  public:
-  TextureAssetLoader* textureAssetLoader;
-  SpriteFontLoader* spriteFontLoader;
+  AssetLoader* assetLoader;
   
   virtual ~BaseCreator(){};
   virtual BaseActor* createActor(json* actorData) const = 0;

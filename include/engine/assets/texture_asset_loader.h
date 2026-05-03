@@ -29,9 +29,7 @@ class TextureAssetLoader
         TextureAssetLoader();
         ~TextureAssetLoader();
 
-        json loadJSONAsDocument(std::string path);
-
-        void loadManifest(std::string path);
+        void loadManifest(json jsonData);
 
         void unloadCurrentManifest();
 

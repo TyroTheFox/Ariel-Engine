@@ -1,7 +1,6 @@
 #include "engine/assets/sprite_font_loader.h"
 
 SpriteFontLoader::SpriteFontLoader() {
-    this->jsonHandler = JSONHandler();
     this->fontCache = std::map<std::string, raylib::Font>{};
 }
 
@@ -14,8 +13,7 @@ SpriteFontLoader::~SpriteFontLoader() {
     }
 }
 
-void SpriteFontLoader::loadManifest(std::string path) {
-    json jsonData = this->jsonHandler.readJSON(path);
+void SpriteFontLoader::loadManifest(json jsonData) {
     json manifest = jsonData.at("manifest");
 
     for (auto& entry : manifest) {
@@ -37,19 +35,6 @@ void SpriteFontLoader::unloadCurrentManifest() {
 
     this->fontCache = std::map<std::string, raylib::Font>{};
 }
-
-// raylib::Font SpriteFontLoader::getFont(std::string fontID) {
-//     auto searchedFontCount = this->fontCache.count(fontID);
-
-//     if (searchedFontCount == 0) {
-//         // Element Not Found
-//         return GetFontDefault();
-//     }
-
-//     auto font = &this->fontCache[fontID];
-
-//     return *font;
-// }
 
 raylib::Font* SpriteFontLoader::getFontPtr(std::string fontID) {
     auto searchedFontCount = this->fontCache.count(fontID);

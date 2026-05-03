@@ -1,8 +1,7 @@
 #include <engine/actors/actor_factory.h>
 
-ActorFactory::ActorFactory(TextureAssetLoader* textureAssetLoaderPtr, SpriteFontLoader* spriteFontLoaderPtr) {
-    this->textureAssetLoader = textureAssetLoaderPtr;
-    this->spriteFontLoader = spriteFontLoaderPtr;
+ActorFactory::ActorFactory(AssetLoader* assetLoaderPtr) {
+    this->assetLoader = assetLoaderPtr;
 
     this->jsonReader = new JSONHandler();
     this->actorCreators = std::map<std::string, void*>{};
@@ -18,8 +17,7 @@ ActorFactory::~ActorFactory(){
 }
 
 void ActorFactory::addNewCreator(std::string actorType, BaseCreator* creatorPtr) {
-    creatorPtr->textureAssetLoader = this->textureAssetLoader;
-    creatorPtr->spriteFontLoader = this->spriteFontLoader;
+    creatorPtr->assetLoader = this->assetLoader;
 
     this->actorCreators.insert({ actorType, creatorPtr });
 }

@@ -17,12 +17,7 @@ TextureAssetLoader::~TextureAssetLoader()
     }
 }
 
-json TextureAssetLoader::loadJSONAsDocument(std::string path) {
-    return this->jsonReader->readJSON(path);
-}
-
-void TextureAssetLoader::loadManifest(std::string path) {
-    json jsonData = this->jsonReader->readJSON(path);
+void TextureAssetLoader::loadManifest(json jsonData) {
     json textureManifest = jsonData.at("textures");
     json atlasManifest = jsonData.at("atlases");
 

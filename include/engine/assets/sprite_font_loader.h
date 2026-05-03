@@ -11,15 +11,13 @@
 class SpriteFontLoader
 {
 private:
-    JSONHandler jsonHandler;
     std::map<std::string, raylib::Font> fontCache;
 public:
     SpriteFontLoader();
     ~SpriteFontLoader();
 
-    void loadManifest(std::string path);
+    void loadManifest(json jsonData);
     void unloadCurrentManifest();
-    raylib::Font getFont(std::string fontID);
     raylib::Font* getFontPtr(std::string fontID);
 };
 

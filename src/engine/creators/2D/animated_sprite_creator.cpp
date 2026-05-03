@@ -6,10 +6,10 @@ AnimatedSpriteCreator::~AnimatedSpriteCreator() {}
 AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
     std::string id = actorData->at("id");
     std::string textureID = actorData->at("texture");
-    std::string firstFrameName = this->textureAssetLoader->getTextureAtlas(textureID)->getFrameList().at(0).id;
+    std::string firstFrameName = this->assetLoader->getTextureAtlas(textureID)->getFrameList().at(0).id;
     std::string defaultFrame = actorData->contains("defaultFrame") ? actorData->at("defaultFrame").get<std::string>() : firstFrameName;
 
-    TextureAtlas* textureAtlas = this->textureAssetLoader->getTextureAtlas(textureID);
+    TextureAtlas* textureAtlas = this->assetLoader->getTextureAtlas(textureID);
 
     AnimatedSprite* animatedSprite = new AnimatedSprite(id, textureAtlas, defaultFrame);
 

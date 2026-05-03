@@ -9,21 +9,18 @@
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
-#include <engine/assets/texture_asset_loader.h>
-#include <engine/assets/sprite_font_loader.h>
+#include <engine/assets/asset_loader.h>
 
 #include <engine/screen/stage_manager.h>
 #include <engine/actors/actor_factory.h>
 
 class GameInstance {
     private:
-        const int screenWidth = 800;
-        const int screenHeight = 450;
+        const int screenWidth = 1600;
+        const int screenHeight = 900;
         const int targetFPS = 60;
-
     public:
-        TextureAssetLoader* textureAssetLoader;
-        SpriteFontLoader* spriteFontLoader;
+        AssetLoader assetLoader;
 
         ActorFactory* actorFactory;
         StageManager* stageManager;
