@@ -14,7 +14,7 @@ SpriteFontLoader::~SpriteFontLoader() {
 }
 
 void SpriteFontLoader::loadManifest(json jsonData) {
-    json manifest = jsonData.at("manifest");
+    json manifest = jsonData.at("fonts");
 
     for (auto& entry : manifest) {
         std::string src = entry.at("src");

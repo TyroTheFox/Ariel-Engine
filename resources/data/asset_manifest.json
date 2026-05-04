@@ -20,5 +20,8 @@
             "id": "test_block",
             "src": "resources/textures/prototype_models/SM_Buildings_Block_1x1_01.obj"
         }
+    ],
+    "fonts": [
+        
     ]
 }
