@@ -23,9 +23,9 @@ private:
     JSONHandler jsonReader;
     std::string defaultResourcePath;
 
-    TextureAssetLoader textureAssetLoader;
-    SpriteFontLoader spriteFontLoader;
-    ModelLoader modelLoader;
+    TextureAssetLoader* textureAssetLoader;
+    SpriteFontLoader* spriteFontLoader;
+    ModelLoader* modelLoader;
 public:
     AssetLoader();
     ~AssetLoader();

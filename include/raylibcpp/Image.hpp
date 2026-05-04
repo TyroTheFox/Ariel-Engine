@@ -637,7 +637,7 @@ public:
         ::ImageDrawRectangleRec(this, rec, color);
     }
 
-    void DrawRectangleLines(::Rectangle rec, ::Color color = {255, 255, 255, 255}) {
+    void DrawRectangleLines(::Rectangle rec, int thick = 1, ::Color color = {255, 255, 255, 255}) {
         ::ImageDrawRectangleLines(this, rec.x, rec.y, rec.width, rec.height, color);
     }
 

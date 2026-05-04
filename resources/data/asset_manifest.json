@@ -3,12 +3,22 @@
         {
             "id": "test",
             "src": "resources/textures/wabbit_alpha.png"
+        },
+        {
+            "id": "test_block_texture",
+            "src": "resources/textures/prototype_models/PolygonPrototype_Texture_Grid_08.png"
         }
     ],
     "atlases": [
         {
             "id": "card_atlas",
             "src": "resources/atlases/cards.json"
+        }
+    ],
+    "models": [
+        {
+            "id": "test_block",
+            "src": "resources/textures/prototype_models/SM_Buildings_Block_1x1_01.obj"
         }
     ]
 }

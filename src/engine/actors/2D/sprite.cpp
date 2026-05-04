@@ -19,7 +19,10 @@ Sprite::Sprite(std::string id, TextureAtlas* textureAtlasPtr, std::string frameI
 Sprite::~Sprite() {};
 
 void Sprite::setTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas->setAtlasTexture(texturePtr);
+    this->textureAtlas = new TextureAtlas(id, texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+    this->spriteFrame = "default";
 }
 
 TextureAtlas* Sprite::getTextureAtlas() {

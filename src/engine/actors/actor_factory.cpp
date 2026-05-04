@@ -10,6 +10,8 @@ ActorFactory::ActorFactory(AssetLoader* assetLoaderPtr) {
     this->addNewCreator("text", new TextCreator());
     this->addNewCreator("animatedSprite", new AnimatedSpriteCreator());
     this->addNewCreator("shape", new ShapeCreator());
+    
+    this->addNewCreator("mesh", new MeshCreator());
 }
 
 ActorFactory::~ActorFactory(){
