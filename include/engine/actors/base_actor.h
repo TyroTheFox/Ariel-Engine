@@ -7,6 +7,11 @@
 
 #include <sling.h>
 
+enum ActorRenderType {
+    ACTOR_2D,
+    ACTOR_3D
+};
+
 class BaseActor {
     protected:
         float renderedX;
@@ -20,6 +25,8 @@ class BaseActor {
         float renderedRotation;
 
         bool renderedVisible;
+
+        ActorRenderType actorRenderType = ACTOR_2D;
     public:
         std::string id;
         
@@ -65,6 +72,8 @@ class BaseActor {
         float getRotation();
 
         bool getVisible();
+
+        ActorRenderType getActorRenderType();
 
         virtual void update(float dT);
         virtual void render();

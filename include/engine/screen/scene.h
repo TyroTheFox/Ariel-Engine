@@ -12,6 +12,20 @@
 
 using json = nlohmann::json;
 
+struct Camera2DSettings {
+    Vector2 offset;
+    Vector2 position;
+    float rotation;
+    float zoom;
+};
+
+struct Camera3DSettings {
+    Vector3 position;
+    Vector3 target;
+    Vector3 up;
+    float fov;
+};
+
 class Scene
 {
     protected:
@@ -19,6 +33,12 @@ class Scene
 
         std::map<std::string, BaseActor*> children;
         Container* baseContainer;
+
+        raylib::Camera2D* camera2D;
+        raylib::Camera3D* camera3D;
+
+        bool use2DCamera = false;
+        CameraProjection cameraProjectionMode = CAMERA_PERSPECTIVE;
     public:
         json* settingsData;
         json* actorData;
@@ -28,7 +48,8 @@ class Scene
         sl::Signal<> actorRemoved;
 
         sl::Signal<float> signal_update;
-        sl::Signal<> signal_render;
+        sl::Signal<> signal_render_2D;
+        sl::Signal<> signal_render_3D;
 
         Scene();
         Scene(std::string id, json sceneData, ActorFactory* actorFactoryPtr);
@@ -42,8 +63,8 @@ class Scene
         virtual void onEnter();
         virtual void onExit();
 
-        void onUpdate(float dT);
-        void onRender();
+        void onUpdate(float dT) const;
+        void onRender() const;
 };
 
 #endif

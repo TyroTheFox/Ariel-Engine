@@ -1,6 +1,8 @@
 #include "engine/actors/2D/animated_sprite.h"
 
 AnimatedSprite::AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultFrame) {
+    this->actorRenderType = ACTOR_2D;
+    
     this->id = id;
     this->textureAtlas = textureAtlas;
 

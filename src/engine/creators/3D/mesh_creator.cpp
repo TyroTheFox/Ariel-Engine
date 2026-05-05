@@ -106,5 +106,22 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
         }
     }
 
+    if (actorData->contains("tint")) {
+        json colorData = actorData->at("tint");
+
+        if (colorData.is_string()) {
+            mesh->setTint(convertTextToColour(colorData.get<std::string>()));
+        }
+
+        if (colorData.is_object()) {
+            mesh->setTint({
+                colorData.contains("r") ? colorData.at("r").get<char>() : 255,
+                colorData.contains("g") ? colorData.at("g").get<char>() : 255,
+                colorData.contains("b") ? colorData.at("b").get<char>() : 255,
+                colorData.contains("a") ? colorData.at("a").get<char>() : 255
+            });
+        }
+    }
+
     return mesh;
 }

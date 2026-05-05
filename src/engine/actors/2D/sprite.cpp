@@ -1,6 +1,8 @@
 #include <engine/actors/2D/sprite.h>
 
 Sprite::Sprite(std::string id, raylib::Texture* texturePtr) {
+    this->actorRenderType = ACTOR_2D;
+
     this->id = id;
 
     this->textureAtlas = new TextureAtlas(id, texturePtr);
@@ -10,6 +12,8 @@ Sprite::Sprite(std::string id, raylib::Texture* texturePtr) {
 }
 
 Sprite::Sprite(std::string id, TextureAtlas* textureAtlasPtr, std::string frameID) {
+    this->actorRenderType = ACTOR_2D;
+
     this->id = id;
 
     this->textureAtlas = textureAtlasPtr;

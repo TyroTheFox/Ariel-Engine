@@ -7,12 +7,12 @@
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
+#include <sling.h>
 
 class MeshModel : public BaseActor {
 private:
     TextureAtlas* textureAtlas;
     raylib::Model* model;
-    raylib::Material material;
 
     raylib::Vector3 rotationAxis;
     raylib::Vector3 positionVector;

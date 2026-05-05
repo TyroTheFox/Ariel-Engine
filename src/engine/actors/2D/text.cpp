@@ -15,6 +15,8 @@ Text::~Text() {
 }
 
 void Text::setDefaults(raylib::Font* fontPtr) {
+    this->actorRenderType = ACTOR_2D;
+
     this->wordWrap = false;
     this->bounds = raylib::Rectangle(25.0f, 25.0f, 250.0f, 250.0f);
     this->fontSize = 20.0f;

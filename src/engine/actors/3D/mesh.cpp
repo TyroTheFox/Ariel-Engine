@@ -5,8 +5,7 @@ MeshModel::MeshModel(std::string id, raylib::Model* model) {
 
     this->setDefaults();
 
-    this->material = raylib::Material();
-    this->model->SetMaterials(&this->material);
+    this->model = model;
 }
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* texturePtr) {
@@ -18,9 +17,9 @@ MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* text
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
-    this->material = raylib::Material();
-    this->material.SetTexture(MATERIAL_MAP_DIFFUSE, *this->textureAtlas->getAtlasTexture());
-    this->model->SetMaterials(&this->material);
+    this->model = model;
+
+    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
 }
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, TextureAtlas* textureAtlasPtr) {
@@ -30,12 +29,14 @@ MeshModel::MeshModel(std::string id, raylib::Model* model, TextureAtlas* texture
 
     this->setDefaults();
 
-    this->material = raylib::Material();
-    this->material.SetTexture(MATERIAL_MAP_DIFFUSE, *this->textureAtlas->getAtlasTexture());
-    this->model->SetMaterials(&this->material);
+    this->model = model;
+
+    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
 }
 
 void MeshModel::setDefaults() {
+    this->actorRenderType = ACTOR_3D;
+    
     this->positionVector = Vector3();
     this->scaleVector = Vector3();
     
@@ -62,8 +63,7 @@ void MeshModel::setTexture(raylib::Texture2D* texturePtr) {
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
-    this->material = raylib::Material();
-    this->material.SetTexture(MATERIAL_MAP_DIFFUSE, *this->textureAtlas->getAtlasTexture());
+    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
 }
 
 TextureAtlas* MeshModel::getTextureAtlas() {

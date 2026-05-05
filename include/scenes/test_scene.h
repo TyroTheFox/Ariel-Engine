@@ -9,11 +9,15 @@
 class TestScene: public Scene
 {
 private:
-    /* data */
+    sl::Slot<float> updateSlot{this, &TestScene::onUpdate};
+
+    MeshModel* testCube;
 public:
     TestScene();
     TestScene(std::string id, json sceneData, ActorFactory* actorFactoryPtr);
     ~TestScene();
+
+    void onUpdate(float dT) const;
 };
 
 #endif

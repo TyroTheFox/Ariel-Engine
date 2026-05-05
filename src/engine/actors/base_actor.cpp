@@ -9,7 +9,7 @@ BaseActor::BaseActor() {
     this->renderedScaleY = 1;
     this->renderedScaleZ = 1;
 
-    this->renderedRotation = 0;
+    this->renderedRotation = 0.0f;
     this->renderedVisible = true;
 
     this->x = 0;
@@ -28,7 +28,7 @@ BaseActor::BaseActor() {
     this->anchorY = 0.5;
     this->anchorZ = 0.5;
 
-    this->rotation = 0;
+    this->rotation = 0.0f;
 
     this->visible = true;
 
@@ -79,6 +79,10 @@ float BaseActor::getRotation() {
 
 bool BaseActor::getVisible() {
     return this->renderedVisible;
+}
+
+ActorRenderType BaseActor::getActorRenderType() {
+    return this->actorRenderType;
 }
 
 void BaseActor::update(float dT) {}

@@ -18,10 +18,10 @@
     "models": [
         {
             "id": "test_block",
-            "src": "resources/textures/prototype_models/SM_Buildings_Block_1x1_01.obj"
+            "src": "resources/models/prototype_models/SM_Buildings_Block_1x1_01.m3d"
         }
     ],
     "fonts": [
-        
+
     ]
 }

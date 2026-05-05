@@ -7,6 +7,7 @@
 #include <raylib.h>
 #include <engine/creators/base_creator.h>
 #include <engine/actors/3D/mesh.h>
+#include <engine/utility/convert_text_to_colour.h>
 
 class MeshCreator : public BaseCreator {
 private:

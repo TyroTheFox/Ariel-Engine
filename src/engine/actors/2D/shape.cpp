@@ -13,6 +13,8 @@ constexpr uint64_t operator"" _hash(const char* str, size_t len) {
 }
 
 Shape::Shape(std::string id) {
+    this->actorRenderType = ACTOR_2D;
+    
     this->id = id;
 }
 
