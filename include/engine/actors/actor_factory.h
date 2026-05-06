@@ -17,6 +17,7 @@
 #include <engine/creators/2D/shape_creator.h>
 
 #include <engine/creators/3D/mesh_creator.h>
+#include <engine/creators/3D/shape_mesh_creator.h>
 
 using json = nlohmann::json;
 

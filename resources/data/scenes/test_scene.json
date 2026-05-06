@@ -57,6 +57,20 @@
             "y": 0,
             "z": 0,
             "scale": 20
+        },
+        {
+            "id": "test_shape_model",
+            "type": "shapeMesh",
+            "x": -20,
+            "y": 0,
+            "z": -20,
+            "draw": {
+                "shape": "sphere",
+                "x": 0,
+                "y": 0,
+                "radius": 5,
+                "color": "RED"
+            }
         }
     ]
 }

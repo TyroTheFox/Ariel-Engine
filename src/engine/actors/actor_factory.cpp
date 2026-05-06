@@ -12,6 +12,7 @@ ActorFactory::ActorFactory(AssetLoader* assetLoaderPtr) {
     this->addNewCreator("shape", new ShapeCreator());
     
     this->addNewCreator("mesh", new MeshCreator());
+    this->addNewCreator("shapeMesh", new ShapeMeshCreator());
 }
 
 ActorFactory::~ActorFactory(){

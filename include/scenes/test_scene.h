@@ -13,7 +13,6 @@ private:
 
     MeshModel* testCube;
 public:
-    TestScene();
     TestScene(std::string id, json sceneData, ActorFactory* actorFactoryPtr);
     ~TestScene();
 
