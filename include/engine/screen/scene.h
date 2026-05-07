@@ -30,18 +30,20 @@ class Scene
 {
     protected:
         ActorFactory* actorFactory;
-
+        
         std::map<std::string, BaseActor*> children;
         Container* baseContainer;
-
+        
         raylib::Camera2D* camera2D;
         raylib::Camera3D* camera3D;
-
+        
         bool use2DCamera = false;
         CameraProjection cameraProjectionMode = CAMERA_PERSPECTIVE;
     public:
         json* settingsData;
         json* actorData;
+        
+        Stage* attachedStage;
 
         std::string id = "";
         sl::Signal<> actorAdded;
@@ -58,6 +60,9 @@ class Scene
         void addActor(BaseActor* actor);
         void removeActor(std::string id);
         BaseActor* getActorByID(std::string id);
+
+        raylib::Camera2D* getCamera2D();
+        raylib::Camera3D* getCamera3D();
 
         virtual void onInit();
         virtual void onEnter();

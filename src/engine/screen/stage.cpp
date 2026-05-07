@@ -1,13 +1,9 @@
 #include <engine/screen/stage.h>
 
-Stage::Stage() {
-    this->id = "Stage";
-    this->currentScene = nullptr;
-}
-
-Stage::Stage(std::string id, Scene* scene) {
+Stage::Stage(std::string id, Scene* scene, StageManager* stageManager) {
     this->id = id;
     this->transitionTo(scene);
+    this->attachedStageManager = stageManager;
 }
 
 Stage::~Stage() {

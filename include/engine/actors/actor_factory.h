@@ -18,6 +18,7 @@
 
 #include <engine/creators/3D/mesh_creator.h>
 #include <engine/creators/3D/shape_mesh_creator.h>
+#include <engine/creators/3D/billboard_sprite_creator.h>
 
 using json = nlohmann::json;
 

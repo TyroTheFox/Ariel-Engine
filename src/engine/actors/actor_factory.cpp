@@ -13,6 +13,7 @@ ActorFactory::ActorFactory(AssetLoader* assetLoaderPtr) {
     
     this->addNewCreator("mesh", new MeshCreator());
     this->addNewCreator("shapeMesh", new ShapeMeshCreator());
+    this->addNewCreator("billboardSprite", new BillboardSpriteCreator());
 }
 
 ActorFactory::~ActorFactory(){

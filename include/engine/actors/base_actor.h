@@ -53,7 +53,8 @@ class BaseActor {
         bool visible;
         
         BaseActor* parent;
-        
+        void* attachedScene;
+
         BaseActor();
         ~BaseActor();
 

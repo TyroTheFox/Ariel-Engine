@@ -24,6 +24,7 @@ Scene::Scene(std::string name, json sceneData, ActorFactory* actorFactoryPtr) {
 
         BaseActor* newActor = this->actorFactory->createActor(&entry);
         newActor->id = actorId;
+        newActor->attachedScene = this;
 
         this->addActor(newActor);
     }
@@ -155,6 +156,14 @@ void Scene::removeActor(std::string id) {
 
 BaseActor* Scene::getActorByID(std::string id) {
     return this->children.at(id);
+}
+
+raylib::Camera2D* Scene::getCamera2D() {
+    return this->camera2D;
+}
+
+raylib::Camera3D* Scene::getCamera3D() {
+    return this->camera3D;
 }
 
 void Scene::onUpdate(float dT) const {
