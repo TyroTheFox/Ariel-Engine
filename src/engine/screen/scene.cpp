@@ -5,11 +5,12 @@ Scene::Scene() {
     this->baseContainer = new Container("scene_Container");
     this->children = std::map<std::string, BaseActor*>{};
 
-    this->camera2D = new raylib::Camera2D();
-    this->camera3D = new raylib::Camera3D();
+    this->setUpCameras();
 }
 
 Scene::Scene(std::string name, json sceneData) {
+    ActorFactory actorFactory = ActorFactory();
+    
     this->id = name;
     this->baseContainer = new Container(name + "_Container");
     this->children = std::map<std::string, BaseActor*>{};
@@ -17,17 +18,24 @@ Scene::Scene(std::string name, json sceneData) {
     this->settingsData = &sceneData.at("settings");
     this->actorData = &sceneData.at("actors");
 
+
     for (json entry : sceneData.at("actors")) {
         std::string actorId = entry.at("id");
 
-        BaseActor* newActor = Ariel::Global::actorFactory.createActor(&entry);
+        BaseActor* newActor = actorFactory.createActor(&entry);
         newActor->id = actorId;
         newActor->attachedScene = this;
 
         this->addActor(newActor);
     }
 
-    Camera2DSettings camera2DSettings {
+    this->setUpCameras();
+}
+
+Scene::~Scene() {}
+
+void Scene::setUpCameras() {
+        Camera2DSettings camera2DSettings {
         .offset = {0.0f, 0.0f},
         .position = {0.0f, 0.0f},
         .rotation = 0.0f,
@@ -115,8 +123,6 @@ Scene::Scene(std::string name, json sceneData) {
     this->camera2D = new raylib::Camera2D(camera2DSettings.offset, camera2DSettings.position, camera2DSettings.rotation, camera2DSettings.zoom);
     this->camera3D = new raylib::Camera3D(camera3DSettings.position, camera3DSettings.target, camera3DSettings.up, camera3DSettings.fov, this->cameraProjectionMode);
 }
-
-Scene::~Scene() {}
 
 void Scene::addActor(BaseActor* actor) {
     this->children.insert({actor->id, actor});

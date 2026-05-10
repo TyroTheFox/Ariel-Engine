@@ -4,12 +4,15 @@ AnimatedSpriteCreator::AnimatedSpriteCreator() {}
 AnimatedSpriteCreator::~AnimatedSpriteCreator() {}
 
 AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
+    TextureAssetLoader assetLoader = TextureAssetLoader();
+
     std::string id = actorData->at("id");
     std::string textureID = actorData->at("texture");
-    std::string firstFrameName = Ariel::Global::assetLoader.getTextureAtlas(textureID)->getFrameList().at(0).id;
-    std::string defaultFrame = actorData->contains("defaultFrame") ? actorData->at("defaultFrame").get<std::string>() : firstFrameName;
 
-    TextureAtlas* textureAtlas = Ariel::Global::assetLoader.getTextureAtlas(textureID);
+    TextureAtlas* textureAtlas = assetLoader.getTextureAtlas(textureID);
+
+    std::string firstFrameName = textureAtlas->getFrameList().at(0).id;
+    std::string defaultFrame = actorData->contains("defaultFrame") ? actorData->at("defaultFrame").get<std::string>() : firstFrameName;
 
     AnimatedSprite* animatedSprite = new AnimatedSprite(id, textureAtlas, defaultFrame);
 

@@ -22,9 +22,8 @@ class TextureAssetLoader
     private:
         JSONHandler *jsonReader;
         // ID, Texture
-        std::map<std::string, raylib::Texture2D*> assetCache;
-        std::map<std::string, TextureAtlas*> textureAtlasCache;
-        std::string defaultResourcePath;
+        static std::map<std::string, raylib::Texture2D*> assetCache;
+        static std::map<std::string, TextureAtlas*> textureAtlasCache;
     public:
         TextureAssetLoader();
         ~TextureAssetLoader();

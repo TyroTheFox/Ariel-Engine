@@ -1,21 +1,13 @@
 #include <engine/assets/texture_asset_loader.h>
 
-TextureAssetLoader::TextureAssetLoader()
-{
+std::map<std::string, raylib::Texture2D*> TextureAssetLoader::assetCache{};
+std::map<std::string, TextureAtlas*> TextureAssetLoader::textureAtlasCache{};
+
+TextureAssetLoader::TextureAssetLoader() {
     this->jsonReader = new JSONHandler();
-    this->assetCache = std::map<std::string, raylib::Texture2D*>{};
-    this->textureAtlasCache = std::map<std::string, TextureAtlas*>{};
 }
 
-TextureAssetLoader::~TextureAssetLoader()
-{
-    // When destroyed, unload all textures
-    for (const auto& [key, value] : this->assetCache) {
-        if (value->IsValid()) {
-            ::UnloadTexture(*value);
-        }
-    }
-}
+TextureAssetLoader::~TextureAssetLoader() {}
 
 void TextureAssetLoader::loadManifest(json jsonData) {
     json textureManifest = jsonData.at("textures");

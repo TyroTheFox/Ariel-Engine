@@ -4,9 +4,11 @@
 #define BASE_CREATOR_H
 
 #include <string>
+#include <nlohmann/json.hpp>
 
 #include <engine/actors/base_actor.h>
-#include <engine/globals.h>
+
+using json = nlohmann::json;
 
 class BaseCreator {
   /**

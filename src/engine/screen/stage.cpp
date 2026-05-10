@@ -1,9 +1,8 @@
 #include <engine/screen/stage.h>
 
-Stage::Stage(std::string id, Scene* scene, StageManager* stageManager) {
+Stage::Stage(std::string id, Scene* scene) {
     this->id = id;
     this->transitionTo(scene);
-    this->attachedStageManager = stageManager;
 }
 
 Stage::~Stage() {

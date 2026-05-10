@@ -74,7 +74,7 @@
         },
         {
             "id": "test_billboard",
-            "type": "billboardShape",
+            "type": "billboardSprite",
             "texture": "card_atlas",
             "x": 20,
             "y": 0,

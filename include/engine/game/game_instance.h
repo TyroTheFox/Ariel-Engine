@@ -6,16 +6,24 @@
 #include <map>
 #include <string>
 
+#include <nlohmann/json.hpp>
+
+#include <engine/assets/texture_asset_loader.h>
+#include <engine/assets/model_loader.h>
+#include <engine/assets/sprite_font_loader.h>
+
+#include <engine/screen/stage_manager.h>
+
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
-#include <engine/globals.h>
+using json = nlohmann::json;
 
 class GameInstance {
     private:
-        const int screenWidth = 1600;
-        const int screenHeight = 900;
-        const int targetFPS = 60;
+        static const int screenWidth = 1600;
+        static const int screenHeight = 900;
+        static const int targetFPS = 60;
     public:
         raylib::Window* gameWindow;
         

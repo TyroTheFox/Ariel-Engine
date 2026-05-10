@@ -10,8 +10,8 @@
 class StageManager
 {
 private:
-    std::map<std::string, Scene*> sceneMap;
-    std::map<std::string, Stage*> stageMap;
+    static std::map<std::string, Scene*> sceneMap;
+    static std::map<std::string, Stage*> stageMap;
 public:
     StageManager();
     ~StageManager();

@@ -1,17 +1,10 @@
 #include "engine/assets/sprite_font_loader.h"
 
-SpriteFontLoader::SpriteFontLoader() {
-    this->fontCache = std::map<std::string, raylib::Font>{};
-}
+std::map<std::string, raylib::Font> SpriteFontLoader::fontCache{};
 
-SpriteFontLoader::~SpriteFontLoader() {
-    // When destroyed, unload all textures
-    for (const auto& [key, value] : this->fontCache) {
-        if (value.IsValid()) {
-            ::UnloadFont(value);
-        }
-    }
-}
+SpriteFontLoader::SpriteFontLoader() {}
+
+SpriteFontLoader::~SpriteFontLoader() {}
 
 void SpriteFontLoader::loadManifest(json jsonData) {
     json manifest = jsonData.at("fonts");

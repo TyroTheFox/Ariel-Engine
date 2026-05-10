@@ -5,6 +5,8 @@
 
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
+
+#include <engine/assets/texture_asset_loader.h>
 #include <engine/creators/base_creator.h>
 #include <engine/actors/3D/billboard_sprite.h>
 

@@ -18,8 +18,7 @@ class ModelLoader {
 private:
     JSONHandler *jsonReader;
     // ID, Texture
-    std::map<std::string, raylib::Model*> assetCache;
-    std::string defaultResourcePath;
+    static std::map<std::string, raylib::Model*> assetCache;
 public:
     ModelLoader();
     ~ModelLoader();

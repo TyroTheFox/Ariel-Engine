@@ -5,12 +5,15 @@ MeshCreator::MeshCreator() {}
 MeshCreator::~MeshCreator() {}
 
 MeshModel* MeshCreator::createActor(json* actorData) const {
+    ModelLoader modelLoader = ModelLoader();
+    TextureAssetLoader textureLoader = TextureAssetLoader();
+    
     std::string id = actorData->at("id");
     std::string modelID = actorData->at("model");
     std::string textureID = actorData->at("texture");
 
-    raylib::Model* model = Ariel::Global::assetLoader.getModelPtr(modelID);
-    raylib::Texture2D* texture = Ariel::Global::assetLoader.getTexturePtr(textureID);
+    raylib::Model* model = modelLoader.getModelPtr(modelID);
+    raylib::Texture2D* texture = textureLoader.getTexturePtr(textureID);
 
     MeshModel* mesh = new MeshModel(id, model, texture);
 

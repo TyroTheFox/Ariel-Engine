@@ -11,7 +11,7 @@
 class SpriteFontLoader
 {
 private:
-    std::map<std::string, raylib::Font> fontCache;
+    static std::map<std::string, raylib::Font> fontCache;
 public:
     SpriteFontLoader();
     ~SpriteFontLoader();

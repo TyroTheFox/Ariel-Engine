@@ -1,18 +1,30 @@
 #include <engine/game/game_instance.h>
 
-GameInstance::GameInstance() {
-}
+GameInstance::GameInstance() {}
 
-GameInstance::~GameInstance() {
-}
+GameInstance::~GameInstance() {}
 
 void GameInstance::instantiateGame(std::string assetManifestPath) {
+    JSONHandler jsonHandler = JSONHandler();
+
+    TextureAssetLoader textureAssetLoader = TextureAssetLoader();
+    SpriteFontLoader spriteFontLoader = SpriteFontLoader();
+    ModelLoader modelLoader = ModelLoader();
+
     this->gameWindow = new raylib::Window(this->screenWidth, this->screenHeight, "Game", FLAG_VSYNC_HINT);
 
-    Ariel::Global::assetLoader.loadManifest(assetManifestPath);
+    json jsonData = jsonHandler.readJSON(assetManifestPath);
+
+    textureAssetLoader.loadManifest(jsonData);
+
+    spriteFontLoader.loadManifest(jsonData);
+
+    modelLoader.loadManifest(jsonData);
 }
 
 void GameInstance::startGame() {
+    StageManager stageManager = StageManager();
+
     this->gameWindow->SetTargetFPS(this->targetFPS);
 
     RenderTexture2D renderTexture = LoadRenderTexture(this->screenWidth, this->screenHeight);
@@ -21,14 +33,14 @@ void GameInstance::startGame() {
         float dT = this->gameWindow->GetFrameTime();
 
         // Update
-        if (!Ariel::Global::stageManager.updateStages(dT)) {
+        if (!stageManager.updateStages(dT)) {
             break;
         }
         
         // Render Screen
         BeginTextureMode(renderTexture);
             this->gameWindow->ClearBackground(raylib::Color::Black());
-            Ariel::Global::stageManager.renderStages();
+            stageManager.renderStages();
         EndTextureMode();
 
 

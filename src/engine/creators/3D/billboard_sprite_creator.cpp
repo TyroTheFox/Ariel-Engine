@@ -5,11 +5,13 @@ BillboardSpriteCreator::BillboardSpriteCreator() {}
 BillboardSpriteCreator::~BillboardSpriteCreator() {}
 
 BillboardSprite* BillboardSpriteCreator::createActor(json* actorData) const {
+    TextureAssetLoader assetLoader = TextureAssetLoader();
+    
     std::string id = actorData->at("id");
     std::string textureID = actorData->at("texture");
     std::string defaultAnimation = actorData->contains("defaultAnimation") ? actorData->at("defaultAnimation").get<std::string>() : "default";
 
-    TextureAtlas* textureAtlas = Ariel::Global::assetLoader.getTextureAtlas(textureID);
+    TextureAtlas* textureAtlas = assetLoader.getTextureAtlas(textureID);
 
     BillboardSprite* billboardSprite = new BillboardSprite(id, textureAtlas, defaultAnimation);
 

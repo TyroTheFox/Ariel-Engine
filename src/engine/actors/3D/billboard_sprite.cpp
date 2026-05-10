@@ -1,6 +1,6 @@
 #include "engine/actors/3D/billboard_sprite.h"
 
-BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultAnimation = "default") {
+BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultAnimation) {
     this->actorRenderType = ACTOR_3D;
     
     this->id = id;
@@ -17,6 +17,8 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     this->loopCount = -1;
 
     this->origin = raylib::Vector2(0.5f, 0.5f);
+
+    this->camera3D = new raylib::Camera3D();
 }
 
 BillboardSprite::~BillboardSprite() {
@@ -90,8 +92,6 @@ void BillboardSprite::render() {
         return;
     }
 
-    raylib::Camera3D* camera3D = static_cast<Scene*>(this->attachedScene)->getCamera3D();
-
     raylib::Texture2D* atlasTexture = this->textureAtlas->getAtlasTexture();
 
     this->calculateRenderedPosition();
@@ -107,7 +107,7 @@ void BillboardSprite::render() {
         );
 
         atlasTexture->DrawBillboard(
-            *camera3D, 
+            *this->camera3D, 
             frameRect, 
             raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
             raylib::Vector3(0.0f, 1.0f, 0.0f), 

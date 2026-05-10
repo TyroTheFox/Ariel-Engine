@@ -7,7 +7,6 @@
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
-#include <engine/screen/scene.h>
 
 class BillboardSprite : public BaseActor {
 private:
@@ -32,6 +31,8 @@ public:
     sl::Signal<std::string, int, float> animationUpdating;
     // <Animation Name, Loops Left>
     sl::Signal<std::string, int> animationLooped;
+
+    raylib::Camera3D* camera3D;
 
     raylib::Vector2 origin;
 

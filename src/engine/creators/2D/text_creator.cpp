@@ -4,12 +4,14 @@ TextCreator::TextCreator() {}
 TextCreator::~TextCreator() {}
 
 Text* TextCreator::createActor(json* actorData) const {
+    SpriteFontLoader assetLoader = SpriteFontLoader();
+    
     raylib::Font defaultFont = GetFontDefault();
 
     std::string id = actorData->at("id");
     std::string fontID = actorData->contains("font") ? actorData->at("font") : "";
 
-    raylib::Font* font = fontID == "" ? &defaultFont : Ariel::Global::assetLoader.getFontPtr(fontID);
+    raylib::Font* font = fontID == "" ? &defaultFont : assetLoader.getFontPtr(fontID);
 
     Text* text = new Text(id, font);
 

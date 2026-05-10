@@ -6,7 +6,7 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
-#include <engine/globals.h>
+#include <engine/actors/actor_factory.h>
 
 #include <engine/actors/base_actor.h>
 #include <engine/actors/container.h>
@@ -38,6 +38,8 @@ class Scene
         
         bool use2DCamera = false;
         CameraProjection cameraProjectionMode = CAMERA_PERSPECTIVE;
+
+        void setUpCameras();
     public:
         json* settingsData;
         json* actorData;

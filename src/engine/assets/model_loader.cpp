@@ -1,16 +1,10 @@
 #include <engine/assets/model_loader.h>
 
-ModelLoader::ModelLoader() {
-    this->assetCache = std::map<std::string, raylib::Model*>{};
-}
+std::map<std::string, raylib::Model*> ModelLoader::assetCache{};
 
-ModelLoader::~ModelLoader() {
-        for (const auto& [key, value] : this->assetCache) {
-        if (value->IsValid()) {
-            ::UnloadModel(*value);
-        }
-    }
-}
+ModelLoader::ModelLoader() {}
+
+ModelLoader::~ModelLoader() {}
 
 void ModelLoader::loadManifest(json jsonData) {
     json modelManifest = jsonData.at("models");

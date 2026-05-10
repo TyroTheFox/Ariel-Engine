@@ -1,9 +1,9 @@
 #include <engine/screen/stage_manager.h>
 
-StageManager::StageManager() {
-    this->sceneMap = std::map<std::string, Scene*>{};
-    this->stageMap = std::map<std::string, Stage*>{};
-}
+std::map<std::string, Scene*> StageManager::sceneMap{};
+std::map<std::string, Stage*> StageManager::stageMap{};
+
+StageManager::StageManager() {}
 
 StageManager::~StageManager() {}
 
