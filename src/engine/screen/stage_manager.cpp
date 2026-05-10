@@ -1,11 +1,10 @@
 #include <engine/screen/stage_manager.h>
 
-StageManager::StageManager(ActorFactory* actorFactoryInstance) {
+StageManager::StageManager() {
     this->sceneMap = std::map<std::string, Scene*>{};
     this->stageMap = std::map<std::string, Stage*>{};
-
-    this->actorFactory = actorFactoryInstance;
 }
+
 StageManager::~StageManager() {}
 
 void StageManager::addScene(std::string id, Scene* scene) {

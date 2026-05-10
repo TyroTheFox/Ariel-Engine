@@ -123,9 +123,12 @@ GENERATED += $(OBJDIR)/animated_sprite.o
 GENERATED += $(OBJDIR)/animated_sprite_creator.o
 GENERATED += $(OBJDIR)/asset_loader.o
 GENERATED += $(OBJDIR)/base_actor.o
+GENERATED += $(OBJDIR)/billboard_sprite.o
+GENERATED += $(OBJDIR)/billboard_sprite_creator.o
 GENERATED += $(OBJDIR)/container.o
 GENERATED += $(OBJDIR)/convert_text_to_colour.o
 GENERATED += $(OBJDIR)/game_instance.o
+GENERATED += $(OBJDIR)/globals.o
 GENERATED += $(OBJDIR)/json_handler.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/mesh.o
@@ -151,9 +154,12 @@ OBJECTS += $(OBJDIR)/animated_sprite.o
 OBJECTS += $(OBJDIR)/animated_sprite_creator.o
 OBJECTS += $(OBJDIR)/asset_loader.o
 OBJECTS += $(OBJDIR)/base_actor.o
+OBJECTS += $(OBJDIR)/billboard_sprite.o
+OBJECTS += $(OBJDIR)/billboard_sprite_creator.o
 OBJECTS += $(OBJDIR)/container.o
 OBJECTS += $(OBJDIR)/convert_text_to_colour.o
 OBJECTS += $(OBJDIR)/game_instance.o
+OBJECTS += $(OBJDIR)/globals.o
 OBJECTS += $(OBJDIR)/json_handler.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/mesh.o
@@ -249,6 +255,9 @@ $(OBJDIR)/sprite.o: src/engine/actors/2D/sprite.cpp
 $(OBJDIR)/text.o: src/engine/actors/2D/text.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/billboard_sprite.o: src/engine/actors/3D/billboard_sprite.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/mesh.o: src/engine/actors/3D/mesh.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -288,6 +297,9 @@ $(OBJDIR)/sprite_creator.o: src/engine/creators/2D/sprite_creator.cpp
 $(OBJDIR)/text_creator.o: src/engine/creators/2D/text_creator.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/billboard_sprite_creator.o: src/engine/creators/3D/billboard_sprite_creator.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/mesh_creator.o: src/engine/creators/3D/mesh_creator.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -298,6 +310,9 @@ $(OBJDIR)/texture_atlas.o: src/engine/data/texture_atlas.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/game_instance.o: src/engine/game/game_instance.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/globals.o: src/engine/globals.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/scene.o: src/engine/screen/scene.cpp

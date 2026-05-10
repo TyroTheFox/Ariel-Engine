@@ -9,7 +9,7 @@ Text* TextCreator::createActor(json* actorData) const {
     std::string id = actorData->at("id");
     std::string fontID = actorData->contains("font") ? actorData->at("font") : "";
 
-    raylib::Font* font = fontID == "" ? &defaultFont : this->assetLoader->getFontPtr(fontID);
+    raylib::Font* font = fontID == "" ? &defaultFont : Ariel::Global::assetLoader.getFontPtr(fontID);
 
     Text* text = new Text(id, font);
 

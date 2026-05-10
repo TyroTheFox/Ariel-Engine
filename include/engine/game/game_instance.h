@@ -9,10 +9,7 @@
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
-#include <engine/assets/asset_loader.h>
-
-#include <engine/screen/stage_manager.h>
-#include <engine/actors/actor_factory.h>
+#include <engine/globals.h>
 
 class GameInstance {
     private:
@@ -20,11 +17,6 @@ class GameInstance {
         const int screenHeight = 900;
         const int targetFPS = 60;
     public:
-        AssetLoader assetLoader;
-
-        ActorFactory* actorFactory;
-        StageManager* stageManager;
-
         raylib::Window* gameWindow;
         
         GameInstance();

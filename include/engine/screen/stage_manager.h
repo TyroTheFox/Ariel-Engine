@@ -6,7 +6,6 @@
 #include <map>
 #include <engine/screen/stage.h>
 #include <engine/screen/scene.h>
-#include <engine/actors/actor_factory.h>
 
 class StageManager
 {
@@ -14,9 +13,7 @@ private:
     std::map<std::string, Scene*> sceneMap;
     std::map<std::string, Stage*> stageMap;
 public:
-    ActorFactory* actorFactory;
-
-    StageManager(ActorFactory* actorFactoryInstance);
+    StageManager();
     ~StageManager();
 
     void addScene(std::string id, Scene* scene);

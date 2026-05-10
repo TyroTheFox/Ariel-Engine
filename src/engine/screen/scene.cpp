@@ -9,12 +9,10 @@ Scene::Scene() {
     this->camera3D = new raylib::Camera3D();
 }
 
-Scene::Scene(std::string name, json sceneData, ActorFactory* actorFactoryPtr) {
+Scene::Scene(std::string name, json sceneData) {
     this->id = name;
     this->baseContainer = new Container(name + "_Container");
     this->children = std::map<std::string, BaseActor*>{};
-
-    this->actorFactory = actorFactoryPtr;
 
     this->settingsData = &sceneData.at("settings");
     this->actorData = &sceneData.at("actors");
@@ -22,7 +20,7 @@ Scene::Scene(std::string name, json sceneData, ActorFactory* actorFactoryPtr) {
     for (json entry : sceneData.at("actors")) {
         std::string actorId = entry.at("id");
 
-        BaseActor* newActor = this->actorFactory->createActor(&entry);
+        BaseActor* newActor = Ariel::Global::actorFactory.createActor(&entry);
         newActor->id = actorId;
         newActor->attachedScene = this;
 

@@ -71,6 +71,14 @@
                 "radius": 5,
                 "color": "RED"
             }
+        },
+        {
+            "id": "test_billboard",
+            "type": "billboardShape",
+            "texture": "card_atlas",
+            "x": 20,
+            "y": 0,
+            "z": -20
         }
     ]
 }

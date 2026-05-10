@@ -6,8 +6,9 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
+#include <engine/globals.h>
+
 #include <engine/actors/base_actor.h>
-#include <engine/actors/actor_factory.h>
 #include <engine/actors/container.h>
 
 using json = nlohmann::json;
@@ -28,9 +29,7 @@ struct Camera3DSettings {
 
 class Scene
 {
-    protected:
-        ActorFactory* actorFactory;
-        
+    protected:        
         std::map<std::string, BaseActor*> children;
         Container* baseContainer;
         
@@ -43,7 +42,7 @@ class Scene
         json* settingsData;
         json* actorData;
         
-        Stage* attachedStage;
+        std::string attachedStage;
 
         std::string id = "";
         sl::Signal<> actorAdded;
@@ -54,7 +53,7 @@ class Scene
         sl::Signal<> signal_render_3D;
 
         Scene();
-        Scene(std::string id, json sceneData, ActorFactory* actorFactoryPtr);
+        Scene(std::string id, json sceneData);
         ~Scene();
 
         void addActor(BaseActor* actor);

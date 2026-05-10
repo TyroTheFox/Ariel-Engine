@@ -6,16 +6,14 @@
 #include <string>
 
 #include <engine/actors/base_actor.h>
-#include <engine/assets/asset_loader.h>
+#include <engine/globals.h>
 
 class BaseCreator {
   /**
    * Note that the Creator may also provide some default implementation of the
    * factory method.
    */
- public:
-  AssetLoader* assetLoader;
-  
+ public:  
   virtual ~BaseCreator(){};
   virtual BaseActor* createActor(json* actorData) const = 0;
 };

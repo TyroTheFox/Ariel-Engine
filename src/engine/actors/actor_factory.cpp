@@ -1,8 +1,6 @@
 #include <engine/actors/actor_factory.h>
 
-ActorFactory::ActorFactory(AssetLoader* assetLoaderPtr) {
-    this->assetLoader = assetLoaderPtr;
-
+ActorFactory::ActorFactory() {
     this->jsonReader = new JSONHandler();
     this->actorCreators = std::map<std::string, void*>{};
 
@@ -21,8 +19,6 @@ ActorFactory::~ActorFactory(){
 }
 
 void ActorFactory::addNewCreator(std::string actorType, BaseCreator* creatorPtr) {
-    creatorPtr->assetLoader = this->assetLoader;
-
     this->actorCreators.insert({ actorType, creatorPtr });
 }
 

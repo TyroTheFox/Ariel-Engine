@@ -1,21 +1,15 @@
 #include <engine/game/game_instance.h>
 
 GameInstance::GameInstance() {
-    this->assetLoader = AssetLoader();
-    
-    this->actorFactory = new ActorFactory(&this->assetLoader);
-    this->stageManager = new StageManager(this->actorFactory);
 }
 
 GameInstance::~GameInstance() {
-    delete this->actorFactory;
-    delete this->stageManager;
 }
 
 void GameInstance::instantiateGame(std::string assetManifestPath) {
     this->gameWindow = new raylib::Window(this->screenWidth, this->screenHeight, "Game", FLAG_VSYNC_HINT);
 
-    this->assetLoader.loadManifest(assetManifestPath);
+    Ariel::Global::assetLoader.loadManifest(assetManifestPath);
 }
 
 void GameInstance::startGame() {
@@ -27,14 +21,14 @@ void GameInstance::startGame() {
         float dT = this->gameWindow->GetFrameTime();
 
         // Update
-        if (!this->stageManager->updateStages(dT)) {
+        if (!Ariel::Global::stageManager.updateStages(dT)) {
             break;
         }
         
         // Render Screen
         BeginTextureMode(renderTexture);
             this->gameWindow->ClearBackground(raylib::Color::Black());
-            this->stageManager->renderStages();
+            Ariel::Global::stageManager.renderStages();
         EndTextureMode();
 
 

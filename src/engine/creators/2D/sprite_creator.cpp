@@ -7,7 +7,7 @@ Sprite* SpriteCreator::createActor(json* actorData) const {
     std::string id = actorData->at("id");
     std::string textureID = actorData->at("texture");
 
-    raylib::Texture2D* texture = this->assetLoader->getTexturePtr(textureID);
+    raylib::Texture2D* texture = Ariel::Global::assetLoader.getTexturePtr(textureID);
 
     Sprite* sprite = new Sprite(id, texture);
 

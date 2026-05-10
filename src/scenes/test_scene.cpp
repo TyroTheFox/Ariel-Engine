@@ -1,10 +1,12 @@
 #include "scenes/test_scene.h"
 
-TestScene::TestScene(std::string id, json sceneData, ActorFactory* actorFactoryPtr) : Scene(id, sceneData, actorFactoryPtr) {
+TestScene::TestScene(std::string id, json sceneData) : Scene(id, sceneData) {
     AnimatedSprite* testAnimatedSprite = dynamic_cast<AnimatedSprite*>(this->getActorByID("test_animated_sprite"));
+    BillboardSprite* testBillboard = dynamic_cast<BillboardSprite*>(this->getActorByID("test_billboard"));
     this->testCube = dynamic_cast<MeshModel*>(this->getActorByID("test_model"));
 
     testAnimatedSprite->playAnimation("clubs");
+    testBillboard->playAnimation("hearts");
 
     this->camera3D->SetTarget({testCube->getX(), testCube->getY(), testCube->getY()});
 

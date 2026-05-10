@@ -13,7 +13,7 @@ private:
 
     MeshModel* testCube;
 public:
-    TestScene(std::string id, json sceneData, ActorFactory* actorFactoryPtr);
+    TestScene(std::string id, json sceneData);
     ~TestScene();
 
     void onUpdate(float dT) const;
