@@ -28,6 +28,10 @@ void BillboardSprite::setTextureAtlas(TextureAtlas* textureAtlas) {
     this->textureAtlas = textureAtlas;
 }
 
+void BillboardSprite::setSceneCamera(raylib::Camera3D* camera) {
+    this->camera3D = camera;
+}
+
 void BillboardSprite::playAnimation(std::string animationID) {
     this->playing = true;
     SpriteAnimation* spriteAnimation = this->textureAtlas->getAnimation(animationID);
@@ -98,22 +102,26 @@ void BillboardSprite::render() {
 
     if (atlasTexture->IsValid() && this->currentFrameID != "") {
         raylib::Rectangle frameRect = this->textureAtlas->getFrameRect(this->currentFrameID);
+        bool isFrameRotated = this->textureAtlas->getFrameRotated(this->currentFrameID);
 
-        raylib::Vector2 calculatedScale = raylib::Vector2(frameRect.GetWidth() * this->getScaleX(), frameRect.GetHeight() * this->getScaleY());
+        raylib::Vector2 calculatedScale{0.0f, 0.0f};
+        float xRotatedFrameOffset = 0;
 
-        raylib::Rectangle destinationRect = raylib::Rectangle(
-            this->getX(), this->getY(), 
-            calculatedScale.x, calculatedScale.y
-        );
+        if (isFrameRotated) {
+            calculatedScale = raylib::Vector2(this->getScaleX(), (frameRect.height/frameRect.width) * this->getScaleY());
+            xRotatedFrameOffset = (frameRect.width * ((frameRect.height/frameRect.width) * this->getScaleY()) * 0.5);
+        } else {
+            calculatedScale = raylib::Vector2((frameRect.width/frameRect.height) * this->getScaleX(), this->getScaleY());
+        }
 
         atlasTexture->DrawBillboard(
             *this->camera3D, 
             frameRect, 
-            raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
+            raylib::Vector3(this->getX() - xRotatedFrameOffset, this->getY(), this->getZ()), 
             raylib::Vector3(0.0f, 1.0f, 0.0f), 
             calculatedScale,
             raylib::Vector2(0.5f, 0.5f),
-            this->getRotation(),
+            this->getRotation() + (isFrameRotated ? 90 : 0),
             raylib::Color::White()
         );
     }

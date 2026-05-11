@@ -18,6 +18,7 @@ Scene::Scene(std::string name, json sceneData) {
     this->settingsData = &sceneData.at("settings");
     this->actorData = &sceneData.at("actors");
 
+    this->setUpCameras();
 
     for (json entry : sceneData.at("actors")) {
         std::string actorId = entry.at("id");
@@ -28,8 +29,6 @@ Scene::Scene(std::string name, json sceneData) {
 
         this->addActor(newActor);
     }
-
-    this->setUpCameras();
 }
 
 Scene::~Scene() {}

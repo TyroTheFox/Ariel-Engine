@@ -40,8 +40,14 @@ void TextureAssetLoader::loadManifest(json jsonData) {
         for (auto& frameEntry : frameData) {
             std::string frameName = frameEntry.at("filename");
             json frame = frameEntry.at("frame");
+            raylib::Rectangle frameRect = raylib::Rectangle(frame.at("x"), frame.at("y"), frame.at("w"), frame.at("h"));
 
-            newTextureAtlas->addFrame(frameName, raylib::Rectangle(frame.at("x"), frame.at("y"), frame.at("w"), frame.at("h")));
+            if (frameEntry.contains("rotated") && frameEntry.at("rotated").get<bool>()) {
+                frameRect.width = frame.at("h");
+                frameRect.height = frame.at("w");
+            }
+
+            newTextureAtlas->addFrame(frameName, frameRect, (frameEntry.contains("rotated") && frameEntry.at("rotated").get<bool>()));
         }
 
         if (metaData.contains("animations")) {

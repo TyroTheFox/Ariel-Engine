@@ -12,6 +12,7 @@
 struct AtlasFrame {
     std::string id;
     raylib::Rectangle frameRect;
+    bool rotated;
 };
 
 struct SpriteAnimation {
@@ -31,8 +32,9 @@ public:
     TextureAtlas(std::string id, raylib::Texture2D* atlasTexture);
     ~TextureAtlas();
 
-    void addFrame(std::string id, raylib::Rectangle frameRect);
+    void addFrame(std::string id, raylib::Rectangle frameRect, bool rotated = false);
     raylib::Rectangle getFrameRect(std::string frameID);
+    bool getFrameRotated(std::string frameID);
     void setAtlasTexture(raylib::Texture2D* texturePtr);
     raylib::Texture2D* getAtlasTexture();
     std::vector<AtlasFrame> getFrameList();

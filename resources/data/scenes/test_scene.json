@@ -2,8 +2,8 @@
     "settings": {
         "camera3D": {
             "x": 0,
-            "y": 50,
-            "z": 50,
+            "y": 0,
+            "z": 75,
             "fov": 45
         }
     },
@@ -39,12 +39,11 @@
             "type": "shape",
             "x": 100,
             "y": 300,
-            "visible": false,
             "draw": {
                 "shape": "circle",
                 "x": 0,
                 "y": 0,
-                "radius": 50,
+                "radius": 25,
                 "color": "RED"
             }
         },
@@ -76,9 +75,10 @@
             "id": "test_billboard",
             "type": "billboardSprite",
             "texture": "card_atlas",
-            "x": 20,
+            "x": 30,
             "y": 0,
-            "z": -20
+            "z": 5,
+            "scale": 5
         }
     ]
 }

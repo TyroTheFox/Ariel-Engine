@@ -41,6 +41,8 @@ public:
 
     void setTextureAtlas(TextureAtlas* textureAtlas);
 
+    void setSceneCamera(raylib::Camera3D* camera);
+
     void playAnimation(std::string animationID);
     void stopAnimation();
 

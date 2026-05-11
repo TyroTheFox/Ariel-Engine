@@ -16,11 +16,12 @@ TextureAtlas::~TextureAtlas() {
     this->animationMap = std::map<std::string, SpriteAnimation*>{};
 }
 
-void TextureAtlas::addFrame(std::string id, raylib::Rectangle frameRect) {
+void TextureAtlas::addFrame(std::string id, raylib::Rectangle frameRect, bool rotated) {
     AtlasFrame newFrame;
 
     newFrame.id = id;
     newFrame.frameRect = frameRect;
+    newFrame.rotated = rotated;
 
     this->frames.push_back(newFrame);
 }
@@ -35,6 +36,18 @@ raylib::Rectangle TextureAtlas::getFrameRect(std::string frameID) {
     }
 
     return returnRect;
+}
+
+bool TextureAtlas::getFrameRotated(std::string frameID) {
+    bool returnBool = false;
+
+    for (int i = 0; i < this->frames.size(); i++) {
+        if (this->frames.at(i).id == frameID) {
+            returnBool = this->frames.at(i).rotated;
+        }
+    }
+
+    return returnBool;
 }
 
 void TextureAtlas::setAtlasTexture(raylib::Texture2D* texturePtr) {

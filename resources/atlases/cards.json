@@ -456,7 +456,9 @@
 			"cards_heart_jack",
 			"cards_heart_queen",
 			"cards_heart_king"
-			]
+			],
+			"loop": -1,
+			"speed": 2
 		},
 		{
 			"id": "diamonds",
