@@ -105,19 +105,24 @@ void BillboardSprite::render() {
         bool isFrameRotated = this->textureAtlas->getFrameRotated(this->currentFrameID);
 
         raylib::Vector2 calculatedScale{0.0f, 0.0f};
-        float xRotatedFrameOffset = 0;
+        float invertedTextureScale = 1 / this->textureAtlas->getTextureScale();
 
         if (isFrameRotated) {
-            calculatedScale = raylib::Vector2(this->getScaleX(), (frameRect.height/frameRect.width) * this->getScaleY());
-            xRotatedFrameOffset = (frameRect.width * ((frameRect.height/frameRect.width) * this->getScaleY()) * 0.5);
+            calculatedScale = raylib::Vector2(
+                this->getScaleX() * invertedTextureScale, 
+                (frameRect.height/frameRect.width) * this->getScaleY() * invertedTextureScale
+            );
         } else {
-            calculatedScale = raylib::Vector2((frameRect.width/frameRect.height) * this->getScaleX(), this->getScaleY());
+            calculatedScale = raylib::Vector2(
+                (frameRect.width/frameRect.height) * this->getScaleX() * invertedTextureScale, 
+                this->getScaleY() * invertedTextureScale
+            );
         }
 
         atlasTexture->DrawBillboard(
             *this->camera3D, 
             frameRect, 
-            raylib::Vector3(this->getX() - xRotatedFrameOffset, this->getY(), this->getZ()), 
+            raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
             raylib::Vector3(0.0f, 1.0f, 0.0f), 
             calculatedScale,
             raylib::Vector2(0.5f, 0.5f),

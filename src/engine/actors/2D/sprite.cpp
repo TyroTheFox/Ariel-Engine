@@ -46,8 +46,12 @@ void Sprite::render() {
 
     if (atlasTexture->IsValid() && this->spriteFrame != "") {
         raylib::Rectangle frameRect = this->textureAtlas->getFrameRect(this->spriteFrame);
+        float invertedTextureScale = 1 / this->textureAtlas->getTextureScale();
 
-        raylib::Vector2 calculatedScale = raylib::Vector2(frameRect.GetWidth() * this->getScaleX(), frameRect.GetHeight() * this->getScaleY());
+        raylib::Vector2 calculatedScale = raylib::Vector2(
+            frameRect.GetWidth() * this->getScaleX() * invertedTextureScale, 
+            frameRect.GetHeight() * this->getScaleY() * invertedTextureScale
+        );
 
         raylib::Rectangle destinationRect = raylib::Rectangle(
             this->getX(), this->getY(), 

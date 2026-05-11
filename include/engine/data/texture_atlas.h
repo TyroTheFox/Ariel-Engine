@@ -28,9 +28,12 @@ private:
     std::vector<AtlasFrame> frames;
     raylib::Texture2D* atlasTexture;
     std::map<std::string, SpriteAnimation*> animationMap;
+    float scale;
 public:
-    TextureAtlas(std::string id, raylib::Texture2D* atlasTexture);
+    TextureAtlas(std::string id, raylib::Texture2D* atlasTexture, float scale = 1.0F);
     ~TextureAtlas();
+
+    float getTextureScale();
 
     void addFrame(std::string id, raylib::Rectangle frameRect, bool rotated = false);
     raylib::Rectangle getFrameRect(std::string frameID);

@@ -1,10 +1,11 @@
 #include "engine/data/texture_atlas.h"
 
-TextureAtlas::TextureAtlas(std::string id, raylib::Texture2D* atlasTexture) {
+TextureAtlas::TextureAtlas(std::string id, raylib::Texture2D* atlasTexture, float scale) {
     this->id = id;
     this->atlasTexture = atlasTexture;
     this->frames = std::vector<AtlasFrame>{};
     this->animationMap = std::map<std::string, SpriteAnimation*>{};
+    this->scale = scale;
 }
 
 TextureAtlas::~TextureAtlas() {
@@ -14,6 +15,10 @@ TextureAtlas::~TextureAtlas() {
     }
 
     this->animationMap = std::map<std::string, SpriteAnimation*>{};
+}
+
+float TextureAtlas::getTextureScale() {
+    return this->scale;
 }
 
 void TextureAtlas::addFrame(std::string id, raylib::Rectangle frameRect, bool rotated) {
