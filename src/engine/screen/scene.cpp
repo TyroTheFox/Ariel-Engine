@@ -29,6 +29,53 @@ Scene::Scene(std::string name, json sceneData) {
 
         this->addActor(newActor);
     }
+
+    if (sceneData.contains("lights")) {
+        json lightData = sceneData.at("lights");
+
+        for (json entry : lightData) {
+            std::string lightId = entry.at("id");
+            std::string lightType = entry.at("type");
+
+            raylib::Vector3 lightPosition{ 0, 0, 0 };
+            raylib::Vector3 lightTarget{ 0, 0, 0 };
+            raylib::Color lightColor = raylib::Color::RayWhite();
+
+            if (entry.contains("x")) {
+                lightPosition.x = entry.at("x");
+            }
+
+            if (entry.contains("y")) {
+                lightPosition.y = entry.at("y");
+            }
+
+            if (entry.contains("z")) {
+                lightPosition.z = entry.at("z");
+            }
+
+            if (entry.contains("targetX")) {
+                lightTarget.x = entry.at("x");
+            }
+
+            if (entry.contains("targetY")) {
+                lightTarget.y = entry.at("y");
+            }
+
+            if (entry.contains("targetZ")) {
+                lightTarget.z = entry.at("z");
+            }
+
+            this->sceneRenderer3D->createNewLight(
+                lightId, 
+                lightType == "Directional" ? LIGHT_DIRECTIONAL : LIGHT_POINT,
+                lightPosition,
+                lightTarget,
+                lightColor
+            );
+        }
+    }
+
+    this->sceneRenderer3D = new SceneRenderer3D();
 }
 
 Scene::~Scene() {}
@@ -176,9 +223,7 @@ void Scene::onUpdate(float dT) const {
 }
 
 void Scene::onRender() const {
-    this->camera3D->BeginMode();
-        this->signal_render_3D.emit();
-    this->camera3D->EndMode();
+    this->sceneRenderer3D->render(this->camera3D, this);
 
     if (this->use2DCamera) {
         this->camera2D->BeginMode();

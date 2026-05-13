@@ -32,6 +32,9 @@ class GameInstance {
 
         void instantiateGame(std::string assetManifestPath);
         void startGame();
+
+        int getScreenWidth();
+        int getScreenHeight();
 };
 
 #endif

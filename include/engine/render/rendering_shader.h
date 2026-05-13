@@ -21,12 +21,12 @@ class RenderingShader {
         RenderingShader(std::string vertexPath, std::string fragmentPath);
         ~RenderingShader();
 
-        void setShaderLocation(ShaderLocationIndex index, std::string uniformName);
-
-        unsigned int getID();
-
         void enableShader();
         void disableShader();
+
+        unsigned int getID();
+        void setShaderLocation(ShaderLocationIndex index, std::string uniformName);
+        void setShaderValue(raylib::Shader shader, std::string locationName, int usage, int uniformType);
 };
 
 #endif

@@ -11,6 +11,8 @@
 #include <engine/actors/base_actor.h>
 #include <engine/actors/container.h>
 
+#include <engine/render/scene_renderer_3D.h>
+
 using json = nlohmann::json;
 
 struct Camera2DSettings {
@@ -38,6 +40,8 @@ class Scene
         
         bool use2DCamera = false;
         CameraProjection cameraProjectionMode = CAMERA_PERSPECTIVE;
+
+        SceneRenderer3D* sceneRenderer3D;
 
         void setUpCameras();
     public:

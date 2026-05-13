@@ -59,3 +59,11 @@ void GameInstance::startGame() {
 
      UnloadRenderTexture(renderTexture);
 }
+
+int GameInstance::getScreenWidth() {
+    return this->screenWidth;
+}
+
+int GameInstance::getScreenHeight() {
+    return this->screenHeight;
+}
