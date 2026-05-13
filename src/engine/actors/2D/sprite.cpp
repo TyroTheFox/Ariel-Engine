@@ -4,6 +4,7 @@ Sprite::Sprite(std::string id, raylib::Texture* texturePtr) {
     this->actorRenderType = ACTOR_2D;
 
     this->id = id;
+    this->actorType = "Sprite";
 
     this->textureAtlas = new TextureAtlas(id, texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
@@ -15,7 +16,8 @@ Sprite::Sprite(std::string id, TextureAtlas* textureAtlasPtr, std::string frameI
     this->actorRenderType = ACTOR_2D;
 
     this->id = id;
-
+    this->actorType = "Sprite";
+    
     this->textureAtlas = textureAtlasPtr;
     this->spriteFrame = frameID;
 }

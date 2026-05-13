@@ -4,6 +4,7 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     this->actorRenderType = ACTOR_3D;
     
     this->id = id;
+    this->actorType = "BillboardSprite";
     this->textureAtlas = textureAtlas;
 
     this->currentFrameID = "";

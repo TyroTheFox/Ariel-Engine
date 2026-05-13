@@ -25,8 +25,15 @@ class RenderingShader {
         void disableShader();
 
         unsigned int getID();
+
         void setShaderLocation(ShaderLocationIndex index, std::string uniformName);
-        void setShaderValue(raylib::Shader shader, std::string locationName, int usage, int uniformType);
+        int getShaderLocation(ShaderLocationIndex index);
+
+        void setShaderValue(std::string locationName, int usage, int uniformType);
+        void setShaderValue(int locIndex, const void *value, int uniformType);
+        void setShaderValueV(int locIndex, const void *value, int uniformType, int count);
+        void setShaderMatrixValue(int locIndex, Matrix mat);
+        void setShaderTextureValue(int locIndex, Texture2D texture);
 };
 
 #endif

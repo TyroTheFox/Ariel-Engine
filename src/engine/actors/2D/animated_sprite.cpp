@@ -4,6 +4,7 @@ AnimatedSprite::AnimatedSprite(std::string id, TextureAtlas* textureAtlas, std::
     this->actorRenderType = ACTOR_2D;
     
     this->id = id;
+    this->actorType = "BillboardSprite";
     this->textureAtlas = textureAtlas;
 
     this->currentFrameID = "";

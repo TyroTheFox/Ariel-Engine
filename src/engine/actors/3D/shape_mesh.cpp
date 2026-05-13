@@ -13,6 +13,8 @@ constexpr uint64_t operator"" _hash(const char* str, size_t len) {
 }
 
 ShapeMesh::ShapeMesh(std::string id) {
+    this->id = id;
+    this->actorType = "ShapeMesh";
     this->actorRenderType = ACTOR_3D;
 }
 

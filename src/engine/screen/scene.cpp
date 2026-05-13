@@ -30,12 +30,14 @@ Scene::Scene(std::string name, json sceneData) {
         this->addActor(newActor);
     }
 
+    this->sceneRenderer3D = new SceneRenderer3D();
+
     if (sceneData.contains("lights")) {
         json lightData = sceneData.at("lights");
 
         for (json entry : lightData) {
             std::string lightId = entry.at("id");
-            std::string lightType = entry.at("type");
+            std::string lightType = entry.contains("type") ? entry.at("type") : "Directional";
 
             raylib::Vector3 lightPosition{ 0, 0, 0 };
             raylib::Vector3 lightTarget{ 0, 0, 0 };
@@ -75,7 +77,13 @@ Scene::Scene(std::string name, json sceneData) {
         }
     }
 
-    this->sceneRenderer3D = new SceneRenderer3D();
+    for (const auto& [key, value] : this->children) {
+        if (value->getActorRenderType() == ACTOR_3D) { 
+            if (value->actorType == "MeshModel") {
+                static_cast<MeshModel*>(value)->setMaterialShader(this->sceneRenderer3D->deferredShader);
+            }
+        }
+    }
 }
 
 Scene::~Scene() {}
@@ -223,7 +231,9 @@ void Scene::onUpdate(float dT) const {
 }
 
 void Scene::onRender() const {
-    this->sceneRenderer3D->render(this->camera3D, this);
+    this->sceneRenderer3D->beginRender(this->camera3D);
+        this->signal_render_3D.emit();
+    this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
 
     if (this->use2DCamera) {
         this->camera2D->BeginMode();

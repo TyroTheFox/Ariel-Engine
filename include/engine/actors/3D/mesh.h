@@ -7,6 +7,7 @@
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
+#include <engine/render/rendering_shader.h>
 #include <sling.h>
 
 class MeshModel : public BaseActor {
@@ -35,6 +36,7 @@ public:
 
     void setWireframeMode(bool wireframeMode);
     void setTint(raylib::Color tint);
+    void setMaterialShader(RenderingShader* renderingShader);
 
     void setRotationAxis(float x, float y, float z);
     void setRotationAxis(Vector3 vector);

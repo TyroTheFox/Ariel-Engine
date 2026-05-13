@@ -3,6 +3,8 @@
 #ifndef GAME_INSTANCE_H
 #define GAME_INSTANCE_H
 
+#include <engine/global_values.h>
+
 #include <map>
 #include <string>
 
@@ -21,9 +23,6 @@ using json = nlohmann::json;
 
 class GameInstance {
     private:
-        static const int screenWidth = 1600;
-        static const int screenHeight = 900;
-        static const int targetFPS = 60;
     public:
         raylib::Window* gameWindow;
         
@@ -32,9 +31,6 @@ class GameInstance {
 
         void instantiateGame(std::string assetManifestPath);
         void startGame();
-
-        int getScreenWidth();
-        int getScreenHeight();
 };
 
 #endif

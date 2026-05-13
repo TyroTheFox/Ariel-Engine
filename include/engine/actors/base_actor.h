@@ -29,6 +29,7 @@ class BaseActor {
         ActorRenderType actorRenderType = ACTOR_2D;
     public:
         std::string id;
+        std::string actorType;
         
         sl::Slot<float> onUpdate{this, &BaseActor::update};
         sl::Slot<> onRender{this, &BaseActor::render};

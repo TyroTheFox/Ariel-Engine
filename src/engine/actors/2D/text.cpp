@@ -3,11 +3,13 @@
 Text::Text(std::string id) {
     raylib::Font defaultFont = ::GetFontDefault();
     this->id = id;
+    this->actorType = "Text";
     this->setDefaults(&defaultFont);
 }
 
 Text::Text(std::string id, raylib::Font* fontPtr) {
     this->id = id;
+    this->actorType = "Text";
     this->setDefaults(fontPtr);
 }
 

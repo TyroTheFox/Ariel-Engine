@@ -11,11 +11,11 @@ SceneRenderer3D::SceneRenderer3D() {
         "resources/shaders/glsl%i/gbuffer/gbuffer.fs"
     );
 
+    this->deferredShader->setShaderLocation(SHADER_LOC_VECTOR_VIEW, "viewPosition");
+
     this->gBufferInstance = new GraphicsBuffer(this->deferredShader);
 
-    this->lightList = std::vector<Light*>();
-
-    this->currentMode = DEFERRED_SHADING;
+    this->lightList = std::vector<Light*>{};
 
     rlEnableDepthTest();
 }
@@ -37,13 +37,22 @@ void SceneRenderer3D::createNewLight(std::string id, LightType type, raylib::Vec
     this->lightList.push_back(newLight);
 }
 
-void SceneRenderer3D::render(raylib::Camera3D* camera, const Scene* renderedScene) {
+void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
+    float cameraPos[3] = { camera->position.x, camera->position.y, camera->position.z };
+    this->deferredShader->setShaderValue(this->deferredShader->getShaderLocation(SHADER_LOC_VECTOR_VIEW), cameraPos, SHADER_UNIFORM_VEC3);
+
+    for (int i = 0; i < this->lightList.size(); i++) {
+        this->lightList.at(i)->UpdateLightValues(&this->deferredShader->shaderInstance);
+    }
+    
     this->gBufferInstance->readyForDrawing();
 
     // Base Render Pass
     camera->BeginMode();
         gBufferShader->enableShader();
-            renderedScene->signal_render_3D.emit();
+}
+
+void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
         gBufferShader->disableShader();
     camera->EndMode();
 
@@ -52,20 +61,20 @@ void SceneRenderer3D::render(raylib::Camera3D* camera, const Scene* renderedScen
     this->gBufferInstance->endBufferDrawing();
 
     camera->BeginMode();
-        rlDisableColorBlend();
-        rlEnableShader(this->deferredShader->getID());
-        // Bind our g-buffer textures
-        // We are binding them to locations that we earlier set in sampler2D uniforms `gPosition`, `gNormal`,
-        // and `gAlbedoSpec`
-        this->gBufferInstance->bindPositionTexture();
-        this->gBufferInstance->bindNormalTexture();
-        this->gBufferInstance->bindAlbedoTexture();
+        this->gBufferInstance->disableColorBlending();
+        this->deferredShader->enableShader();
+            // Bind our g-buffer textures
+            // We are binding them to locations that we earlier set in sampler2D uniforms `gPosition`, `gNormal`,
+            // and `gAlbedoSpec`
+            this->gBufferInstance->bindPositionTexture();
+            this->gBufferInstance->bindNormalTexture();
+            this->gBufferInstance->bindAlbedoTexture();
 
         // Finally, we draw a fullscreen quad to our default framebufferId
         // This will now be shaded using our deferred shader
-        rlLoadDrawQuad();
-        rlDisableShader();
-        rlEnableColorBlend();
+        ::rlLoadDrawQuad();
+        this->deferredShader->disableShader();
+        this->gBufferInstance->enableColorBlending();
     camera->EndMode();
 
     this->gBufferInstance->blitBuffer();

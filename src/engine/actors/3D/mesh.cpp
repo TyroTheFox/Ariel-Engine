@@ -2,6 +2,7 @@
 
 MeshModel::MeshModel(std::string id, raylib::Model* model) {
     this->id = id;
+    this->actorType = "MeshModel";
 
     this->setDefaults();
 
@@ -10,6 +11,7 @@ MeshModel::MeshModel(std::string id, raylib::Model* model) {
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* texturePtr) {
     this->id = id;
+    this->actorType = "MeshModel";
 
     this->setDefaults();
 
@@ -24,6 +26,7 @@ MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* text
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, TextureAtlas* textureAtlasPtr) {
     this->id = id;
+    this->actorType = "MeshModel";
 
     this->textureAtlas = textureAtlasPtr;
 
@@ -76,6 +79,10 @@ void MeshModel::setWireframeMode(bool wireframeMode) {
 
 void MeshModel::setTint(raylib::Color tintColor) {
     this->tint = tintColor;
+}
+
+void MeshModel::setMaterialShader(RenderingShader* renderingShader) {
+    this->model->materials[0].shader = renderingShader->shaderInstance;
 }
 
 void MeshModel::setRotationAxis(float x, float y, float z) {

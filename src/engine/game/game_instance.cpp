@@ -11,7 +11,7 @@ void GameInstance::instantiateGame(std::string assetManifestPath) {
     SpriteFontLoader spriteFontLoader = SpriteFontLoader();
     ModelLoader modelLoader = ModelLoader();
 
-    this->gameWindow = new raylib::Window(this->screenWidth, this->screenHeight, "Game", FLAG_VSYNC_HINT);
+    this->gameWindow = new raylib::Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Game", FLAG_VSYNC_HINT);
 
     json jsonData = jsonHandler.readJSON(assetManifestPath);
 
@@ -25,9 +25,9 @@ void GameInstance::instantiateGame(std::string assetManifestPath) {
 void GameInstance::startGame() {
     StageManager stageManager = StageManager();
 
-    this->gameWindow->SetTargetFPS(this->targetFPS);
+    this->gameWindow->SetTargetFPS(TARGET_FPS);
 
-    RenderTexture2D renderTexture = LoadRenderTexture(this->screenWidth, this->screenHeight);
+    RenderTexture2D renderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     while (!this->gameWindow->ShouldClose()) {
         float dT = this->gameWindow->GetFrameTime();
@@ -58,12 +58,4 @@ void GameInstance::startGame() {
     }
 
      UnloadRenderTexture(renderTexture);
-}
-
-int GameInstance::getScreenWidth() {
-    return this->screenWidth;
-}
-
-int GameInstance::getScreenHeight() {
-    return this->screenHeight;
 }

@@ -16,6 +16,7 @@ Shape::Shape(std::string id) {
     this->actorRenderType = ACTOR_2D;
     
     this->id = id;
+    this->actorType = "Shape";
 }
 
 Shape::~Shape() {
