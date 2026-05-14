@@ -39,10 +39,6 @@
         {
             "id": "old_car",
             "src": "resources/models/old_car_new.glb"
-        },
-        {
-            "id": "watermill",
-            "src": "resources/models/watermill.obj"
         }
     ],
     "fonts": [
