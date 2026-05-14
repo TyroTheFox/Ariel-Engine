@@ -17,6 +17,27 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
 
     MeshModel* mesh = new MeshModel(id, model, texture);
 
+    if (actorData->contains("metalnessTexture")) {
+        std::string id = actorData->at("metalnessTexture");
+        raylib::Texture2D* newTexture = textureLoader.getTexturePtr(id);
+
+        mesh->setMetalnessTexture(newTexture);
+    }
+
+    if (actorData->contains("normalTexture")) {
+        std::string id = actorData->at("normalTexture");
+        raylib::Texture2D* newTexture = textureLoader.getTexturePtr(id);
+
+        mesh->setNormalTexture(newTexture);
+    }
+
+    if (actorData->contains("emissionTexture")) {
+        std::string id = actorData->at("emissionTexture");
+        raylib::Texture2D* newTexture = textureLoader.getTexturePtr(id);
+
+        mesh->setEmissionTexture(newTexture);
+    }
+
     if (actorData->contains("x")) {
         mesh->x = actorData->at("x");
     }
@@ -31,6 +52,18 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
 
     if (actorData->contains("visible")) {
         mesh->visible = actorData->at("visible");
+    }
+
+    if (actorData->contains("metalness")) {
+        mesh->setMetalness(actorData->at("metalness"));
+    }
+
+    if (actorData->contains("roughness")) {
+        mesh->setRoughness(actorData->at("roughness"));
+    }
+
+    if (actorData->contains("occlusion")) {
+        mesh->setOcclusion(actorData->at("occlusion"));
     }
 
     if (actorData->contains("scale")) {
@@ -118,9 +151,26 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
 
         if (colorData.is_object()) {
             mesh->setTint({
-                colorData.contains("r") ? colorData.at("r").get<char>() : 255,
-                colorData.contains("g") ? colorData.at("g").get<char>() : 255,
-                colorData.contains("b") ? colorData.at("b").get<char>() : 255,
+                colorData.contains("r") ? colorData.at("r").get<char>() : 0,
+                colorData.contains("g") ? colorData.at("g").get<char>() : 0,
+                colorData.contains("b") ? colorData.at("b").get<char>() : 0,
+                colorData.contains("a") ? colorData.at("a").get<char>() : 255
+            });
+        }
+    }
+
+    if (actorData->contains("emissionColor")) {
+        json colorData = actorData->at("emissionColor");
+
+        if (colorData.is_string()) {
+            mesh->setEmissionColor(convertTextToColour(colorData.get<std::string>()));
+        }
+
+        if (colorData.is_object()) {
+            mesh->setEmissionColor({
+                colorData.contains("r") ? colorData.at("r").get<char>() : 0,
+                colorData.contains("g") ? colorData.at("g").get<char>() : 0,
+                colorData.contains("b") ? colorData.at("b").get<char>() : 0,
                 colorData.contains("a") ? colorData.at("a").get<char>() : 255
             });
         }

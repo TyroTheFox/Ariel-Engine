@@ -46,8 +46,8 @@ void SceneRenderer3D::setUpRenderer() {
     this->pbrShader->setShaderValue(lightCountLoc, &maxLightCount, SHADER_UNIFORM_INT);
 
     // Setup ambient color and intensity parameters
-    float ambientIntensity = 0.02f;
-    Color ambientColor = (Color){ 26, 32, 135, 255 };
+    float ambientIntensity = 1.0f;
+    Color ambientColor = (Color){ 255, 0, 0, 255 };
     Vector3 ambientColorNormalized = (Vector3){ ambientColor.r/255.0f, ambientColor.g/255.0f, ambientColor.b/255.0f };
     this->pbrShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
     this->pbrShader->setShaderValue("ambient", &ambientIntensity, SHADER_UNIFORM_FLOAT);
@@ -74,18 +74,18 @@ void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
 }
 
 void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
-        // Draw spheres to show the lights positions
-        for (int i = 0; i < this->lightList.size(); i++)
-        {
-            Color lightColor = (Color){
-                (unsigned char)(this->lightList.at(i)->getColor().r * 255),
-                (unsigned char)(this->lightList.at(i)->getColor().g * 255),
-                (unsigned char)(this->lightList.at(i)->getColor().b * 255),
-                (unsigned char)(this->lightList.at(i)->getColor().a * 255)
-            };
+        // // Draw spheres to show the lights positions
+        // for (int i = 0; i < this->lightList.size(); i++)
+        // {
+        //     Color lightColor = (Color){
+        //         (unsigned char)(this->lightList.at(i)->getColor().r * 255),
+        //         (unsigned char)(this->lightList.at(i)->getColor().g * 255),
+        //         (unsigned char)(this->lightList.at(i)->getColor().b * 255),
+        //         (unsigned char)(this->lightList.at(i)->getColor().a * 255)
+        //     };
 
-            if (this->lightList.at(i)->isEnabled()) DrawSphereEx(this->lightList.at(i)->getPosition(), 0.2f, 8, 8, lightColor);
-            else DrawSphereWires(this->lightList.at(i)->getPosition(), 0.2f, 8, 8, ColorAlpha(lightColor, 0.3f));
-        }
+        //     if (this->lightList.at(i)->isEnabled()) DrawSphereEx(this->lightList.at(i)->getPosition(), 0.2f, 8, 8, lightColor);
+        //     else DrawSphereWires(this->lightList.at(i)->getPosition(), 0.2f, 8, 8, ColorAlpha(lightColor, 0.3f));
+        // }
     camera->EndMode();
 }

@@ -8,20 +8,7 @@ MeshModel::MeshModel(std::string id, raylib::Model* model) {
 
     this->model = model;
 
-    // Setup materials[0].maps default parameters
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].color = this->tint;
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
-
-    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
-
-    // Setup materials[0].maps default textures
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas->getAtlasTexture();
+    this->setModelTextures();
 }
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* texturePtr) {
@@ -30,52 +17,26 @@ MeshModel::MeshModel(std::string id, raylib::Model* model, raylib::Texture* text
 
     this->setDefaults();
 
-    this->textureAtlas = new TextureAtlas(id, texturePtr);
+    this->textureAtlas_Albedo = new TextureAtlas(id, texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
-    this->textureAtlas->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+    this->textureAtlas_Albedo->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->model = model;
 
-    // Setup materials[0].maps default parameters
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].color = this->tint;
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
-
-    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
-
-    // Setup materials[0].maps default textures
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas->getAtlasTexture();
+    this->setModelTextures();
 }
 
 MeshModel::MeshModel(std::string id, raylib::Model* model, TextureAtlas* textureAtlasPtr) {
     this->id = id;
     this->actorType = "MeshModel";
 
-    this->textureAtlas = textureAtlasPtr;
+    this->textureAtlas_Albedo = textureAtlasPtr;
 
     this->setDefaults();
 
     this->model = model;
 
-    // Setup materials[0].maps default parameters
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].color = this->tint;
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
-
-    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
-
-    // Setup materials[0].maps default textures
-    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas->getAtlasTexture();
-    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas->getAtlasTexture();
+    this->setModelTextures();
 }
 
 void MeshModel::setDefaults() {
@@ -89,29 +50,137 @@ void MeshModel::setDefaults() {
     this->rotationAxis.y = 1;
     this->rotationAxis.z = 0;
 
-    this->tint = raylib::Color::RayWhite();
+    this->tint = raylib::Color::White();
+    this->emissionTint = raylib::Color::White();
+
+    this->tilingVector = Vector2();
+    tilingVector.x = 0.5;
+    tilingVector.y = 0.5;
 
     this->wireframeMode = false;
 }
 
-MeshModel::~MeshModel()
-{
+void MeshModel::setModelTextures() {
+    this->textureAtlas_Metalness = this->textureAtlas_Albedo;
+    this->textureAtlas_Normal = this->textureAtlas_Albedo;
+    this->textureAtlas_Emission = this->textureAtlas_Albedo;
+
+    // Setup materials[0].maps default parameters
+    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].color = this->tint;
+    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value = this->metalness;
+    this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = this->roughness;
+    this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = this->occlusion;
+    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = this->emissionTint;
+
+    // this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
+
+    // Setup materials[0].maps default textures
+    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas_Albedo->getAtlasTexture();
+    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
+    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();
+    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas_Emission->getAtlasTexture();
+}
+
+MeshModel::~MeshModel() {
+    this->model->materials[0].shader = Shader{ 0 };
+    UnloadMaterial(this->model->materials[0]);
+    this->model->materials[0].maps = NULL;
 }
 
 void MeshModel::setModel(raylib::Model* model) {
     this->model = model;
 }
 
-void MeshModel::setTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas = new TextureAtlas(id, texturePtr);
+void MeshModel::setAlbedoTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Albedo = new TextureAtlas(id, texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
-    this->textureAtlas->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+    this->textureAtlas_Albedo->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
-    this->model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *this->textureAtlas->getAtlasTexture();
+    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas_Albedo->getAtlasTexture();
+}
+
+void MeshModel::setMetalnessTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Metalness = new TextureAtlas(id, texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Metalness->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+
+    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
+}
+
+void MeshModel::setNormalTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Normal = new TextureAtlas(id, texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Normal->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+
+    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();
+}
+
+void MeshModel::setEmissionTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Emission = new TextureAtlas(id, texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Emission->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+
+    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas_Emission->getAtlasTexture();
+}
+
+void MeshModel::setAlbedoTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Albedo = textureAtlas;
+
+    this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas_Albedo->getAtlasTexture();
+}
+
+void MeshModel::setMetalnessTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Metalness = textureAtlas;
+
+    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
+}
+
+void MeshModel::setNormalTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Normal = textureAtlas;
+
+    this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();
+}
+
+void MeshModel::setEmissionTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Emission = textureAtlas;
+
+    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas_Emission->getAtlasTexture();
 }
 
 TextureAtlas* MeshModel::getTextureAtlas() {
-    return this->textureAtlas;
+    return this->textureAtlas_Albedo;
+}
+
+TextureAtlas* MeshModel::getMetalnessTextureAtlas() {
+    return this->textureAtlas_Metalness;
+}
+
+TextureAtlas* MeshModel::getNormalTextureAtlas() {
+    return this->textureAtlas_Normal;
+}
+
+TextureAtlas* MeshModel::getEmissionTextureAtlas() {
+    return this->textureAtlas_Emission;
+}
+
+void MeshModel::setMetalness(float value) {
+    this->metalness = value;
+    this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value = this->metalness;
+}
+
+void MeshModel::setRoughness(float value) {
+    this->roughness = value;
+    this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = this->roughness;
+}
+
+void MeshModel::setOcclusion(float value) {
+    this->occlusion = value;
+    this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = this->occlusion;
+}
+
+void MeshModel::setEmissionColor(raylib::Color color) {
+    this->emissionTint = color;
+    this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = this->emissionTint;
 }
 
 void MeshModel::setWireframeMode(bool wireframeMode) {
@@ -149,17 +218,12 @@ void MeshModel::render(RenderingShader* shader) {
     this->model->materials[0].shader = shader->shaderInstance;
 
     // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
-    Vector2 tilingVector = Vector2();
-    tilingVector.x = 0.5;
-    tilingVector.y = 0.5;
-
-    shader->setShaderValue(textureTilingLoc, &tilingVector, SHADER_UNIFORM_VEC2);
+    shader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
 
     Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
     shader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
 
-    float emissiveIntensity = 0.01f;
-    shader->setShaderValue(emissiveIntensityLoc, &emissiveIntensity, SHADER_UNIFORM_FLOAT);
+    shader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 
     // Set old car metallic and roughness values
     shader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
@@ -177,7 +241,7 @@ void MeshModel::render(RenderingShader* shader) {
 
     if (this->model->IsValid()) {
         if (this->wireframeMode) {
-            this->model->Draw(this->positionVector, this->rotationAxis, this->rotation, this->scaleVector, this->tint);
+            this->model->DrawWires(this->positionVector, this->rotationAxis, this->rotation, this->scaleVector, this->tint);
         } else {
             this->model->Draw(this->positionVector, this->rotationAxis, this->rotation, this->scaleVector, this->tint);
         }

@@ -2,7 +2,7 @@
 
 precision highp float;
 
-#define MAX_LIGHTS              4
+#define MAX_LIGHTS              50
 #define LIGHT_DIRECTIONAL       0
 #define LIGHT_POINT             1
 #define PI 3.14159265358979323846
@@ -30,9 +30,6 @@ uniform sampler2D albedoMap;
 uniform sampler2D mraMap;
 uniform sampler2D normalMap;
 uniform sampler2D emissiveMap; // r: Hight g:emissive
-
-uniform vec2 tiling;
-uniform vec2 offset;
 
 uniform int useTexAlbedo;
 uniform int useTexNormal;
@@ -81,7 +78,7 @@ float GeomSmith(float nDotV,float nDotL,float roughness)
 
 vec3 ComputePBR()
 {
-    vec3 albedo = texture2D(albedoMap, vec2(fragTexCoord.x*tiling.x + offset.x, fragTexCoord.y*tiling.y + offset.y)).rgb;
+    vec3 albedo = texture2D(albedoMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
     albedo = vec3(albedoColor.x*albedo.x, albedoColor.y*albedo.y, albedoColor.z*albedo.z);
 
     float metallic = clamp(metallicValue, 0.0, 1.0);
@@ -90,7 +87,7 @@ vec3 ComputePBR()
 
     if (useTexMRA == 1)
     {
-        vec4 mra = texture2D(mraMap, vec2(fragTexCoord.x*tiling.x + offset.x, fragTexCoord.y*tiling.y + offset.y));
+        vec4 mra = texture2D(mraMap, vec2(fragTexCoord.x, fragTexCoord.y));
         metallic = clamp(mra.r + metallicValue, 0.04, 1.0);
         roughness = clamp(mra.g + roughnessValue, 0.04, 1.0);
         ao = (mra.b + aoValue)*0.5;
@@ -99,7 +96,7 @@ vec3 ComputePBR()
     vec3 N = normalize(fragNormal);
     if (useTexNormal == 1)
     {
-        N = texture2D(normalMap, vec2(fragTexCoord.x*tiling.x + offset.y, fragTexCoord.y*tiling.y + offset.y)).rgb;
+        N = texture2D(normalMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
         N = normalize(N*2.0 - 1.0);
         N = normalize(N*TBN);
     }
@@ -107,7 +104,7 @@ vec3 ComputePBR()
     vec3 V = normalize(viewPos - fragPosition);
 
     vec3 emissive = vec3(0);
-    emissive = (texture2D(emissiveMap, vec2(fragTexCoord.x*tiling.x + offset.x, fragTexCoord.y*tiling.y + offset.y)).rgb).g*emissiveColor.rgb*emissivePower*float(useTexEmissive);
+    emissive = (texture2D(emissiveMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb).g*emissiveColor.rgb*emissivePower*float(useTexEmissive);
 
     // return N;//vec3(metallic,metallic,metallic);
     // If  dia-electric use base reflectivity of 0.04 otherwise ut is a metal use albedo as base reflectivity

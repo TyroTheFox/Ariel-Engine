@@ -21,5 +21,5 @@ void TestScene::onUpdate(float dT) const {
         this->testCube->rotation = 0.0f;
     }
 
-    this->testCube->rotation += 5.0f;
+    this->testCube->rotation += dT * 50;
 }

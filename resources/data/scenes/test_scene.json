@@ -2,8 +2,8 @@
     "settings": {
         "camera3D": {
             "x": 0,
-            "y": 0,
-            "z": 75,
+            "y": 10,
+            "z": 30,
             "fov": 45
         }
     },
@@ -11,7 +11,7 @@
         {
             "id": "main_light",
             "x": 0,
-            "y": 1,
+            "y": 10,
             "z": 0,
             "targetX": 0,
             "targetY": 0,
@@ -61,24 +61,26 @@
         {
             "id": "test_model",
             "type": "mesh",
-            "texture": "test_block_texture",
-            "model": "test_block",
+            "model": "old_car",
+            "texture": "old_car_d",
+            "metalnessTexture": "old_car_mra",
+            "normalTexture": "old_car_n",
+            "emissionTexture": "old_car_e",
             "x": 0,
             "y": 0,
-            "z": 0,
-            "scale": 20
+            "z": 0
         },
         {
             "id": "test_shape_model",
             "type": "shapeMesh",
-            "x": -20,
+            "x": -10,
             "y": 0,
-            "z": -20,
+            "z": 5,
             "draw": {
                 "shape": "sphere",
                 "x": 0,
                 "y": 0,
-                "radius": 5,
+                "radius": 2,
                 "color": "RED"
             }
         },
@@ -86,7 +88,7 @@
             "id": "test_billboard",
             "type": "billboardSprite",
             "texture": "card_atlas",
-            "x": 30,
+            "x": 10,
             "y": 0,
             "z": 5,
             "scale": 5
