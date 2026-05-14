@@ -9,6 +9,7 @@
 #include <raylib.h>
 
 #include <engine/actors/base_actor.h>
+#include <engine/render/rendering_shader.h>
 
 #include <cstdint>
 #include <string_view>
@@ -40,7 +41,7 @@ public:
     void renderDrawData(json shapeData);
 
     void update(float dT) override;
-    void render() override;
+    void render(RenderingShader* shader) override;
 };
 
 #endif

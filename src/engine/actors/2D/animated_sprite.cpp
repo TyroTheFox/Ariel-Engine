@@ -84,7 +84,7 @@ void AnimatedSprite::update(float dT) {
     }
 }
 
-void AnimatedSprite::render() {
+void AnimatedSprite::render(RenderingShader* shader) {
     if (!this->getVisible()) {
         return;
     }

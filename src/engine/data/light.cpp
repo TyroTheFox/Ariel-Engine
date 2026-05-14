@@ -1,11 +1,12 @@
 #include <engine/data/light.h>
 
-Light::Light(std::string id, int type, int lightsCount, raylib::Vector3 position, raylib::Vector3 target, raylib::Color color, raylib::Shader* shader) {
+Light::Light(std::string id, int type, int lightsCount, raylib::Vector3 position, raylib::Vector3 target, float intensity, raylib::Color color, raylib::Shader* shader) {
     this->enabled = true;
     this->type = type;
     this->position = position;
     this->target = target;
     this->color = color;
+    this->intensity = intensity;
 
     this->id = id;
     this->lightID = lightsCount;
@@ -16,12 +17,25 @@ Light::Light(std::string id, int type, int lightsCount, raylib::Vector3 position
     this->positionLoc = shader->GetLocation(TextFormat("lights[%i].position", lightsCount));
     this->targetLoc = shader->GetLocation(TextFormat("lights[%i].target", lightsCount));
     this->colorLoc = shader->GetLocation(TextFormat("lights[%i].color", lightsCount));
+    this->intensityLoc = shader->GetLocation(TextFormat("lights[%i].intensity", lightsCount));
 
     UpdateLightValues(shader);
 }
 
 Light::~Light()
 {
+}
+
+raylib::Color Light::getColor() {
+    return this->color;
+}
+
+bool Light::isEnabled() {
+    return this->enabled;
+}
+
+raylib::Vector3 Light::getPosition() {
+    return this->position;
 }
 
 void Light::UpdateLightValues(raylib::Shader* shader) {
@@ -33,10 +47,6 @@ void Light::UpdateLightValues(raylib::Shader* shader) {
     float position[3] = { this->position.x, this->position.y, this->position.z };
     shader->SetValue(this->positionLoc, position, SHADER_UNIFORM_VEC3);
 
-    // Send to shader light target position values
-    float target[3] = { this->target.x, this->target.y, this->target.z };
-    shader->SetValue(this->targetLoc, target, SHADER_UNIFORM_VEC3);
-
     // Send to shader light color values
     float color[4] = { 
         (float)this->color.r/(float)255, 
@@ -44,5 +54,10 @@ void Light::UpdateLightValues(raylib::Shader* shader) {
         (float)this->color.b/(float)255, 
         (float)this->color.a/(float)255 
     };
+
+    // Send to shader light target position values
+    float target[3] = { this->target.x, this->target.y, this->target.z };
+    shader->SetValue(this->targetLoc, target, SHADER_UNIFORM_VEC3);
     shader->SetValue(this->colorLoc, color, SHADER_UNIFORM_VEC4);
+    shader->SetValue(this->intensityLoc, &this->intensity, SHADER_UNIFORM_FLOAT);
 }

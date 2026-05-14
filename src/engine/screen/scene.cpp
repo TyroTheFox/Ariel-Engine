@@ -42,6 +42,7 @@ Scene::Scene(std::string name, json sceneData) {
             raylib::Vector3 lightPosition{ 0, 0, 0 };
             raylib::Vector3 lightTarget{ 0, 0, 0 };
             raylib::Color lightColor = raylib::Color::RayWhite();
+            float lightIntensity = 10.0f;
 
             if (entry.contains("x")) {
                 lightPosition.x = entry.at("x");
@@ -67,21 +68,18 @@ Scene::Scene(std::string name, json sceneData) {
                 lightTarget.z = entry.at("z");
             }
 
+            if (entry.contains("intensity")) {
+                lightIntensity = entry.at("intensity");
+            }
+
             this->sceneRenderer3D->createNewLight(
                 lightId, 
                 lightType == "Directional" ? LIGHT_DIRECTIONAL : LIGHT_POINT,
                 lightPosition,
                 lightTarget,
+                lightIntensity,
                 lightColor
             );
-        }
-    }
-
-    for (const auto& [key, value] : this->children) {
-        if (value->getActorRenderType() == ACTOR_3D) { 
-            if (value->actorType == "MeshModel") {
-                static_cast<MeshModel*>(value)->setMaterialShader(this->sceneRenderer3D->deferredShader);
-            }
         }
     }
 }
@@ -232,15 +230,15 @@ void Scene::onUpdate(float dT) const {
 
 void Scene::onRender() const {
     this->sceneRenderer3D->beginRender(this->camera3D);
-        this->signal_render_3D.emit();
+        this->signal_render_3D.emit(this->sceneRenderer3D->pbrShader);
     this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
 
     if (this->use2DCamera) {
         this->camera2D->BeginMode();
-            this->signal_render_2D.emit();
+            this->signal_render_2D.emit(this->sceneRenderer3D->pbrShader);
         this->camera2D->EndMode();
     } else {
-        this->signal_render_2D.emit();
+        this->signal_render_2D.emit(this->sceneRenderer3D->pbrShader);
     }
 }
 

@@ -11,6 +11,7 @@
 
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
+#include <engine/render/rendering_shader.h>
 
 class AnimatedSprite: public BaseActor {
 private:
@@ -45,7 +46,7 @@ public:
     void stopAnimation();
 
     void update(float dT) override;
-    void render() override;
+    void render(RenderingShader* shader) override;
 };
 
 #endif

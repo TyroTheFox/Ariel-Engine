@@ -36,13 +36,12 @@ public:
 
     void setWireframeMode(bool wireframeMode);
     void setTint(raylib::Color tint);
-    void setMaterialShader(RenderingShader* renderingShader);
 
     void setRotationAxis(float x, float y, float z);
     void setRotationAxis(Vector3 vector);
 
     void update(float dT) override;
-    void render() override;
+    void render(RenderingShader* shader) override;
 };
 
 #endif

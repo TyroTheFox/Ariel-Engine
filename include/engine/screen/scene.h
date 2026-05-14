@@ -55,8 +55,8 @@ class Scene
         sl::Signal<> actorRemoved;
 
         sl::Signal<float> signal_update;
-        sl::Signal<> signal_render_2D;
-        sl::Signal<> signal_render_3D;
+        sl::Signal<RenderingShader*> signal_render_2D;
+        sl::Signal<RenderingShader*> signal_render_3D;
 
         Scene();
         Scene(std::string id, json sceneData);

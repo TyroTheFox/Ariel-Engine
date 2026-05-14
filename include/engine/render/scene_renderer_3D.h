@@ -17,19 +17,17 @@
 #include <engine/render/gbuffer.h>
 
 class SceneRenderer3D {
-    private:
-        GraphicsBuffer* gBufferInstance;
-        
+    private:        
         std::vector<Light*> lightList;
     public:
-        RenderingShader* deferredShader;
-        RenderingShader* gBufferShader;
+        RenderingShader* pbrShader;
 
         SceneRenderer3D();
         ~SceneRenderer3D();
 
-        void createNewLight(std::string id, LightType type, raylib::Vector3 position, raylib::Vector3 target, raylib::Color color);
+        void createNewLight(std::string id, LightType type, raylib::Vector3 position, raylib::Vector3 target, float intensity = 10.0f, raylib::Color color = raylib::Color::RayWhite());
 
+        void setUpRenderer();
         void beginRender(raylib::Camera3D* camera);
         void endRenderAndProcess(raylib::Camera3D* camera);
 };

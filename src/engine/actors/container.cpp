@@ -24,7 +24,7 @@ void Container::removeChildren(std::string childId) {
 
 void Container::update(float dT) {}
 
-void Container::render() {
+void Container::render(RenderingShader* shader) {
     if (!this->visible) {
         return;
     }

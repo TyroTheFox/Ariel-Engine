@@ -92,7 +92,7 @@ void BillboardSprite::update(float dT) {
     }
 }
 
-void BillboardSprite::render() {
+void BillboardSprite::render(RenderingShader* shader) {
     if (!this->getVisible()) {
         return;
     }

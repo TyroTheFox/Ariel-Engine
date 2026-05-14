@@ -221,7 +221,7 @@ void ShapeMesh::renderDrawData(json shapeData) {
 
 void ShapeMesh::update(float dT) {}
 
-void ShapeMesh::render() {
+void ShapeMesh::render(RenderingShader* shader) {
     if (!this->getVisible()) {
         return;
     }

@@ -28,8 +28,12 @@ int RenderingShader::getShaderLocation(ShaderLocationIndex index) {
     return this->shaderInstance.locs[index];
 }
 
-void RenderingShader::setShaderValue(std::string locationName, int usage, int uniformType) {
-    ::SetShaderValue(this->shaderInstance, ::GetShaderLocation(this->shaderInstance, locationName.c_str()), &usage, uniformType);
+int RenderingShader::getShaderLocation(std::string location) {
+    return this->shaderInstance.GetLocation(location);
+}
+
+void RenderingShader::setShaderValue(std::string locationName, const void *value, int uniformType) {
+    ::SetShaderValue(this->shaderInstance, ::GetShaderLocation(this->shaderInstance, locationName.c_str()), value, uniformType);
 }
 
 void RenderingShader::setShaderValue(int locIndex, const void *value, int uniformType) {

@@ -28,8 +28,9 @@ class RenderingShader {
 
         void setShaderLocation(ShaderLocationIndex index, std::string uniformName);
         int getShaderLocation(ShaderLocationIndex index);
+        int getShaderLocation(std::string location);
 
-        void setShaderValue(std::string locationName, int usage, int uniformType);
+        void setShaderValue(std::string locationName, const void *value, int uniformType);
         void setShaderValue(int locIndex, const void *value, int uniformType);
         void setShaderValueV(int locIndex, const void *value, int uniformType, int count);
         void setShaderMatrixValue(int locIndex, Matrix mat);
