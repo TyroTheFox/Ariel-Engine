@@ -48,6 +48,8 @@ uniform float roughnessValue;
 uniform float aoValue;
 uniform float emissivePower;
 
+uniform float gamma;
+
 // Input lighting values
 uniform Light lights[MAX_LIGHTS];
 uniform vec3 viewPos;
@@ -153,10 +155,10 @@ void main()
     vec3 color = ComputePBR();
 
     // HDR tonemapping
-    color = pow(color, color + vec3(1.0));
+    // color = pow(color, color + vec3(1.0));
 
     // Gamma correction
-    color = pow(color, vec3(1.0/2.2));
+    color = pow(color, vec3(1.0/gamma));
 
     finalColor = vec4(color, 1.0);
 }

@@ -4,7 +4,6 @@
 #define BASE_ACTOR_H
 
 #include <string>
-#include <engine/render/rendering_shader.h>
 
 #include <sling.h>
 
@@ -33,7 +32,7 @@ class BaseActor {
         std::string actorType;
         
         sl::Slot<float> onUpdate{this, &BaseActor::update};
-        sl::Slot<RenderingShader*> onRender{this, &BaseActor::render};
+        sl::Slot<> onRender{this, &BaseActor::render};
         
         float x;
         float y;
@@ -79,7 +78,7 @@ class BaseActor {
         ActorRenderType getActorRenderType();
 
         virtual void update(float dT);
-        virtual void render(RenderingShader* shader);
+        virtual void render();
 
         void calculateRenderedPosition();
 };

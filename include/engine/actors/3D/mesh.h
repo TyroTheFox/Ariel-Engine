@@ -7,7 +7,7 @@
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
-#include <engine/render/rendering_shader.h>
+#include <engine/render/shader_objects/shader_manager.h>
 #include <sling.h>
 
 class MeshModel : public BaseActor {
@@ -34,6 +34,8 @@ protected:
 
     bool wireframeMode;
 
+    RenderingShader* shader;
+
     void setDefaults();
     void setModelTextures();
 public:
@@ -54,6 +56,8 @@ public:
     void setNormalTexture(TextureAtlas* textureAtlas);
     void setEmissionTexture(TextureAtlas* textureAtlas);
 
+    void setTextureTilingVector(float x, float y);
+
     TextureAtlas* getTextureAtlas();
     TextureAtlas* getMetalnessTextureAtlas();
     TextureAtlas* getNormalTextureAtlas();
@@ -71,7 +75,7 @@ public:
     void setRotationAxis(Vector3 vector);
 
     void update(float dT) override;
-    void render(RenderingShader* shader) override;
+    void render() override;
 };
 
 #endif

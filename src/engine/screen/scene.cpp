@@ -41,7 +41,7 @@ Scene::Scene(std::string name, json sceneData) {
 
             raylib::Vector3 lightPosition{ 0, 0, 0 };
             raylib::Vector3 lightTarget{ 0, 0, 0 };
-            raylib::Color lightColor = raylib::Color::RayWhite();
+            raylib::Color lightColor = raylib::Color::White();
             float lightIntensity = 10.0f;
 
             if (entry.contains("x")) {
@@ -72,6 +72,23 @@ Scene::Scene(std::string name, json sceneData) {
                 lightIntensity = entry.at("intensity");
             }
 
+            if (entry.contains("color")) {
+                json colorData = entry.at("color");
+
+                if (colorData.is_string()) {
+                    lightColor = convertTextToColour(colorData.get<std::string>());
+                }
+
+                if (colorData.is_object()) {
+                    lightColor = raylib::Color(
+                        colorData.contains("r") ? colorData.at("r").get<char>() : 0,
+                        colorData.contains("g") ? colorData.at("g").get<char>() : 0,
+                        colorData.contains("b") ? colorData.at("b").get<char>() : 0,
+                        colorData.contains("a") ? colorData.at("a").get<char>() : 255
+                    );
+                }
+            }
+
             this->sceneRenderer3D->createNewLight(
                 lightId, 
                 lightType == "Directional" ? LIGHT_DIRECTIONAL : LIGHT_POINT,
@@ -82,6 +99,8 @@ Scene::Scene(std::string name, json sceneData) {
             );
         }
     }
+
+    this->sceneRenderer3D->setUpRenderer();
 }
 
 Scene::~Scene() {}
@@ -230,15 +249,15 @@ void Scene::onUpdate(float dT) const {
 
 void Scene::onRender() const {
     this->sceneRenderer3D->beginRender(this->camera3D);
-        this->signal_render_3D.emit(this->sceneRenderer3D->pbrShader);
+        this->signal_render_3D.emit();
     this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
 
     if (this->use2DCamera) {
         this->camera2D->BeginMode();
-            this->signal_render_2D.emit(this->sceneRenderer3D->pbrShader);
+            this->signal_render_2D.emit();
         this->camera2D->EndMode();
     } else {
-        this->signal_render_2D.emit(this->sceneRenderer3D->pbrShader);
+        this->signal_render_2D.emit();
     }
 }
 

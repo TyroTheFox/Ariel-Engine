@@ -10,10 +10,13 @@ void GameInstance::instantiateGame(std::string assetManifestPath) {
     TextureAssetLoader textureAssetLoader = TextureAssetLoader();
     SpriteFontLoader spriteFontLoader = SpriteFontLoader();
     ModelLoader modelLoader = ModelLoader();
+    ShaderManager shaderManager = ShaderManager();
 
     this->gameWindow = new raylib::Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Game", FLAG_VSYNC_HINT);
 
     json jsonData = jsonHandler.readJSON(assetManifestPath);
+
+    shaderManager.loadManifest(jsonData);
 
     textureAssetLoader.loadManifest(jsonData);
 

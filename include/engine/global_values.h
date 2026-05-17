@@ -7,4 +7,6 @@
 #define SCREEN_HEIGHT 900
 #define TARGET_FPS 60
 
+#define GAMMA 2.0f;
+
 #endif

@@ -37,7 +37,7 @@ TextureAtlas* Sprite::getTextureAtlas() {
 
 void Sprite::update(float dT) {}
 
-void Sprite::render(RenderingShader* shader) {
+void Sprite::render() {
     if (!this->getVisible()) {
         return;
     }

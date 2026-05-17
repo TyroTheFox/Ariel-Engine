@@ -9,7 +9,6 @@
 
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
-#include <engine/render/rendering_shader.h>
 
 class Sprite : public BaseActor
 {
@@ -24,7 +23,7 @@ class Sprite : public BaseActor
         void setTexture(raylib::Texture2D* texturePtr);
         TextureAtlas* getTextureAtlas();
         void update(float dT) override;
-        void render(RenderingShader* shader) override;
+        void render() override;
 };
 
 #endif

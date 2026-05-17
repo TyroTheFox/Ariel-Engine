@@ -137,6 +137,7 @@ GENERATED += $(OBJDIR)/model_loader.o
 GENERATED += $(OBJDIR)/rendering_shader.o
 GENERATED += $(OBJDIR)/scene.o
 GENERATED += $(OBJDIR)/scene_renderer_3D.o
+GENERATED += $(OBJDIR)/shader_manager.o
 GENERATED += $(OBJDIR)/shape.o
 GENERATED += $(OBJDIR)/shape_creator.o
 GENERATED += $(OBJDIR)/shape_mesh.o
@@ -170,6 +171,7 @@ OBJECTS += $(OBJDIR)/model_loader.o
 OBJECTS += $(OBJDIR)/rendering_shader.o
 OBJECTS += $(OBJDIR)/scene.o
 OBJECTS += $(OBJDIR)/scene_renderer_3D.o
+OBJECTS += $(OBJDIR)/shader_manager.o
 OBJECTS += $(OBJDIR)/shape.o
 OBJECTS += $(OBJDIR)/shape_creator.o
 OBJECTS += $(OBJDIR)/shape_mesh.o
@@ -319,10 +321,13 @@ $(OBJDIR)/game_instance.o: src/engine/game/game_instance.cpp
 $(OBJDIR)/gbuffer.o: src/engine/render/gbuffer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/rendering_shader.o: src/engine/render/rendering_shader.cpp
+$(OBJDIR)/scene_renderer_3D.o: src/engine/render/scene_renderer_3D.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/scene_renderer_3D.o: src/engine/render/scene_renderer_3D.cpp
+$(OBJDIR)/rendering_shader.o: src/engine/render/shader_objects/rendering_shader.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/shader_manager.o: src/engine/render/shader_objects/shader_manager.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/scene.o: src/engine/screen/scene.cpp

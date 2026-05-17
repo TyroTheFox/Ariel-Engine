@@ -8,7 +8,6 @@
 #include <raylib.h>
 
 #include <engine/actors/base_actor.h>
-#include <engine/render/rendering_shader.h>
 
 class Text : public BaseActor
 {
@@ -37,7 +36,7 @@ public:
     void drawTextWithWordWrap();
 
     void update(float dT) override;
-    void render(RenderingShader* shader) override;
+    void render() override;
 };
 
 #endif

@@ -132,7 +132,7 @@ void Shape::renderDrawData(json shapeData) {
 
 void Shape::update(float dT) {}
 
-void Shape::render(RenderingShader* shader) {
+void Shape::render() {
     if (!this->getVisible()) {
         return;
     }

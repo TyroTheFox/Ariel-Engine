@@ -1,26 +1,13 @@
 #include <engine/render/scene_renderer_3D.h>
 
 SceneRenderer3D::SceneRenderer3D() {
-    this->pbrShader = new RenderingShader(
-        "resources/shaders/glsl%i/pbr/pbr.vs",
-        "resources/shaders/glsl%i/pbr/pbr.fs"
-    );
+    ShaderManager shadermanager = ShaderManager();
 
-    this->pbrShader->setShaderLocation(SHADER_LOC_MAP_ALBEDO, "albedoMap");
-
-    // WARNING: Metalness, roughness, and ambient occlusion are all packed into a MRA texture
-    // They are passed as to the SHADER_LOC_MAP_METALNESS location for convenience,
-    // shader already takes care of it accordingly
-    this->pbrShader->setShaderLocation(SHADER_LOC_MAP_METALNESS, "mraMap");
-    this->pbrShader->setShaderLocation(SHADER_LOC_MAP_NORMAL, "normalMap");
-
-    // WARNING: Similar to the MRA map, the emissive map packs different information
-    // into a single texture: it stores height and emission data
-    // It is binded to SHADER_LOC_MAP_EMISSION location an properly processed on shader
-    this->pbrShader->setShaderLocation(SHADER_LOC_MAP_EMISSION, "emissiveMap");
-    this->pbrShader->setShaderLocation(SHADER_LOC_COLOR_DIFFUSE, "albedoColor");
+    this->pbrShader = shadermanager.getShaderPtr("pbr");
 
     this->lightList = std::vector<Light*>{};
+
+    this->ambientColor = raylib::Color::White();
 }
 
 SceneRenderer3D::~SceneRenderer3D() {
@@ -39,26 +26,19 @@ void SceneRenderer3D::createNewLight(std::string id, LightType type, raylib::Vec
 }
 
 void SceneRenderer3D::setUpRenderer() {
+    int gammaLoc = this->pbrShader->getShaderLocation("gamma");
+
+    this->pbrShader->setShaderValue(gammaLoc, &this->gammaValue, SHADER_UNIFORM_FLOAT);
+
     // Setup additional required shader locations, including lights data
-    this->pbrShader->setShaderLocation(SHADER_LOC_VECTOR_VIEW, "viewPos");
     int lightCountLoc = GetShaderLocation(this->pbrShader->shaderInstance, "numOfLights");
     int maxLightCount = this->lightList.size();
     this->pbrShader->setShaderValue(lightCountLoc, &maxLightCount, SHADER_UNIFORM_INT);
 
     // Setup ambient color and intensity parameters
-    float ambientIntensity = 1.0f;
-    Color ambientColor = (Color){ 255, 0, 0, 255 };
-    Vector3 ambientColorNormalized = (Vector3){ ambientColor.r/255.0f, ambientColor.g/255.0f, ambientColor.b/255.0f };
+    Vector3 ambientColorNormalized = (Vector3){ this->ambientColor.r/255.0f, this->ambientColor.g/255.0f, this->ambientColor.b/255.0f };
     this->pbrShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
-    this->pbrShader->setShaderValue("ambient", &ambientIntensity, SHADER_UNIFORM_FLOAT);
-
-    // Setup material texture maps usage in shader
-    // NOTE: By default, the texture maps are always used
-    int usage = 1;
-    this->pbrShader->setShaderValue("useTexAlbedo", &usage, SHADER_UNIFORM_INT);
-    this->pbrShader->setShaderValue("useTexNormal", &usage, SHADER_UNIFORM_INT);
-    this->pbrShader->setShaderValue("useTexMRA", &usage, SHADER_UNIFORM_INT);
-    this->pbrShader->setShaderValue("useTexEmissive", &usage, SHADER_UNIFORM_INT);
+    this->pbrShader->setShaderValue("ambient", &this->ambientIntensity, SHADER_UNIFORM_FLOAT);
 }
 
 void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {

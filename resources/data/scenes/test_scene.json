@@ -15,7 +15,36 @@
             "z": 0,
             "targetX": 0,
             "targetY": 0,
-            "targetZ": 0
+            "targetZ": 0,
+            "intensity": 10.0
+        },
+        {
+            "id": "side_light1",
+            "type": "point",
+            "x": 15,
+            "y": 2,
+            "z": 0,
+            "targetX": 0,
+            "targetY": 2,
+            "targetZ": 0,
+            "color": {
+                "r": 200
+            },
+            "intensity": 5.0
+        },
+        {
+            "id": "side_light2",
+            "type": "point",
+            "x": -15,
+            "y": 2,
+            "z": 0,
+            "targetX": 0,
+            "targetY": 2,
+            "targetZ": 0,
+            "color": {
+                "b": 200
+            },
+            "intensity": 5.0
         }
     ],
     "actors": [

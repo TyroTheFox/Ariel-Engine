@@ -13,6 +13,7 @@
 #include <engine/assets/texture_asset_loader.h>
 #include <engine/assets/model_loader.h>
 #include <engine/assets/sprite_font_loader.h>
+#include <engine/render/shader_objects/shader_manager.h>
 
 #include <engine/screen/stage_manager.h>
 

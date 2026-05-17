@@ -27,7 +27,7 @@ public:
     void removeChildren(std::string childId);
 
     void update(float dT) override;
-    void render(RenderingShader* shader) override;
+    void render() override;
 };
 
 #endif

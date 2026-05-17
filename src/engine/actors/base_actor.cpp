@@ -87,7 +87,7 @@ ActorRenderType BaseActor::getActorRenderType() {
 
 void BaseActor::update(float dT) {}
 
-void BaseActor::render(RenderingShader* shader) {}
+void BaseActor::render() {}
 
 void BaseActor::calculateRenderedPosition() {
     BaseActor* objectParent = this->parent;

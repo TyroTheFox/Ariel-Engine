@@ -13,7 +13,7 @@
 #include "rlgl.h"
 #include "raymath.h"
 
-#include <engine/render/rendering_shader.h>
+#include <engine/render/shader_objects/rendering_shader.h>
 
 typedef struct GBufferData {
     unsigned int framebufferId;

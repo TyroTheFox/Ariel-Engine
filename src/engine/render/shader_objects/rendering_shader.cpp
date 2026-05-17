@@ -1,4 +1,4 @@
-#include <engine/render/rendering_shader.h>
+#include <engine/render/shader_objects/rendering_shader.h>
 
 RenderingShader::RenderingShader(std::string vertexPath, std::string fragmentPath) {
     this->shaderInstance = raylib::Shader(::TextFormat(vertexPath.c_str(), GLSL_VERSION), ::TextFormat(fragmentPath.c_str(), GLSL_VERSION));
@@ -20,11 +20,11 @@ unsigned int RenderingShader::getID() {
     return this->shaderInstance.id;
 }
 
-void RenderingShader::setShaderLocation(ShaderLocationIndex index, std::string uniformName) {
+void RenderingShader::setShaderLocation(int index, std::string uniformName) {
     this->shaderInstance.locs[index] = ::GetShaderLocation(this->shaderInstance, uniformName.c_str());
 }
 
-int RenderingShader::getShaderLocation(ShaderLocationIndex index) {
+int RenderingShader::getShaderLocation(int index) {
     return this->shaderInstance.locs[index];
 }
 

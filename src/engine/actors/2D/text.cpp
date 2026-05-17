@@ -54,7 +54,7 @@ void Text::setSpacing(float spacing) {
 
 void Text::update(float dT) {}
 
-void Text::render(RenderingShader* shader) {
+void Text::render() {
     if (!this->getVisible()) {
         return;
     }

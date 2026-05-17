@@ -26,8 +26,8 @@ class RenderingShader {
 
         unsigned int getID();
 
-        void setShaderLocation(ShaderLocationIndex index, std::string uniformName);
-        int getShaderLocation(ShaderLocationIndex index);
+        void setShaderLocation(int index, std::string uniformName);
+        int getShaderLocation(int index);
         int getShaderLocation(std::string location);
 
         void setShaderValue(std::string locationName, const void *value, int uniformType);

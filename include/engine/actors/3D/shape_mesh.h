@@ -52,7 +52,7 @@ public:
     void renderDrawData(json shapeData);
 
     void update(float dT) override;
-    void render(RenderingShader* shader) override;
+    void render() override;
 };
 
 #endif

@@ -8,7 +8,6 @@
 #include <map>
 #include <memory>
 #include <tuple>
-#include <nlohmann/json.hpp>
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 

@@ -17,6 +17,11 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
 
     MeshModel* mesh = new MeshModel(id, model, texture);
 
+    mesh->setTextureTilingVector(
+        actorData->contains("tilingX") ? actorData->at("tilingX").get<float>() : 0.5,
+        actorData->contains("tilingY") ? actorData->at("tilingY").get<float>() : 0.5
+    );
+
     if (actorData->contains("metalnessTexture")) {
         std::string id = actorData->at("metalnessTexture");
         raylib::Texture2D* newTexture = textureLoader.getTexturePtr(id);
@@ -113,6 +118,15 @@ MeshModel* MeshCreator::createActor(json* actorData) const {
             }
         }
     }
+
+    if (actorData->contains("textureTilingX")) {
+        mesh->x = actorData->at("textureTilingX");
+    }
+
+    if (actorData->contains("y")) {
+        mesh->y = actorData->at("y");
+    }
+
 
     if (actorData->contains("rotation")) {
         mesh->rotation = actorData->at("rotation");

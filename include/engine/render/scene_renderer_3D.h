@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include <engine/global_values.h>
+
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
@@ -13,13 +15,17 @@
 
 #include "engine/data/light.h"
 
-#include <engine/render/rendering_shader.h>
+#include <engine/render/shader_objects/shader_manager.h>
 #include <engine/render/gbuffer.h>
 
 class SceneRenderer3D {
-    private:        
+    private:
         std::vector<Light*> lightList;
     public:
+        float gammaValue = 4.2;
+        float ambientIntensity = 0.1;
+        raylib::Color ambientColor;
+
         RenderingShader* pbrShader;
 
         SceneRenderer3D();
