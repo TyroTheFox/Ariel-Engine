@@ -46,34 +46,22 @@
     ],
     "shaders": [
         {
-            "id": "pbr",
-            "vertex": "resources/shaders/glsl%i/pbr/pbr.vs",
-            "frag": "resources/shaders/glsl%i/pbr/pbr.fs",
+            "id": "gbuffer",
+            "vertex": "resources/shaders/glsl%i/gbuffer/gbuffer.vs",
+            "frag": "resources/shaders/glsl%i/gbuffer/gbuffer.fs",
             "default": true,
             "locations": [
-                {
-                    "index": "SHADER_LOC_MAP_ALBEDO",
-                    "uniformName": "albedoMap"
-                },
-                {
-                    "index": "SHADER_LOC_MAP_METALNESS",
-                    "uniformName": "mraMap"
-                },
-                {
-                    "index": "SHADER_LOC_MAP_NORMAL",
-                    "uniformName": "normalMap"
-                },
-                {
-                    "index": "SHADER_LOC_MAP_EMISSION",
-                    "uniformName": "emissiveMap"
-                },
-                {
-                    "index": "SHADER_LOC_COLOR_DIFFUSE",
-                    "uniformName": "albedoColor"
-                },
+            ]
+        },
+        {
+            "id": "deferred",
+            "vertex": "resources/shaders/glsl%i/deferred_shading/deferred_shading.vs",
+            "frag": "resources/shaders/glsl%i/deferred_shading/deferred_shading.fs",
+            "default": false,
+            "locations": [
                 {
                     "index": "SHADER_LOC_VECTOR_VIEW",
-                    "uniformName": "viewPos"
+                    "uniformName": "viewPosition"
                 }
             ]
         }

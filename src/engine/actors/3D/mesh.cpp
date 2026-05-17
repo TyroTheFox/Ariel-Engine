@@ -68,38 +68,38 @@ void MeshModel::setModelTextures() {
     this->model->materials[0].shader = this->shader->shaderInstance;
     this->model->meshMaterial[0] = 0;
 
-    // Get location for shader parameters that can be modified in real time 
-    int metallicValueLoc = this->shader->getShaderLocation("metallicValue");
-    int roughnessValueLoc = this->shader->getShaderLocation("roughnessValue");
-    int emissiveIntensityLoc = this->shader->getShaderLocation("emissivePower");
-    int emissiveColorLoc = this->shader->getShaderLocation("emissiveColor");
-    int textureTilingLoc = this->shader->getShaderLocation("tiling");
+    // // Get location for shader parameters that can be modified in real time 
+    // int metallicValueLoc = this->shader->getShaderLocation("metallicValue");
+    // int roughnessValueLoc = this->shader->getShaderLocation("roughnessValue");
+    // int emissiveIntensityLoc = this->shader->getShaderLocation("emissivePower");
+    // int emissiveColorLoc = this->shader->getShaderLocation("emissiveColor");
+    // int textureTilingLoc = this->shader->getShaderLocation("tiling");
 
     // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
-    shader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
+    // shader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
 
-    Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
-    shader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
+    // Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
+    // shader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
 
-    shader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
+    // shader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 
-    // Set old car metallic and roughness values
-    shader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
-    shader->setShaderValue(roughnessValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value, SHADER_UNIFORM_FLOAT);
+    // // Set old car metallic and roughness values
+    // shader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
+    // shader->setShaderValue(roughnessValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value, SHADER_UNIFORM_FLOAT);
 
     // Setup material texture maps usage in shader
     // NOTE: By default, the texture maps are always used
-    int usage = 1;
-    shader->setShaderValue("useTexAlbedo", &usage, SHADER_UNIFORM_INT);
-    shader->setShaderValue("useTexNormal", &usage, SHADER_UNIFORM_INT);
-    shader->setShaderValue("useTexMRA", &usage, SHADER_UNIFORM_INT);
-    shader->setShaderValue("useTexEmissive", &usage, SHADER_UNIFORM_INT);
+    // int usage = 1;
+    // shader->setShaderValue("useTexAlbedo", &usage, SHADER_UNIFORM_INT);
+    // shader->setShaderValue("useTexNormal", &usage, SHADER_UNIFORM_INT);
+    // shader->setShaderValue("useTexMRA", &usage, SHADER_UNIFORM_INT);
+    // shader->setShaderValue("useTexEmissive", &usage, SHADER_UNIFORM_INT);
 
     this->textureAtlas_Metalness = this->textureAtlas_Albedo;
     this->textureAtlas_Normal = this->textureAtlas_Albedo;
     this->textureAtlas_Emission = this->textureAtlas_Albedo;
 
-    // Setup materials[0].maps default textures
+    // // Setup materials[0].maps default textures
     this->model->materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *this->textureAtlas_Albedo->getAtlasTexture();
     this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
     this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();

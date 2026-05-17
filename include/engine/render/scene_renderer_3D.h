@@ -26,7 +26,11 @@ class SceneRenderer3D {
         float ambientIntensity = 0.1;
         raylib::Color ambientColor;
 
-        RenderingShader* pbrShader;
+        // RenderingShader* pbrShader;
+        RenderingShader* gBuffer;
+        RenderingShader* deferredShader;
+
+        GraphicsBuffer* graphicsBuffer;
 
         SceneRenderer3D();
         ~SceneRenderer3D();

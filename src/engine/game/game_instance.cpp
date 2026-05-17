@@ -41,24 +41,22 @@ void GameInstance::startGame() {
         }
         
         // Render Screen
-        BeginTextureMode(renderTexture);
+        ::BeginTextureMode(renderTexture);
             this->gameWindow->ClearBackground(raylib::Color::Black());
             stageManager.renderStages();
-        EndTextureMode();
+        ::EndTextureMode();
 
 
         // Draw
-        BeginDrawing();
-            DrawTexturePro(
+        ::BeginDrawing();
+            ::DrawTextureRec(
                 renderTexture.texture,
-                Rectangle{ 0, 0, static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height) },
-                Rectangle{ 0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
-                Vector2{ 0, 0 },
-                0,
+                raylib::Rectangle{ 0, 0, static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height) },
+                raylib::Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
                 WHITE
             );
-        EndDrawing();
+        ::EndDrawing();
     }
 
-     UnloadRenderTexture(renderTexture);
+    UnloadRenderTexture(renderTexture);
 }
