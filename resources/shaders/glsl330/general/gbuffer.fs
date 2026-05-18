@@ -8,7 +8,6 @@ layout (location = 4) out vec3 gMRA;
 
 in vec3 fragPosition;
 in vec2 fragTexCoord;
-in vec3 fragNormal;
 in mat3 TBN;
 
 uniform sampler2D albedoMap;
@@ -63,20 +62,16 @@ void main()
     gPosition = fragPosition;
 
     // also store the per-fragment normals into the gbuffer
-    gNormal = normalize(fragNormal);
+    gNormal = calculateNormal() * useTexNormal;
 
     // and the diffuse per-fragment color
     gAlbedo = calculateAlbedo();
 
-    gEmissive = vec3(0);
+    gEmissive = calculateEmissive() * useTexEmissive;
 
     float metallic = clamp(metallicValue, 0.0, 1.0);
     float roughness = clamp(roughnessValue, 0.0, 1.0);
     float ao = clamp(aoValue, 0.0, 1.0);
-
-    if (useTexNormal == 1) {
-        gNormal = calculateNormal();
-    }
 
     if (useTexMRA == 1) {
         vec4 mra = calculateMRA();
@@ -84,10 +79,6 @@ void main()
         metallic = clamp(mra.r + metallicValue, 0.04, 1.0);
         roughness = clamp(mra.g + roughnessValue, 0.04, 1.0);
         ao = (mra.b + aoValue) * 0.5;
-    }
-
-    if (useTexEmissive == 1) {
-        gEmissive = calculateEmissive();
     }
 
     gMRA = vec3(metallic, roughness, ao);

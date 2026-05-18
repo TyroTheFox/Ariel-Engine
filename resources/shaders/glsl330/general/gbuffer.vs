@@ -14,7 +14,7 @@ uniform mat4 matModel;
 
 void main()
 {
-    // Compute binormal from vertex normal and tangent
+    // Compute binormal from vertex normal and tangent. W component is the tangent handedness
     vec3 vertexBinormal = cross(vertexNormal, vertexTangent.xyz)*vertexTangent.w;
 
     // Compute fragment normal based on normal transformations
@@ -23,15 +23,18 @@ void main()
     // Compute fragment position based on model transformations
     fragPosition = vec3(matModel*vec4(vertexPosition, 1.0));
 
-    fragTexCoord = vertexTexCoord*2.0;
+    //Create TBN matrix for transforming the normal map values from tangent-space to world-space
     fragNormal = normalize(normalMatrix*vertexNormal);
+
     vec3 fragTangent = normalize(normalMatrix*vertexTangent.xyz);
     fragTangent = normalize(fragTangent - dot(fragTangent, fragNormal)*fragNormal);
+
     vec3 fragBinormal = normalize(normalMatrix*vertexBinormal);
     fragBinormal = cross(fragNormal, fragTangent);
 
     TBN = transpose(mat3(fragTangent, fragBinormal, fragNormal));
 
-    // Calculate final vertex position
+    fragTexCoord = vertexTexCoord;
+
     gl_Position = mvp*vec4(vertexPosition, 1.0);
 }

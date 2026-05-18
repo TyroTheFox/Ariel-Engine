@@ -73,11 +73,11 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
     camera->BeginMode();
         this->graphicsBuffer->disableColorBlending();
             this->deferredShader->enableShader();
-                // this->graphicsBuffer->bindPositionTexture();
-                // this->graphicsBuffer->bindNormalTexture();
-                // this->graphicsBuffer->bindAlbedoTexture();
-                // this->graphicsBuffer->bindEmissiveTexture();
-                // this->graphicsBuffer->bindMRATexture();
+                this->graphicsBuffer->bindPositionTexture();
+                this->graphicsBuffer->bindNormalTexture();
+                this->graphicsBuffer->bindAlbedoTexture();
+                this->graphicsBuffer->bindEmissiveTexture();
+                this->graphicsBuffer->bindMRATexture();
                 ::rlLoadDrawQuad();
             this->deferredShader->disableShader();
         this->graphicsBuffer->enableColorBlending();
@@ -85,5 +85,5 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
 
     this->graphicsBuffer->blitBuffer();
 
-    this->graphicsBuffer->renderPostionTexture();
+    // this->graphicsBuffer->renderPostionTexture();
 }

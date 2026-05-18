@@ -15,7 +15,8 @@ GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
     this->gBufferData.emissiveTextureId = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
     this->gBufferData.MRATextureID = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
     
-    this->gBufferData.depthRenderbufferId = ::rlLoadTextureDepth(SCREEN_WIDTH, SCREEN_HEIGHT, true);
+    // Set Active Draw Buffers
+    ::rlActiveDrawBuffers(5);
     
     // Connect each rendered texture buffer to the main buffer ID
     rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.positionTextureId, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_TEXTURE2D, 0);
@@ -23,11 +24,9 @@ GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
     rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.albedoTextureId, RL_ATTACHMENT_COLOR_CHANNEL2, RL_ATTACHMENT_TEXTURE2D, 0);
     rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.emissiveTextureId, RL_ATTACHMENT_COLOR_CHANNEL3, RL_ATTACHMENT_TEXTURE2D, 0);
     rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.MRATextureID, RL_ATTACHMENT_COLOR_CHANNEL4, RL_ATTACHMENT_TEXTURE2D, 0);
-
-    // Set Active Draw Buffers
-    ::rlActiveDrawBuffers(5);
-
+    
     // Create Depth Buffer
+    this->gBufferData.depthRenderbufferId = ::rlLoadTextureDepth(SCREEN_WIDTH, SCREEN_HEIGHT, true);
     rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.depthRenderbufferId, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0);
 
     // Make sure our framebufferId is complete
@@ -37,8 +36,6 @@ GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
     } else { 
         TraceLog(LOG_WARNING, "Framebuffer is NOT complete");
     }
-
-    rlDisableFramebuffer();
 
     deferredShader->enableShader();
         int gPosition = rlGetLocationUniform(deferredShader->getID(), "gPosition");
