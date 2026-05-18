@@ -6,39 +6,52 @@ GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
     if (this->gBufferData.framebufferId == 0) TraceLog(LOG_WARNING, "Failed to create framebufferId");
 
     // Enable Frame Buffer
-    ::rlEnableFramebuffer(this->gBufferData.framebufferId);
+    rlEnableFramebuffer(this->gBufferData.framebufferId);
 
     // Create Memory Areas for Textures
-    this->gBufferData.positionTextureId = ::rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
-    this->gBufferData.normalTextureId = ::rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
-    this->gBufferData.albedoTextureId = ::rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
-    this->gBufferData.emissiveTextureId = ::rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
-    this->gBufferData.MRATextureID = ::rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
+    this->gBufferData.positionTextureId = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
+    this->gBufferData.normalTextureId = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
+    this->gBufferData.albedoTextureId = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 1);
+    this->gBufferData.emissiveTextureId = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
+    this->gBufferData.MRATextureID = rlLoadTexture(NULL, SCREEN_WIDTH, SCREEN_HEIGHT, RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16, 1);
+    
+    this->gBufferData.depthRenderbufferId = ::rlLoadTextureDepth(SCREEN_WIDTH, SCREEN_HEIGHT, true);
+    
+    // Connect each rendered texture buffer to the main buffer ID
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.positionTextureId, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_TEXTURE2D, 0);
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.normalTextureId, RL_ATTACHMENT_COLOR_CHANNEL1, RL_ATTACHMENT_TEXTURE2D, 0);
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.albedoTextureId, RL_ATTACHMENT_COLOR_CHANNEL2, RL_ATTACHMENT_TEXTURE2D, 0);
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.emissiveTextureId, RL_ATTACHMENT_COLOR_CHANNEL3, RL_ATTACHMENT_TEXTURE2D, 0);
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.MRATextureID, RL_ATTACHMENT_COLOR_CHANNEL4, RL_ATTACHMENT_TEXTURE2D, 0);
 
     // Set Active Draw Buffers
     ::rlActiveDrawBuffers(5);
 
-    // Connect each rendered texture buffer to the main buffer ID
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.positionTextureId, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_TEXTURE2D, 0);
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.normalTextureId, RL_ATTACHMENT_COLOR_CHANNEL1, RL_ATTACHMENT_TEXTURE2D, 0);
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.albedoTextureId, RL_ATTACHMENT_COLOR_CHANNEL2, RL_ATTACHMENT_TEXTURE2D, 0);
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.emissiveTextureId, RL_ATTACHMENT_COLOR_CHANNEL3, RL_ATTACHMENT_TEXTURE2D, 0);
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.MRATextureID, RL_ATTACHMENT_COLOR_CHANNEL4, RL_ATTACHMENT_TEXTURE2D, 0);
-
     // Create Depth Buffer
-    this->gBufferData.depthRenderbufferId = ::rlLoadTextureDepth(SCREEN_WIDTH, SCREEN_HEIGHT, true);
-    ::rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.depthRenderbufferId, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0);
+    rlFramebufferAttach(this->gBufferData.framebufferId, this->gBufferData.depthRenderbufferId, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0);
 
     // Make sure our framebufferId is complete
     // NOTE: rlFramebufferComplete() automatically unbinds the framebufferId, so we don't have to rlDisableFramebuffer() here
-    if (!::rlFramebufferComplete(this->gBufferData.framebufferId)) TraceLog(LOG_WARNING, "Framebuffer is not complete");
+    if (rlFramebufferComplete(this->gBufferData.framebufferId)) {
+        TraceLog(LOG_INFO, "Framebuffer is complete");
+    } else { 
+        TraceLog(LOG_WARNING, "Framebuffer is NOT complete");
+    }
+
+    rlDisableFramebuffer();
 
     deferredShader->enableShader();
-        deferredShader->setShaderValue(::rlGetLocationUniform(deferredShader->getID(), "gPosition"), &this->texUnitPosition, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(::rlGetLocationUniform(deferredShader->getID(), "gNormal"), &this->texUnitNormal, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(::rlGetLocationUniform(deferredShader->getID(), "gAlbedo"), &this->texUnitAlbedo, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(::rlGetLocationUniform(deferredShader->getID(), "gEmissive"), &this->texUnitEmissive, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(::rlGetLocationUniform(deferredShader->getID(), "gMRA"), &this->texUnitMRA, RL_SHADER_UNIFORM_SAMPLER2D);
+        int gPosition = rlGetLocationUniform(deferredShader->getID(), "gPosition");
+        int gNormal = rlGetLocationUniform(deferredShader->getID(), "gNormal");
+        int gAlbedo = rlGetLocationUniform(deferredShader->getID(), "gAlbedo");
+        int gEmissive = rlGetLocationUniform(deferredShader->getID(), "gEmissive");
+        int gMRA = rlGetLocationUniform(deferredShader->getID(), "gMRA");
+        
+        deferredShader->setShaderValue(gPosition, &this->texUnitPosition, RL_SHADER_UNIFORM_SAMPLER2D);
+        deferredShader->setShaderValue(gNormal, &this->texUnitNormal, RL_SHADER_UNIFORM_SAMPLER2D);
+        deferredShader->setShaderValue(gAlbedo, &this->texUnitAlbedo, RL_SHADER_UNIFORM_SAMPLER2D);
+        deferredShader->setShaderValue(gEmissive, &this->texUnitEmissive, RL_SHADER_UNIFORM_SAMPLER2D);
+        deferredShader->setShaderValue(gMRA, &this->texUnitMRA, RL_SHADER_UNIFORM_SAMPLER2D);
     deferredShader->disableShader();
 }
 
@@ -106,4 +119,12 @@ void GraphicsBuffer::blitBuffer() {
     ::rlBindFramebuffer(RL_DRAW_FRAMEBUFFER, 0);
     ::rlBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0x00000100); // GL_DEPTH_BUFFER_BIT
     ::rlDisableFramebuffer();
+}
+
+void GraphicsBuffer::renderPostionTexture() {
+    DrawTextureRec((Texture2D){
+                        .id = this->gBufferData.positionTextureId,
+                        .width = SCREEN_WIDTH,
+                        .height = SCREEN_HEIGHT,
+                    }, (Rectangle) { 0, 0, (float)SCREEN_WIDTH, (float)-SCREEN_HEIGHT }, Vector2Zero(), RAYWHITE);
 }

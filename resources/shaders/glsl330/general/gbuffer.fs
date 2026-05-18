@@ -46,7 +46,7 @@ vec4 calculateMRA() {
 }
 
 vec3 calculateNormal() {
-    N = texture(normalMap, vec2(fragTexCoord.x * tiling.x + offset.y, fragTexCoord.y * tiling.y + offset.y)).rgb;
+    vec3 N = texture(normalMap, vec2(fragTexCoord.x * tiling.x + offset.y, fragTexCoord.y * tiling.y + offset.y)).rgb;
     N = normalize(N * 2.0 - 1.0);
     N = normalize(N * TBN);
 

@@ -75,7 +75,12 @@ vec3 calculateRadiance(vec3 fragPosition, vec3 lightPosition, vec4 lightColor, f
     return radiance;
 }
 
-vec3 calculateSpec(float roughness, vec3 baseRefl, vec3 L, vec3 H, vec3 N, vec3 V) {
+vec3 calculateLightAccum(Light light, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, vec3 baseRefl, float roughness, float metallic) {
+    vec3 lightAccum = vec3(0.0);
+    
+    vec3 L = normalize(light.position - fragPosition);      // Compute light vector
+    vec3 H = normalize(V + L);                             // Compute halfway bisecting vector
+
     // Cook-Torrance BRDF distribution function
     float nDotV = max(dot(N,V), 0.0000001);
     float nDotL = max(dot(N,L), 0.0000001);
@@ -86,9 +91,18 @@ vec3 calculateSpec(float roughness, vec3 baseRefl, vec3 L, vec3 H, vec3 N, vec3 
     float G = GeomSmith(nDotV, nDotL, roughness);   // Smaller the more micro-facets shadow
     vec3 F = SchlickFresnel(hDotV, baseRefl);       // Fresnel proportion of specular reflectance
 
-    vec3 spec = (D*G*F)/(4.0*nDotV*nDotL);
+    vec3 radiance = calculateRadiance(fragPosition, light.position, light.color, light.intensity);
+    vec3 spec = (D * G * F) / (4.0 * nDotV * nDotL);
 
-    return spec;
+    // Difuse and spec light can't be above 1.0
+    // kD = 1.0 - kS  diffuse component is equal 1.0 - spec comonent
+    vec3 kD = vec3(1.0) - F;
+
+    // Mult kD by the inverse of metallnes, only non-metals should have diffuse light
+    kD *= 1.0 - metallic;
+    lightAccum = ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * light.enabled; // Angle of light has impact on result
+
+    return lightAccum;
 }
 
 vec3 ComputePBR()
@@ -113,20 +127,7 @@ vec3 ComputePBR()
 
     for (int i = 0; i < numOfLights; i++)
     {
-        vec3 L = normalize(lights[i].position - fragPosition);      // Compute light vector
-        vec3 H = normalize(V + L);                             // Compute halfway bisecting vector
-
-        vec3 radiance = calculateRadiance(fragPosition, lights[i].position, lights[i].color, lights[i].intensity);
-        vec3 spec = calculateSpec(roughness, baseRefl, L, H, V, N);
-
-        // Difuse and spec light can't be above 1.0
-        // kD = 1.0 - kS  diffuse component is equal 1.0 - spec comonent
-        vec3 kD = vec3(1.0) - F;
-        float nDotL = max(dot(N,L), 0.0000001);
-
-        // Mult kD by the inverse of metallnes, only non-metals should have diffuse light
-        kD *= 1.0 - metallic;
-        lightAccum += ((kD * albedo.rgb / PI + spec) * radiance*nDotL) * lights[i].enabled; // Angle of light has impact on result
+        lightAccum += calculateLightAccum(lights[i], fragPosition, albedo, N, V, baseRefl, roughness, metallic);
     }
 
     vec3 ambientFinal = (ambientColor + albedo) * ambient * vec3(0.03);
@@ -138,13 +139,13 @@ void main()
 {
     vec3 color = ComputePBR();
 
-    color = color / (color + vec3(1.0));
+    // color = color / (color + vec3(1.0));
 
     // HDR tonemapping
     // color = pow(color, color + vec3(1.0));
 
     // Gamma correction
-    color = pow(color, vec3(1.0/gamma));
+    // color = pow(color, vec3(1.0/gamma));
 
     finalColor = vec4(color, 1.0);
 }

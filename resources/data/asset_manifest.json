@@ -5,10 +5,6 @@
             "src": "resources/textures/wabbit_alpha.png"
         },
         {
-            "id": "test_block_texture",
-            "src": "resources/textures/prototype_models/PolygonPrototype_Texture_Grid_08.png"
-        },
-        {
             "id": "old_car_d",
             "src": "resources/textures/old_car/old_car_d.png"
         },
@@ -32,10 +28,6 @@
         }
     ],
     "models": [
-        {
-            "id": "test_block",
-            "src": "resources/models/prototype_models/SM_Buildings_Block_1x1_01.m3d"
-        },
         {
             "id": "old_car",
             "src": "resources/models/old_car_new.glb"

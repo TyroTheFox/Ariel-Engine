@@ -40,6 +40,7 @@ class GraphicsBuffer {
         GraphicsBuffer(RenderingShader* deferredShader);
         ~GraphicsBuffer();
 
+
         void readyForDrawing();
         void enableColorBlending();
         void disableColorBlending();
@@ -52,6 +53,8 @@ class GraphicsBuffer {
         void bindMRATexture();
 
         void blitBuffer();
+
+        void renderPostionTexture();
 };
 
 #endif
