@@ -9,11 +9,11 @@ RenderingShader::~RenderingShader() {
 }
 
 void RenderingShader::enableShader() {
-    rlEnableShader(this->shaderInstance.id);
+    ::rlEnableShader(this->shaderInstance.id);
 }
 
 void RenderingShader::disableShader() {
-    rlDisableShader();
+    ::rlDisableShader();
 }
 
 unsigned int RenderingShader::getID() {

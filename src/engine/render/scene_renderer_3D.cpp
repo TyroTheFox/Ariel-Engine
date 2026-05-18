@@ -30,21 +30,21 @@ void SceneRenderer3D::createNewLight(std::string id, LightType type, raylib::Vec
 }
 
 void SceneRenderer3D::setUpRenderer() {
-    rlEnableDepthTest();
+    int gammaLoc = this->deferredShader->getShaderLocation("gamma");
 
-    // int gammaLoc = this->pbrShader->getShaderLocation("gamma");
+    this->deferredShader->setShaderValue(gammaLoc, &this->gammaValue, SHADER_UNIFORM_FLOAT);
 
-    // this->pbrShader->setShaderValue(gammaLoc, &this->gammaValue, SHADER_UNIFORM_FLOAT);
+    // Setup additional required shader locations, including lights data
+    int lightCountLoc = GetShaderLocation(this->deferredShader->shaderInstance, "numOfLights");
+    int maxLightCount = this->lightList.size();
+    this->deferredShader->setShaderValue(lightCountLoc, &maxLightCount, SHADER_UNIFORM_INT);
 
-    // // Setup additional required shader locations, including lights data
-    // int lightCountLoc = GetShaderLocation(this->pbrShader->shaderInstance, "numOfLights");
-    // int maxLightCount = this->lightList.size();
-    // this->pbrShader->setShaderValue(lightCountLoc, &maxLightCount, SHADER_UNIFORM_INT);
+    // Setup ambient color and intensity parameters
+    Vector3 ambientColorNormalized = (Vector3){ this->ambientColor.r/255.0f, this->ambientColor.g/255.0f, this->ambientColor.b/255.0f };
+    this->deferredShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
+    this->deferredShader->setShaderValue("ambient", &this->ambientIntensity, SHADER_UNIFORM_FLOAT);
 
-    // // Setup ambient color and intensity parameters
-    // Vector3 ambientColorNormalized = (Vector3){ this->ambientColor.r/255.0f, this->ambientColor.g/255.0f, this->ambientColor.b/255.0f };
-    // this->pbrShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
-    // this->pbrShader->setShaderValue("ambient", &this->ambientIntensity, SHADER_UNIFORM_FLOAT);
+    ::rlEnableDepthTest();
 }
 
 void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
@@ -76,6 +76,8 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
                 this->graphicsBuffer->bindPositionTexture();
                 this->graphicsBuffer->bindNormalTexture();
                 this->graphicsBuffer->bindAlbedoTexture();
+                this->graphicsBuffer->bindEmissiveTexture();
+                this->graphicsBuffer->bindMRATexture();
                 ::rlLoadDrawQuad();
             this->deferredShader->disableShader();
         this->graphicsBuffer->enableColorBlending();

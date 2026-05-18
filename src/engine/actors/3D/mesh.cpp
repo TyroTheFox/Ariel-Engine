@@ -63,37 +63,32 @@ void MeshModel::setDefaults() {
 void MeshModel::setModelTextures() {
     ShaderManager shadermanager = ShaderManager();
 
-    this->shader = shadermanager.getDefaultShaderPtr();
+    this->gBufferShader = shadermanager.getShaderPtr("gbuffer");
     
-    this->model->materials[0].shader = this->shader->shaderInstance;
+    this->model->materials[0].shader = this->gBufferShader->shaderInstance;
     this->model->meshMaterial[0] = 0;
 
-    // // Get location for shader parameters that can be modified in real time 
-    // int metallicValueLoc = this->shader->getShaderLocation("metallicValue");
-    // int roughnessValueLoc = this->shader->getShaderLocation("roughnessValue");
-    // int emissiveIntensityLoc = this->shader->getShaderLocation("emissivePower");
-    // int emissiveColorLoc = this->shader->getShaderLocation("emissiveColor");
-    // int textureTilingLoc = this->shader->getShaderLocation("tiling");
+    // Get location for shader parameters that can be modified in real time 
+    int metallicValueLoc = this->gBufferShader->getShaderLocation("metallicValue");
+    int roughnessValueLoc = this->gBufferShader->getShaderLocation("roughnessValue");
+    int emissiveIntensityLoc = this->gBufferShader->getShaderLocation("emissivePower");
+    int emissiveColorLoc = this->gBufferShader->getShaderLocation("emissiveColor");
+    int textureTilingLoc = this->gBufferShader->getShaderLocation("tiling");
 
     // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
-    // shader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
+    this->gBufferShader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
 
-    // Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
-    // shader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
+    Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
+    this->gBufferShader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
 
-    // shader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
-
-    // // Set old car metallic and roughness values
-    // shader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
-    // shader->setShaderValue(roughnessValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value, SHADER_UNIFORM_FLOAT);
+    this->gBufferShader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 
     // Setup material texture maps usage in shader
     // NOTE: By default, the texture maps are always used
-    // int usage = 1;
-    // shader->setShaderValue("useTexAlbedo", &usage, SHADER_UNIFORM_INT);
-    // shader->setShaderValue("useTexNormal", &usage, SHADER_UNIFORM_INT);
-    // shader->setShaderValue("useTexMRA", &usage, SHADER_UNIFORM_INT);
-    // shader->setShaderValue("useTexEmissive", &usage, SHADER_UNIFORM_INT);
+    this->setUseOfTexture("useTexAlbedo", 1);
+    this->setUseOfTexture("useTexNormal", 0);
+    this->setUseOfTexture("useTexMRA", 0);
+    this->setUseOfTexture("useTexEmissive", 0);
 
     this->textureAtlas_Metalness = this->textureAtlas_Albedo;
     this->textureAtlas_Normal = this->textureAtlas_Albedo;
@@ -111,6 +106,10 @@ void MeshModel::setModelTextures() {
     this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = this->roughness;
     this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value = this->occlusion;
     this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color = this->emissionTint;
+
+    // Set old car metallic and roughness values
+    this->gBufferShader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
+    this->gBufferShader->setShaderValue(roughnessValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value, SHADER_UNIFORM_FLOAT);
 }
 
 MeshModel::~MeshModel() {
@@ -137,6 +136,8 @@ void MeshModel::setMetalnessTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Metalness->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
+
+    this->setUseOfTexture("useTexMRA", 1);
 }
 
 void MeshModel::setNormalTexture(raylib::Texture2D* texturePtr) {
@@ -145,6 +146,8 @@ void MeshModel::setNormalTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Normal->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();
+
+    this->setUseOfTexture("useTexNormal", 1);
 }
 
 void MeshModel::setEmissionTexture(raylib::Texture2D* texturePtr) {
@@ -153,6 +156,8 @@ void MeshModel::setEmissionTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Emission->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas_Emission->getAtlasTexture();
+
+    this->setUseOfTexture("useTexEmissive", 1);
 }
 
 void MeshModel::setAlbedoTexture(TextureAtlas* textureAtlas) {
@@ -165,18 +170,28 @@ void MeshModel::setMetalnessTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Metalness = textureAtlas;
 
     this->model->materials[0].maps[MATERIAL_MAP_METALNESS].texture = *this->textureAtlas_Metalness->getAtlasTexture();
+
+    this->setUseOfTexture("useTexMRA", 1);
 }
 
 void MeshModel::setNormalTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Normal = textureAtlas;
 
     this->model->materials[0].maps[MATERIAL_MAP_NORMAL].texture = *this->textureAtlas_Normal->getAtlasTexture();
+
+    this->setUseOfTexture("useTexNormal", 1);
 }
 
 void MeshModel::setEmissionTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Emission = textureAtlas;
 
     this->model->materials[0].maps[MATERIAL_MAP_EMISSION].texture = *this->textureAtlas_Emission->getAtlasTexture();
+
+    this->setUseOfTexture("useTexEmissive", 1);
+}
+
+void MeshModel::setUseOfTexture(std::string uniformName, int useInt) {
+    this->gBufferShader->setShaderValue(uniformName, &useInt, SHADER_UNIFORM_INT);
 }
 
 void MeshModel::setTextureTilingVector(float x, float y) {

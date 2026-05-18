@@ -34,10 +34,11 @@ protected:
 
     bool wireframeMode;
 
-    RenderingShader* shader;
+    RenderingShader* gBufferShader;
 
     void setDefaults();
     void setModelTextures();
+    void setUseOfTexture(std::string uniformName, int useInt);
 public:
     MeshModel(std::string id, raylib::Model* model);
     MeshModel(std::string id, raylib::Model* model, raylib::Texture* texturePtr);

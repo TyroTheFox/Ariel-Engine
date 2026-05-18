@@ -20,7 +20,9 @@ typedef struct GBufferData {
 
     unsigned int positionTextureId;
     unsigned int normalTextureId;
-    unsigned int albedoSpecTextureId;
+    unsigned int albedoTextureId;
+    unsigned int emissiveTextureId;
+    unsigned int MRATextureID;
 
     unsigned int depthRenderbufferId;
 } GBufferData;
@@ -31,7 +33,9 @@ class GraphicsBuffer {
 
         int texUnitPosition = 0;
         int texUnitNormal = 1;
-        int texUnitAlbedoSpec = 2;
+        int texUnitAlbedo = 2;
+        int texUnitEmissive = 3;
+        int texUnitMRA = 4;
     public:
         GraphicsBuffer(RenderingShader* deferredShader);
         ~GraphicsBuffer();
@@ -44,6 +48,8 @@ class GraphicsBuffer {
         void bindPositionTexture();
         void bindNormalTexture();
         void bindAlbedoTexture();
+        void bindEmissiveTexture();
+        void bindMRATexture();
 
         void blitBuffer();
 };
