@@ -14,6 +14,9 @@ SceneRenderer3D::SceneRenderer3D() {
 }
 
 SceneRenderer3D::~SceneRenderer3D() {
+    this->graphicsBuffer->readyForDrawing();
+    this->graphicsBuffer->endBufferDrawing();
+
     delete this->gBuffer;
     delete this->deferredShader;
 
@@ -45,6 +48,9 @@ void SceneRenderer3D::setUpRenderer() {
     this->deferredShader->setShaderValue("ambient", &this->ambientIntensity, SHADER_UNIFORM_FLOAT);
 
     ::rlEnableDepthTest();
+
+    this->graphicsBuffer->readyForDrawing();
+    this->graphicsBuffer->endBufferDrawing();
 }
 
 void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {

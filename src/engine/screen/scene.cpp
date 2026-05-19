@@ -42,7 +42,7 @@ Scene::Scene(std::string name, json sceneData) {
             raylib::Vector3 lightPosition{ 0, 0, 0 };
             raylib::Vector3 lightTarget{ 0, 0, 0 };
             raylib::Color lightColor = raylib::Color::White();
-            float lightIntensity = 10.0f;
+            float lightIntensity = 5.0f;
 
             if (entry.contains("x")) {
                 lightPosition.x = entry.at("x");

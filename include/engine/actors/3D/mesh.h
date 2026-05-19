@@ -23,10 +23,10 @@ protected:
     raylib::Vector3 positionVector;
     raylib::Vector3 scaleVector;
 
-    float metalness = 1.0f;
-    float roughness = 1.0f;
-    float occlusion = 1.0f;
-    float emissiveIntensity = 0.01f;
+    float metalness = 0.0f;
+    float roughness = 0.5f;
+    float occlusion = 0.5f;
+    float emissiveIntensity = 0.5f;
     Vector2 tilingVector;
 
     raylib::Color tint;

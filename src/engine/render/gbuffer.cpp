@@ -117,11 +117,3 @@ void GraphicsBuffer::blitBuffer() {
     ::rlBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0x00000100); // GL_DEPTH_BUFFER_BIT
     ::rlDisableFramebuffer();
 }
-
-void GraphicsBuffer::renderPostionTexture() {
-    DrawTextureRec((Texture2D){
-                        .id = this->gBufferData.positionTextureId,
-                        .width = SCREEN_WIDTH,
-                        .height = SCREEN_HEIGHT,
-                    }, (Rectangle) { 0, 0, (float)SCREEN_WIDTH, (float)-SCREEN_HEIGHT }, Vector2Zero(), RAYWHITE);
-}

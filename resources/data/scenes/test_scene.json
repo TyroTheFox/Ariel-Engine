@@ -11,40 +11,40 @@
         {
             "id": "main_light",
             "x": 0,
-            "y": 10,
+            "y": 7,
             "z": 0,
             "targetX": 0,
             "targetY": 0,
             "targetZ": 0,
-            "intensity": 10.0
+            "intensity": 100
         },
         {
             "id": "side_light1",
             "type": "point",
-            "x": 15,
+            "x": 7,
             "y": 2,
             "z": 0,
             "targetX": 0,
             "targetY": 2,
             "targetZ": 0,
             "color": {
-                "r": 200
+                "r": 255
             },
-            "intensity": 5.0
+            "intensity": 5
         },
         {
             "id": "side_light2",
             "type": "point",
-            "x": -15,
+            "x": -7,
             "y": 2,
             "z": 0,
             "targetX": 0,
             "targetY": 2,
             "targetZ": 0,
             "color": {
-                "b": 200
+                "b": 255
             },
-            "intensity": 5.0
+            "intensity": 5
         }
     ],
     "actors": [
@@ -75,6 +75,19 @@
             "y": 10
         },
         {
+            "id": "test_shape",
+            "type": "shape",
+            "x": 100,
+            "y": 300,
+            "draw": {
+                "shape": "circle",
+                "x": 0,
+                "y": 0,
+                "radius": 25,
+                "color": "RED"
+            }
+        },
+        {
             "id": "test_model",
             "type": "mesh",
             "model": "old_car",
@@ -85,6 +98,29 @@
             "x": 0,
             "y": 0,
             "z": 0
+        },
+        {
+            "id": "test_shape_model",
+            "type": "shapeMesh",
+            "x": -10,
+            "y": 0,
+            "z": 5,
+            "draw": {
+                "shape": "sphere",
+                "x": 0,
+                "y": 0,
+                "radius": 2,
+                "color": "RED"
+            }
+        },
+        {
+            "id": "test_billboard",
+            "type": "billboardSprite",
+            "texture": "card_atlas",
+            "x": 10,
+            "y": 0,
+            "z": 5,
+            "scale": 5
         }
     ]
 }

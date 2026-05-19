@@ -71,17 +71,10 @@ void MeshModel::setModelTextures() {
     // Get location for shader parameters that can be modified in real time 
     int metallicValueLoc = this->gBufferShader->getShaderLocation("metallicValue");
     int roughnessValueLoc = this->gBufferShader->getShaderLocation("roughnessValue");
+    int aoValueLoc = this->gBufferShader->getShaderLocation("aoValue");
     int emissiveIntensityLoc = this->gBufferShader->getShaderLocation("emissivePower");
     int emissiveColorLoc = this->gBufferShader->getShaderLocation("emissiveColor");
     int textureTilingLoc = this->gBufferShader->getShaderLocation("tiling");
-
-    // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
-    this->gBufferShader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
-
-    Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
-    this->gBufferShader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
-
-    this->gBufferShader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 
     // Setup material texture maps usage in shader
     // NOTE: By default, the texture maps are always used
@@ -110,6 +103,15 @@ void MeshModel::setModelTextures() {
     // Set old car metallic and roughness values
     this->gBufferShader->setShaderValue(metallicValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_METALNESS].value, SHADER_UNIFORM_FLOAT);
     this->gBufferShader->setShaderValue(roughnessValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_ROUGHNESS].value, SHADER_UNIFORM_FLOAT);
+    this->gBufferShader->setShaderValue(aoValueLoc, &this->model->materials[0].maps[MATERIAL_MAP_OCCLUSION].value, SHADER_UNIFORM_FLOAT);
+
+        // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
+    this->gBufferShader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
+
+    Vector4 emissiveColor = ColorNormalize(this->model->materials[0].maps[MATERIAL_MAP_EMISSION].color);
+    this->gBufferShader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
+
+    this->gBufferShader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 }
 
 MeshModel::~MeshModel() {

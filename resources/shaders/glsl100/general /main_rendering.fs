@@ -1,4 +1,4 @@
-#version 330
+#version 100
 
 #define MAX_LIGHTS              128
 
