@@ -34,6 +34,7 @@ uniform sampler2D gMRA;
 uniform int numOfLights;
 
 uniform float gamma;
+uniform float exposure;
 
 // Input lighting values
 uniform Light lights[MAX_LIGHTS];
@@ -50,20 +51,20 @@ vec3 SchlickFresnel(float hDotV, vec3 refl) {
 
 float GgxDistribution(float nDotH,float roughness)
 {
-    float a = roughness*roughness*roughness*roughness;
-    float d = nDotH*nDotH*(a - 1.0) + 1.0;
-    d = PI*d*d;
-    return (a/max(d,0.0000001));
+    float a = roughness * roughness * roughness * roughness;
+    float d = nDotH * nDotH * (a - 1.0) + 1.0;
+    d = PI * d * d;
+    return (a / max(d, 0.0000001));
 }
 
 float GeomSmith(float nDotV,float nDotL,float roughness)
 {
     float r = roughness + 1.0;
-    float k = r*r/8.0;
+    float k = r * r / 8.0;
     float ik = 1.0 - k;
-    float ggx1 = nDotV/(nDotV*ik + k);
-    float ggx2 = nDotL/(nDotL*ik + k);
-    return ggx1*ggx2;
+    float ggx1 = nDotV / (nDotV * ik + k);
+    float ggx2 = nDotL / (nDotL * ik + k);
+    return ggx1 * ggx2;
 }
 
 vec3 calculateRadiance(vec3 fragPosition, vec3 lightPosition, vec4 lightColor, float lightIntensity) {
@@ -138,10 +139,8 @@ void main()
 {
     vec3 color = ComputePBR();
 
-    color = color / (color + vec3(1.0));
-
     // HDR tonemapping
-    // color = pow(color, color + vec3(1.0));
+    color = vec3(1.0) - exp(-color * exposure);
 
     // Gamma correction
     color = pow(color, vec3(1.0 / gamma));

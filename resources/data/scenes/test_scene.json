@@ -21,7 +21,7 @@
         {
             "id": "side_light1",
             "type": "point",
-            "x": 7,
+            "x": 5,
             "y": 2,
             "z": 0,
             "targetX": 0,
@@ -30,12 +30,12 @@
             "color": {
                 "r": 255
             },
-            "intensity": 5
+            "intensity": 4
         },
         {
             "id": "side_light2",
             "type": "point",
-            "x": -7,
+            "x": -5,
             "y": 2,
             "z": 0,
             "targetX": 0,
@@ -44,7 +44,7 @@
             "color": {
                 "b": 255
             },
-            "intensity": 5
+            "intensity": 4
         }
     ],
     "actors": [

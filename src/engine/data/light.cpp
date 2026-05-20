@@ -22,8 +22,7 @@ Light::Light(std::string id, int type, int lightsCount, raylib::Vector3 position
     UpdateLightValues(shader);
 }
 
-Light::~Light()
-{
+Light::~Light() {
 }
 
 raylib::Color Light::getColor() {

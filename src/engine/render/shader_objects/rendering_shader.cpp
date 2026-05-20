@@ -1,7 +1,10 @@
 #include <engine/render/shader_objects/rendering_shader.h>
 
 RenderingShader::RenderingShader(std::string vertexPath, std::string fragmentPath) {
-    this->shaderInstance = raylib::Shader(::TextFormat(vertexPath.c_str(), GLSL_VERSION), ::TextFormat(fragmentPath.c_str(), GLSL_VERSION));
+    this->shaderInstance = raylib::Shader(
+        vertexPath == "" ? 0 : ::TextFormat(vertexPath.c_str(), GLSL_VERSION), 
+        fragmentPath == "" ? 0 : ::TextFormat(fragmentPath.c_str(), GLSL_VERSION)
+    );
 }
 
 RenderingShader::~RenderingShader() {

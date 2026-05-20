@@ -24,6 +24,7 @@ using json = nlohmann::json;
 
 class GameInstance {
     private:
+        RenderingShader* postProcessingShader;
     public:
         raylib::Window* gameWindow;
         

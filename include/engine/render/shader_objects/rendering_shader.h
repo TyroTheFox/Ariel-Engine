@@ -18,7 +18,7 @@ class RenderingShader {
     private:
     public:
         raylib::Shader shaderInstance;
-        RenderingShader(std::string vertexPath, std::string fragmentPath);
+        RenderingShader(std::string vertexPath = "", std::string fragmentPath = "");
         ~RenderingShader();
 
         void enableShader();

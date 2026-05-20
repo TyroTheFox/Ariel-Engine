@@ -76,6 +76,12 @@
                     "uniformName": "viewPos"
                 }
             ]
+        },
+        {
+            "id": "bloom",
+            "frag": "resources/shaders/glsl%i/post_processing/bloom.fs",
+            "default": false,
+            "locations": []
         }
     ]
 }

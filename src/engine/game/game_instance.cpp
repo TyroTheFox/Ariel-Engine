@@ -2,7 +2,9 @@
 
 GameInstance::GameInstance() {}
 
-GameInstance::~GameInstance() {}
+GameInstance::~GameInstance() {
+    delete this->gameWindow;
+}
 
 void GameInstance::instantiateGame(std::string assetManifestPath) {
     JSONHandler jsonHandler = JSONHandler();
@@ -12,7 +14,7 @@ void GameInstance::instantiateGame(std::string assetManifestPath) {
     ModelLoader modelLoader = ModelLoader();
     ShaderManager shaderManager = ShaderManager();
 
-    this->gameWindow = new raylib::Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Game", FLAG_VSYNC_HINT);
+    this->gameWindow = new raylib::Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Game", FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 
     json jsonData = jsonHandler.readJSON(assetManifestPath);
 
@@ -23,6 +25,8 @@ void GameInstance::instantiateGame(std::string assetManifestPath) {
     spriteFontLoader.loadManifest(jsonData);
 
     modelLoader.loadManifest(jsonData);
+
+    this->postProcessingShader = shaderManager.getShaderPtr("bloom");
 }
 
 void GameInstance::startGame() {
@@ -45,16 +49,17 @@ void GameInstance::startGame() {
             this->gameWindow->ClearBackground(raylib::Color::Black());
             stageManager.renderStages();
         ::EndTextureMode();
-
-
+ 
         // Draw
         ::BeginDrawing();
-            ::DrawTextureRec(
-                renderTexture.texture,
-                raylib::Rectangle{ 0, 0, static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height) },
-                raylib::Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
-                WHITE
-            );
+            this->postProcessingShader->enableShader();
+                ::DrawTextureRec(
+                    renderTexture.texture,
+                    raylib::Rectangle{ 0, 0, static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height) },
+                    raylib::Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
+                    WHITE
+                );
+            this->postProcessingShader->disableShader();
         ::EndDrawing();
     }
 

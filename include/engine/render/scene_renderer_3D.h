@@ -22,11 +22,8 @@ class SceneRenderer3D {
     private:
         std::vector<Light*> lightList;
     public:
-        float gammaValue = 2.2;
-        float ambientIntensity = 0.1;
         raylib::Color ambientColor;
 
-        // RenderingShader* pbrShader;
         RenderingShader* gBuffer;
         RenderingShader* deferredShader;
 

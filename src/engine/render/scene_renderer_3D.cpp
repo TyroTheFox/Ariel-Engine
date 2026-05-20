@@ -34,8 +34,12 @@ void SceneRenderer3D::createNewLight(std::string id, LightType type, raylib::Vec
 
 void SceneRenderer3D::setUpRenderer() {
     int gammaLoc = this->deferredShader->getShaderLocation("gamma");
+    float gammaValue = GAMMA;
+    this->deferredShader->setShaderValue(gammaLoc, &gammaValue, SHADER_UNIFORM_FLOAT);
 
-    this->deferredShader->setShaderValue(gammaLoc, &this->gammaValue, SHADER_UNIFORM_FLOAT);
+    int exposureLoc = this->deferredShader->getShaderLocation("exposure");
+    float exposureValue = HDR_EXPOSURE;
+    this->deferredShader->setShaderValue(exposureLoc, &exposureValue, SHADER_UNIFORM_FLOAT);
 
     // Setup additional required shader locations, including lights data
     int lightCountLoc = GetShaderLocation(this->deferredShader->shaderInstance, "numOfLights");
@@ -44,8 +48,10 @@ void SceneRenderer3D::setUpRenderer() {
 
     // Setup ambient color and intensity parameters
     Vector3 ambientColorNormalized = (Vector3){ this->ambientColor.r/255.0f, this->ambientColor.g/255.0f, this->ambientColor.b/255.0f };
+    float ambientIntensity = AMBIENT_INTENSITY;
+
     this->deferredShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
-    this->deferredShader->setShaderValue("ambient", &this->ambientIntensity, SHADER_UNIFORM_FLOAT);
+    this->deferredShader->setShaderValue("ambient", &ambientIntensity, SHADER_UNIFORM_FLOAT);
 
     ::rlEnableDepthTest();
 
@@ -73,7 +79,7 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
     camera->EndMode();
 
     this->graphicsBuffer->enableColorBlending();
-
+    
     this->graphicsBuffer->endBufferDrawing();
 
     camera->BeginMode();
@@ -90,6 +96,4 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
     camera->EndMode();
 
     this->graphicsBuffer->blitBuffer();
-
-    // this->graphicsBuffer->renderPostionTexture();
 }

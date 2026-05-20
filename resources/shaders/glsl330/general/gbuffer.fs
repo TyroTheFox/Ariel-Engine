@@ -81,9 +81,9 @@ void main()
     if (useTexMRA == 1) {
         vec4 mra = calculateMRA();
 
-        metallic = clamp(mra.r, 0.04, 1.0);
-        roughness = clamp(mra.g, 0.04, 1.0);
-        ao = (mra.b) * 0.5;
+        metallic = clamp(mra.r + metallicValue, 0.04, 1.0);
+        roughness = clamp(mra.g + roughness, 0.04, 1.0);
+        ao = (mra.b + aoValue) * 0.5;
     }
 
     if (useTexEmissive == 1) {

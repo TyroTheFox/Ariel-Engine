@@ -47,8 +47,8 @@ void ShaderManager::loadManifest(json jsonData) {
 
     for (auto& entry : shaderManifest) {
         std::string id = entry.at("id");
-        std::string vertex = entry.at("vertex");
-        std::string frag = entry.at("frag");
+        std::string vertex = entry.contains("vertex") ? entry.at("vertex") : "";
+        std::string frag = entry.contains("frag") ? entry.at("frag") : "";
         bool isDefault = entry.contains("default") ? entry.at("default").get<bool>() : false;
 
         RenderingShader* foundShader = new RenderingShader(vertex, frag);
