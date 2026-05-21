@@ -20,7 +20,7 @@
 
 class SceneRenderer3D {
     private:
-        std::vector<Light*> lightList;
+        std::vector<Light> lightList;
     public:
         raylib::Color ambientColor;
 

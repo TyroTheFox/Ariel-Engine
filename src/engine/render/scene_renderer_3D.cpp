@@ -6,7 +6,7 @@ SceneRenderer3D::SceneRenderer3D() {
     this->gBuffer = shadermanager.getShaderPtr("gbuffer");
     this->deferredShader = shadermanager.getShaderPtr("deferred");
 
-    this->lightList = std::vector<Light*>{};
+    this->lightList = std::vector<Light>{};
 
     this->ambientColor = raylib::Color::White();
 
@@ -20,15 +20,15 @@ SceneRenderer3D::~SceneRenderer3D() {
     delete this->gBuffer;
     delete this->deferredShader;
 
-    for (int i = 0; i < this->lightList.size(); i++) {
-        delete this->lightList.at(i);
-    }
+    // for (int i = 0; i < this->lightList.size(); i++) {
+    //     delete this->lightList.at(i);
+    // }
 
     this->lightList.clear();
 }
 
 void SceneRenderer3D::createNewLight(std::string id, LightType type, raylib::Vector3 position, raylib::Vector3 target, float intensity, raylib::Color color) {
-    Light* newLight = new Light(id, type, this->lightList.size(), position, target, intensity, color, &this->deferredShader->shaderInstance);
+    Light newLight = Light(id, type, this->lightList.size(), position, target, intensity, color, &this->deferredShader->shaderInstance);
     this->lightList.push_back(newLight);
 }
 
@@ -64,7 +64,7 @@ void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
     this->deferredShader->setShaderValue(this->deferredShader->getShaderLocation(SHADER_LOC_VECTOR_VIEW), cameraPos, SHADER_UNIFORM_VEC3);
 
     for (int i = 0; i < this->lightList.size(); i++) {
-        this->lightList.at(i)->UpdateLightValues(&this->deferredShader->shaderInstance);
+        this->lightList.at(i).UpdateLightValues(&this->deferredShader->shaderInstance);
     }
 
     this->graphicsBuffer->readyForDrawing();

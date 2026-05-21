@@ -1,6 +1,10 @@
 {
     "textures": [
         {
+            "id": "_DEFAULT_",
+            "src": "resources/textures/prototype_models/PolygonPrototype_Texture_Grid_02.png"
+        },
+        {
             "id": "test",
             "src": "resources/textures/wabbit_alpha.png"
         },

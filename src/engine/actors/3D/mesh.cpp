@@ -1,10 +1,17 @@
 #include <engine/actors/3D/mesh.h>
 
 MeshModel::MeshModel(std::string id, raylib::Model* model) {
+    TextureAssetLoader textureAssetLoader = TextureAssetLoader();
     this->id = id;
     this->actorType = "MeshModel";
 
     this->setDefaults();
+
+    raylib::Texture2D* texturePtr = textureAssetLoader.getTexturePtr("_DEFAULT_");
+    
+    this->textureAtlas_Albedo = new TextureAtlas(id, texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Albedo->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->model = model;
 

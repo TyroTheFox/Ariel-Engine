@@ -6,6 +6,7 @@
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
+#include <engine/assets/texture_asset_loader.h>
 #include <engine/data/texture_atlas.h>
 #include <engine/render/shader_objects/shader_manager.h>
 #include <sling.h>
