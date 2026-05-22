@@ -15,146 +15,54 @@ constexpr uint64_t operator"" _hash(const char* str, size_t len) {
 ShapeMesh::ShapeMesh(std::string id) {
     this->id = id;
     this->actorType = "ShapeMesh";
-    this->actorRenderType = ACTOR_3D;
+    this->actorRenderType = ACTOR_3D_OVER;
 }
 
 ShapeMesh::~ShapeMesh() {
 }
 
-raylib::Mesh ShapeMesh::generateCube(float width, float height, float length) {
-    return GenMeshCube(width, height, length);
+void ShapeMesh::drawCube(Vector3 position, float width, float height, float length, raylib::Color color) {
+    ::DrawCube(position, width, height, length, color);
 }
 
-raylib::Mesh ShapeMesh::generateSphere(float radius, int rings, int slices) {
-    return GenMeshSphere(radius, rings, slices);
+void ShapeMesh::drawCubeWires(Vector3 position, float width, float height, float length, raylib::Color color) {
+    ::DrawCubeWires(position, width, height, length, color);
 }
 
-raylib::Mesh ShapeMesh::generateHemiSphere(float radius, int rings, int slices) {
-    return GenMeshHemiSphere(radius, rings, slices);
+void ShapeMesh::drawSphere(Vector3 centerPos, float radius, raylib::Color color) {
+    ::DrawSphere(centerPos, radius, color);
 }
 
-raylib::Mesh ShapeMesh::generateCylinder(float radius, float height, int slices) {
-    return GenMeshCylinder(radius, height, slices);
+void ShapeMesh::drawSphereWires(Vector3 centerPos, float radius, raylib::Color color) {
+    ::DrawSphere(centerPos, radius, color);
 }
 
-raylib::Mesh ShapeMesh::generatePlane(float width, float length, int resX, int resZ) {
-    return GenMeshPlane(width, length, resX, resZ);
+void ShapeMesh::drawCylinder(Vector3 position, float radiusTop, float radiusBottom, float height, int sides, raylib::Color color) {
+    ::DrawCylinder(position, radiusTop, radiusBottom, height, sides, color);
 }
 
-raylib::Mesh ShapeMesh::generateTorus(float radius, float size, int radSeg, int sides) {
-    return GenMeshTorus(radius, size, radSeg, sides);
+void ShapeMesh::drawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, float height, int sides, raylib::Color color) {
+    ::DrawCylinderWires(position, radiusTop, radiusBottom, height, sides, color);
 }
 
-raylib::Mesh ShapeMesh::generateKnot(float radius, float size, int radSeg, int sides) {
-    return GenMeshKnot(radius, size, radSeg, sides);
+void ShapeMesh::drawCapsule(Vector3 startPos, Vector3 endPos, float radius, float rings, int slices, Color color) {
+    ::DrawCapsule(startPos, endPos, radius, rings, slices, color);
 }
 
-raylib::Mesh ShapeMesh::generatePoly(int sides, float radius) {
-    return GenMeshPoly(sides, radius);
+void ShapeMesh::drawCapsuleWires(Vector3 startPos, Vector3 endPos, float radius, float rings, int slices, Color color) {
+    ::DrawCapsuleWires(startPos, endPos, radius, rings, slices, color);
 }
 
-raylib::Mesh ShapeMesh::createMesh(json shapeData) {
-    std::string type = shapeData.at("shape");
-    raylib::Color shapeColour = raylib::Color::White();
-
-    if (shapeData.contains("color")) {
-        json colorData = shapeData.at("color");
-
-        if (colorData.is_string()) {
-            shapeColour = convertTextToColour(colorData.get<std::string>());
-        }
-
-        if (colorData.is_object()) {
-            shapeColour.r = colorData.contains("r") ? colorData.at("r").get<char>() : 255;
-            shapeColour.g = colorData.contains("g") ? colorData.at("g").get<char>() : 255;
-            shapeColour.b = colorData.contains("b") ? colorData.at("b").get<char>() : 255;
-            shapeColour.a = colorData.contains("a") ? colorData.at("a").get<char>() : 255;
-        }
-    }
-
-    raylib::Mesh createdMesh;
-
-    switch (hash(type)) {
-        case "cube"_hash:
-            createdMesh = this->generateCube(
-                (shapeData.contains("width") ? shapeData.at("width").get<float>() : 1) * this->getScaleX(),
-                (shapeData.contains("height") ? shapeData.at("height").get<float>() : 1) * this->getScaleY(),
-                (shapeData.contains("length") ? shapeData.at("length").get<float>() : 1) * this->getScaleZ()
-            );
-        break;
-
-        case "sphere"_hash:
-            createdMesh = this->generateSphere(
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX(),
-                shapeData.contains("rings") ? shapeData.at("rings").get<float>() : 1,
-                shapeData.contains("slices") ? shapeData.at("slices").get<float>() : 10
-            );
-        break;
-
-        case "cylinder"_hash:
-            createdMesh = this->generateCylinder(
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX(),
-                (shapeData.contains("height") ? shapeData.at("height").get<float>() : 1) * this->getScaleY(),
-                shapeData.contains("slices") ? shapeData.at("slices").get<float>() : 10
-            );
-        break;
-
-        case "hemiSphere"_hash:
-            createdMesh = this->generateHemiSphere(
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX(),
-                shapeData.contains("rings") ? shapeData.at("rings").get<float>() : 1,
-                shapeData.contains("slices") ? shapeData.at("slices").get<float>() : 10
-            );
-        break;
-
-        case "torus"_hash:
-            createdMesh = this->generateTorus(
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX(),
-                (shapeData.contains("size") ? shapeData.at("size").get<float>() : 1) * this->getScaleY(),
-                shapeData.contains("radSeg") ? shapeData.at("radSeg").get<float>() : 10,
-                shapeData.contains("sides") ? shapeData.at("sides").get<float>() : 10
-            );
-        break;
-
-        case "knot"_hash:
-            createdMesh = this->generateKnot(
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX(),
-                (shapeData.contains("size") ? shapeData.at("size").get<float>() : 1) * this->getScaleY(),
-                shapeData.contains("radSeg") ? shapeData.at("radSeg").get<float>() : 10,
-                shapeData.contains("sides") ? shapeData.at("sides").get<float>() : 10
-            );
-        break;
-
-        case "plane"_hash:
-            createdMesh = this->generatePlane(
-                (shapeData.contains("width") ? shapeData.at("width").get<float>() : 1) * this->getScaleX(),
-                (shapeData.contains("length") ? shapeData.at("length").get<float>() : 1) * this->getScaleY(),
-                shapeData.contains("resX") ? shapeData.at("resX").get<float>() : 4,
-                shapeData.contains("resZ") ? shapeData.at("resZ").get<float>() : 4
-            );
-        break;
-
-        case "poly"_hash:
-            createdMesh = this->generatePoly(
-                shapeData.contains("sides") ? shapeData.at("sides").get<float>() : 5,
-                (shapeData.contains("radius") ? shapeData.at("radius").get<float>() : 1) * this->getScaleX()
-            );
-        break;
-    }
-
-    return createdMesh;
+void ShapeMesh::drawPlane(Vector3 centerPos, Vector2 size, Color color) {
+    ::DrawPlane(centerPos, size, color);
 }
 
-void ShapeMesh::processDrawData() {    
-    if (this->drawData.is_array()) {
-        for (auto& entry : this->drawData) {
-            this->renderDrawData(entry);
-        }
-    }
+void ShapeMesh::drawRay(raylib::Ray ray, raylib::Color color) {
+    ::DrawRay(ray, color);
+}
 
-    if (this->drawData.is_object()) {
-        this->renderDrawData(this->drawData);
-    }
+void ShapeMesh::drawGrid(int slices, float spacing) {
+    ::DrawGrid(slices, spacing);
 }
 
 void ShapeMesh::processDrawData() {    

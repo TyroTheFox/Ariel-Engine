@@ -1,7 +1,7 @@
 #include "engine/actors/3D/billboard_sprite.h"
 
 BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std::string defaultAnimation) {
-    this->actorRenderType = ACTOR_3D;
+    this->actorRenderType = ACTOR_3D_BILLBOARD;
     
     this->id = id;
     this->actorType = "BillboardSprite";
@@ -120,11 +120,29 @@ void BillboardSprite::render() {
             );
         }
 
+        // the forward direction of the camera (look direction)
+        Vector3 forward = Vector3Subtract(this->camera3D->target, this->camera3D->position);
+        
+        // the up vector we start with - but this up vector is not orthogonal to the forward vector
+        Vector3 up = { 0.0f, 1.0f, 0.0f };
+        
+        // compute the right vector using the cross product of the up and forward vector
+        // this vector is orthogonal to the forward vector
+        Vector3 right = Vector3CrossProduct(up, forward);
+        
+        // compute the up vector using the cross product of the forward and right vector
+        // the result is orthogonal to the forward and right vector, so it's now pointing up in 
+        // the orientation of the camera itself
+        up = Vector3CrossProduct(forward, right);
+        
+        // normalize the up vector so it's unit length
+        up = Vector3Normalize(up);
+
         atlasTexture->DrawBillboard(
             *this->camera3D, 
             frameRect, 
             raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
-            raylib::Vector3(0.0f, 1.0f, 0.0f), 
+            up, 
             calculatedScale,
             raylib::Vector2(0.5f, 0.5f),
             this->getRotation() + (isFrameRotated ? 90 : 0),

@@ -57,6 +57,8 @@ class Scene
         sl::Signal<float> signal_update;
         sl::Signal<> signal_render_2D;
         sl::Signal<> signal_render_3D;
+        sl::Signal<> signal_render_3D_BILLBOARD;
+        sl::Signal<> signal_render_3D_OVER;
 
         Scene();
         Scene(std::string id, json sceneData);

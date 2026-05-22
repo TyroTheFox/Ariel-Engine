@@ -82,6 +82,12 @@
             ]
         },
         {
+            "id": "billboard",
+            "frag": "resources/shaders/glsl%i/general/billboard_rendering.fs",
+            "default": false,
+            "locations": []
+        },
+        {
             "id": "bloom",
             "frag": "resources/shaders/glsl%i/post_processing/bloom.fs",
             "default": false,

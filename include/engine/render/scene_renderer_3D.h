@@ -26,6 +26,7 @@ class SceneRenderer3D {
 
         RenderingShader* gBuffer;
         RenderingShader* deferredShader;
+        RenderingShader* billboardShader;
 
         GraphicsBuffer* graphicsBuffer;
 
@@ -37,6 +38,9 @@ class SceneRenderer3D {
         void setUpRenderer();
         void beginRender(raylib::Camera3D* camera);
         void endRenderAndProcess(raylib::Camera3D* camera);
+
+        void beginBillboardRender(raylib::Camera3D* camera);
+        void endBillboardRender(raylib::Camera3D* camera);
 };
 
 #endif

@@ -30,19 +30,26 @@ public:
     ShapeMesh(std::string id);
     ~ShapeMesh();
 
-    raylib::Mesh generateCube(float width, float height, float length);
-    raylib::Mesh generateSphere(float radius, int rings, int slices);
-    raylib::Mesh generateHemiSphere(float radius, int rings, int slices);
-    raylib::Mesh generateCylinder(float radius, float height, int slices);
-    raylib::Mesh generatePlane(float width, float length, int resX, int resZ);
-    raylib::Mesh generateTorus(float radius, float size, int radSeg, int sides);
-    raylib::Mesh generateKnot(float radius, float size, int radSeg, int sides);
-    raylib::Mesh generatePoly(int sides, float radius);
+    void drawCube(Vector3 position, float width, float height, float length, raylib::Color color);
+    void drawCubeWires(Vector3 position, float width, float height, float length, raylib::Color color);
+
+    void drawSphere(Vector3 centerPos, float radius, raylib::Color color);
+    void drawSphereWires(Vector3 centerPos, float radius, raylib::Color color);
+
+    void drawCylinder(Vector3 position, float radiusTop, float radiusBottom, float height, int sides, raylib::Color color);
+    void drawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, float height, int sides, raylib::Color color);
+
+    void drawCapsule(Vector3 startPos, Vector3 endPos, float radius, float rings, int slices, Color color);
+    void drawCapsuleWires(Vector3 startPos, Vector3 endPos, float radius, float rings, int slices, Color color);
+
+    void drawPlane(Vector3 centerPos, Vector2 size, Color color);
+
+    void drawRay(raylib::Ray ray, raylib::Color color);
+    
+    void drawGrid(int slices, float spacing);
 
     void processDrawData();
     void renderDrawData(json shapeData);
-
-    raylib::Mesh createMesh(json shapeData);
 
     void update(float dT) override;
     void render() override;

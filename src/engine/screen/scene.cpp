@@ -208,6 +208,14 @@ void Scene::addActor(BaseActor* actor) {
         case ACTOR_3D:
             this->signal_render_3D.connect(actor->onRender);
         break;
+
+        case ACTOR_3D_BILLBOARD:
+            this->signal_render_3D_BILLBOARD.connect(actor->onRender);
+        break;
+
+        case ACTOR_3D_OVER:
+            this->signal_render_3D_OVER.connect(actor->onRender);
+        break;
     }
 }
 
@@ -219,13 +227,21 @@ void Scene::removeActor(std::string id) {
     this->signal_update.disconnect(actor->onUpdate);
 
     switch(actor->getActorRenderType()) {
-    case ACTOR_2D:
-        this->signal_render_2D.disconnect(actor->onRender);
-    break;
+        case ACTOR_2D:
+            this->signal_render_2D.disconnect(actor->onRender);
+        break;
 
-    case ACTOR_3D:
-        this->signal_render_3D.disconnect(actor->onRender);
-    break;
+        case ACTOR_3D:
+            this->signal_render_3D.disconnect(actor->onRender);
+        break;
+
+        case ACTOR_3D_BILLBOARD:
+            this->signal_render_3D_BILLBOARD.disconnect(actor->onRender);
+        break;
+
+        case ACTOR_3D_OVER:
+            this->signal_render_3D_OVER.disconnect(actor->onRender);
+        break;
     }
 }
 
@@ -251,6 +267,14 @@ void Scene::onRender() const {
     this->sceneRenderer3D->beginRender(this->camera3D);
         this->signal_render_3D.emit();
     this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
+
+    this->sceneRenderer3D->beginBillboardRender(this->camera3D);
+        this->signal_render_3D_BILLBOARD.emit();
+    this->sceneRenderer3D->endBillboardRender(this->camera3D);
+
+    this->camera3D->BeginMode();
+        this->signal_render_3D_OVER.emit();
+    this->camera3D->EndMode();
 
     if (this->use2DCamera) {
         this->camera2D->BeginMode();

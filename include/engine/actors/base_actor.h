@@ -8,8 +8,10 @@
 #include <sling.h>
 
 enum ActorRenderType {
-    ACTOR_2D,
-    ACTOR_3D
+    ACTOR_2D, // 2D Actors rendered after 3D assets
+    ACTOR_3D, // 3D Actors rendered using the gBuffer (typically meshes)
+    ACTOR_3D_OVER, // 3D Actors rendered over top of the gBuffer rendered actors after the fact
+    ACTOR_3D_BILLBOARD // Rendering Step specifically for billboards because they're rendered weirdly
 };
 
 class BaseActor {

@@ -5,6 +5,7 @@ SceneRenderer3D::SceneRenderer3D() {
 
     this->gBuffer = shadermanager.getShaderPtr("gbuffer");
     this->deferredShader = shadermanager.getShaderPtr("deferred");
+    this->billboardShader = shadermanager.getShaderPtr("billboard");
 
     this->lightList = std::vector<Light>{};
 
@@ -19,10 +20,6 @@ SceneRenderer3D::~SceneRenderer3D() {
 
     delete this->gBuffer;
     delete this->deferredShader;
-
-    // for (int i = 0; i < this->lightList.size(); i++) {
-    //     delete this->lightList.at(i);
-    // }
 
     this->lightList.clear();
 }
@@ -96,4 +93,15 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
     camera->EndMode();
 
     this->graphicsBuffer->blitBuffer();
+}
+
+void SceneRenderer3D::beginBillboardRender(raylib::Camera3D* camera) {
+    // Base Render Pass
+    camera->BeginMode();
+        this->billboardShader->enableShader();
+}
+
+void SceneRenderer3D::endBillboardRender(raylib::Camera3D* camera) {
+        this->billboardShader->disableShader();
+    camera->EndMode();
 }
