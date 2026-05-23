@@ -11,8 +11,6 @@ uniform vec4 colDiffuse;
 // Output fragment color
 out vec4 finalColor;
 
-// NOTE: Add your custom variables here
-
 const vec2 size = vec2(800, 450);   // Framebuffer size
 const float samples = 5.0;          // Pixels per axis; higher = bigger glow, worse performance
 const float quality = 2.5;          // Defines size factor: Lower = smaller glow, better quality

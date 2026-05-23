@@ -5,7 +5,10 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     
     this->id = id;
     this->actorType = "BillboardSprite";
-    this->textureAtlas = textureAtlas;
+    this->textureAtlas_Deffuse = textureAtlas;
+    this->textureAtlas_Normal = textureAtlas;
+    this->textureAtlas_Occlusion = textureAtlas;
+    this->textureAtlas_Specular = textureAtlas;
 
     this->currentFrameID = "";
     this->currentFrameIndex = -1;
@@ -23,10 +26,53 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
 }
 
 BillboardSprite::~BillboardSprite() {
+    delete this->textureAtlas_Deffuse;
+    delete this->textureAtlas_Normal;
+    delete this->textureAtlas_Occlusion;
+    delete this->textureAtlas_Specular;
+
+    delete this->currentAnimation;
+    delete this->camera3D;
 }
 
-void BillboardSprite::setTextureAtlas(TextureAtlas* textureAtlas) {
-    this->textureAtlas = textureAtlas;
+void BillboardSprite::setDeffuseTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Deffuse = new TextureAtlas(this->id + "_DEFFUSE", texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Deffuse->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+}
+
+void BillboardSprite::setNormalTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Normal = new TextureAtlas(this->id + "_NORMAL", texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Normal->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+}
+
+void BillboardSprite::setOcclusionTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Occlusion = new TextureAtlas(this->id + "_OCCLUSION", texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Occlusion->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+}
+
+void BillboardSprite::setSpecularTexture(raylib::Texture2D* texturePtr) {
+    this->textureAtlas_Specular = new TextureAtlas(this->id + "_SPECULAR", texturePtr);
+    raylib::Vector2 textureDimentions = texturePtr->GetSize();
+    this->textureAtlas_Specular->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
+}
+
+void BillboardSprite::setDeffuseTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Deffuse = textureAtlas;
+}
+
+void BillboardSprite::setNormalTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Normal = textureAtlas;
+}
+
+void BillboardSprite::setOcclusionTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Occlusion = textureAtlas;
+}
+
+void BillboardSprite::setSpecularTexture(TextureAtlas* textureAtlas) {
+    this->textureAtlas_Specular = textureAtlas;
 }
 
 void BillboardSprite::setSceneCamera(raylib::Camera3D* camera) {
@@ -35,7 +81,7 @@ void BillboardSprite::setSceneCamera(raylib::Camera3D* camera) {
 
 void BillboardSprite::playAnimation(std::string animationID) {
     this->playing = true;
-    SpriteAnimation* spriteAnimation = this->textureAtlas->getAnimation(animationID);
+    SpriteAnimation* spriteAnimation = this->textureAtlas_Deffuse->getAnimation(animationID);
     this->currentAnimation = spriteAnimation;
 
     std::vector<std::string> animationFrames = spriteAnimation->frames;
@@ -97,56 +143,82 @@ void BillboardSprite::render() {
         return;
     }
 
-    raylib::Texture2D* atlasTexture = this->textureAtlas->getAtlasTexture();
+    raylib::Texture2D* atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
+    
+    switch (this->renderMode) {
+        case DEFFUSE:
+            atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
+            break;
+
+        case NORMAL:
+            atlasTexture = this->textureAtlas_Normal->getAtlasTexture();
+            break;
+
+        case OCCLUSION:
+            atlasTexture = this->textureAtlas_Occlusion->getAtlasTexture();
+            break;
+
+        case SPECULAR:
+            atlasTexture = this->textureAtlas_Specular->getAtlasTexture();
+            break;
+        
+        default:
+            atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
+            break;
+    }
 
     this->calculateRenderedPosition();
 
     if (atlasTexture->IsValid() && this->currentFrameID != "") {
-        raylib::Rectangle frameRect = this->textureAtlas->getFrameRect(this->currentFrameID);
-        bool isFrameRotated = this->textureAtlas->getFrameRotated(this->currentFrameID);
+        this->drawBillboardTexture(this->textureAtlas_Deffuse->getAtlasTexture());
+    }
+}
 
-        raylib::Vector2 calculatedScale{0.0f, 0.0f};
-        float invertedTextureScale = 1 / this->textureAtlas->getTextureScale();
+void BillboardSprite::drawBillboardTexture(raylib::Texture2D* atlasTexture) {
+    raylib::Rectangle frameRect = this->textureAtlas_Deffuse->getFrameRect(this->currentFrameID);
+    bool isFrameRotated = this->textureAtlas_Deffuse->getFrameRotated(this->currentFrameID);
 
-        if (isFrameRotated) {
-            calculatedScale = raylib::Vector2(
-                this->getScaleX() * invertedTextureScale, 
-                (frameRect.height/frameRect.width) * this->getScaleY() * invertedTextureScale
-            );
-        } else {
-            calculatedScale = raylib::Vector2(
-                (frameRect.width/frameRect.height) * this->getScaleX() * invertedTextureScale, 
-                this->getScaleY() * invertedTextureScale
-            );
-        }
+    raylib::Vector2 calculatedScale{0.0f, 0.0f};
+    float invertedTextureScale = 1 / this->textureAtlas_Deffuse->getTextureScale();
 
-        // the forward direction of the camera (look direction)
-        Vector3 forward = Vector3Subtract(this->camera3D->target, this->camera3D->position);
-        
-        // the up vector we start with - but this up vector is not orthogonal to the forward vector
-        Vector3 up = { 0.0f, 1.0f, 0.0f };
-        
-        // compute the right vector using the cross product of the up and forward vector
-        // this vector is orthogonal to the forward vector
-        Vector3 right = Vector3CrossProduct(up, forward);
-        
-        // compute the up vector using the cross product of the forward and right vector
-        // the result is orthogonal to the forward and right vector, so it's now pointing up in 
-        // the orientation of the camera itself
-        up = Vector3CrossProduct(forward, right);
-        
-        // normalize the up vector so it's unit length
-        up = Vector3Normalize(up);
-
-        atlasTexture->DrawBillboard(
-            *this->camera3D, 
-            frameRect, 
-            raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
-            up, 
-            calculatedScale,
-            raylib::Vector2(0.5f, 0.5f),
-            this->getRotation() + (isFrameRotated ? 90 : 0),
-            raylib::Color::White()
+    if (isFrameRotated) {
+        calculatedScale = raylib::Vector2(
+            this->getScaleX() * invertedTextureScale, 
+            (frameRect.height/frameRect.width) * this->getScaleY() * invertedTextureScale
+        );
+    } else {
+        calculatedScale = raylib::Vector2(
+            (frameRect.width/frameRect.height) * this->getScaleX() * invertedTextureScale, 
+            this->getScaleY() * invertedTextureScale
         );
     }
+
+    // the forward direction of the camera (look direction)
+    Vector3 forward = Vector3Subtract(this->camera3D->target, this->camera3D->position);
+    
+    // the up vector we start with - but this up vector is not orthogonal to the forward vector
+    Vector3 up = { 0.0f, 1.0f, 0.0f };
+    
+    // compute the right vector using the cross product of the up and forward vector
+    // this vector is orthogonal to the forward vector
+    Vector3 right = Vector3CrossProduct(up, forward);
+    
+    // compute the up vector using the cross product of the forward and right vector
+    // the result is orthogonal to the forward and right vector, so it's now pointing up in 
+    // the orientation of the camera itself
+    up = Vector3CrossProduct(forward, right);
+    
+    // normalize the up vector so it's unit length
+    up = Vector3Normalize(up);
+
+    atlasTexture->DrawBillboard(
+        *this->camera3D, 
+        frameRect, 
+        raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
+        up, 
+        calculatedScale,
+        raylib::Vector2(0.5f, 0.5f),
+        this->getRotation() + (isFrameRotated ? 90 : 0),
+        raylib::Color::White()
+    );
 }

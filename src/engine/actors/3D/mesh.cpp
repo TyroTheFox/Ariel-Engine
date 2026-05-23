@@ -132,7 +132,7 @@ void MeshModel::setModel(raylib::Model* model) {
 }
 
 void MeshModel::setAlbedoTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas_Albedo = new TextureAtlas(id, texturePtr);
+    this->textureAtlas_Albedo = new TextureAtlas(this->id + "_ALBEDO", texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas_Albedo->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
@@ -140,7 +140,7 @@ void MeshModel::setAlbedoTexture(raylib::Texture2D* texturePtr) {
 }
 
 void MeshModel::setMetalnessTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas_Metalness = new TextureAtlas(id, texturePtr);
+    this->textureAtlas_Metalness = new TextureAtlas(this->id + "_MRA", texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas_Metalness->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
@@ -150,7 +150,7 @@ void MeshModel::setMetalnessTexture(raylib::Texture2D* texturePtr) {
 }
 
 void MeshModel::setNormalTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas_Normal = new TextureAtlas(id, texturePtr);
+    this->textureAtlas_Normal = new TextureAtlas(this->id + "_NORMAL", texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas_Normal->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
@@ -160,7 +160,7 @@ void MeshModel::setNormalTexture(raylib::Texture2D* texturePtr) {
 }
 
 void MeshModel::setEmissionTexture(raylib::Texture2D* texturePtr) {
-    this->textureAtlas_Emission = new TextureAtlas(id, texturePtr);
+    this->textureAtlas_Emission = new TextureAtlas(this->id + "_EMISSION", texturePtr);
     raylib::Vector2 textureDimentions = texturePtr->GetSize();
     this->textureAtlas_Emission->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 

@@ -23,6 +23,18 @@
         {
             "id": "old_car_n",
             "src": "resources/textures/old_car/old_car_n.png"
+        },
+        {
+            "id": "cards_n",
+            "src": "resources/atlases/cards_n.png"
+        },
+        {
+            "id": "cards_o",
+            "src": "resources/atlases/cards_o.png"
+        },
+        {
+            "id": "cards_s",
+            "src": "resources/atlases/cards_s.png"
         }
     ],
     "atlases": [
