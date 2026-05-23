@@ -211,6 +211,7 @@ void Scene::addActor(BaseActor* actor) {
 
         case ACTOR_3D_BILLBOARD:
             this->signal_render_3D_BILLBOARD.connect(actor->onRender);
+            this->signal_set_3D_BILLBOARD_RENDER_MODE.connect(dynamic_cast<BillboardSprite*>(actor)->onChangeRenderMode);
         break;
 
         case ACTOR_3D_OVER:
@@ -237,6 +238,7 @@ void Scene::removeActor(std::string id) {
 
         case ACTOR_3D_BILLBOARD:
             this->signal_render_3D_BILLBOARD.disconnect(actor->onRender);
+            this->signal_set_3D_BILLBOARD_RENDER_MODE.disconnect(dynamic_cast<BillboardSprite*>(actor)->onChangeRenderMode);
         break;
 
         case ACTOR_3D_OVER:
@@ -264,12 +266,38 @@ void Scene::onUpdate(float dT) const {
 }
 
 void Scene::onRender() const {
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(OCCLUSION);
+    // this->signal_render_3D_BILLBOARD.emit();
+
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(SPECULAR);
+    // this->signal_render_3D_BILLBOARD.emit();
+
     this->sceneRenderer3D->beginRender(this->camera3D);
         this->signal_render_3D.emit();
     this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
 
+    ::BeginTextureMode(this->sceneRenderer3D->albedoTexture);
+        this->camera3D->BeginMode();
+            this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
+            this->signal_render_3D_BILLBOARD.emit();
+        this->camera3D->EndMode();
+    ::EndTextureMode();
+
+    ::BeginTextureMode(this->sceneRenderer3D->normalTexture);
+        this->camera3D->BeginMode();
+            this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
+            this->signal_render_3D_BILLBOARD.emit();
+        this->camera3D->EndMode();
+    ::EndTextureMode();
+
     this->sceneRenderer3D->beginBillboardRender(this->camera3D);
-        this->signal_render_3D_BILLBOARD.emit();
+        ::rlActiveTextureSlot(1);
+        ::rlEnableTexture(this->sceneRenderer3D->albedoTexture.id);
+
+        ::rlActiveTextureSlot(2);
+        ::rlEnableTexture(this->sceneRenderer3D->normalTexture.id);
+
+        ::rlLoadDrawQuad();
     this->sceneRenderer3D->endBillboardRender(this->camera3D);
 
     this->camera3D->BeginMode();

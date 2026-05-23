@@ -30,6 +30,11 @@ class SceneRenderer3D {
 
         GraphicsBuffer* graphicsBuffer;
 
+        int albedoLoc = -1;
+        int normalLoc = -1;
+        RenderTexture2D albedoTexture;
+        RenderTexture2D normalTexture;
+
         SceneRenderer3D();
         ~SceneRenderer3D();
 

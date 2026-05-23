@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <engine/actors/base_actor.h>
 #include <engine/data/texture_atlas.h>
+#include <engine/render/shader_objects/rendering_shader.h>
+#include <engine/render/shader_objects/shader_manager.h>
 
 enum BILLBOARD_RENDER_MODE {
     DEFFUSE,
@@ -30,11 +32,27 @@ private:
 
     SpriteAnimation* currentAnimation;
 
+    RenderingShader* deferredShader;
+    RenderingShader* gBufferShader;
+
     bool playing;
 
     int frameSpeedCount; 
     int loopCount;
     void drawBillboardTexture(raylib::Texture2D* atlasTexture);
+
+    int metallicValueLoc = -1;
+    int roughnessValueLoc = -1;
+    int aoValueLoc = -1;
+    int emissiveIntensityLoc = -1;
+    int emissiveColorLoc = -1;
+    int textureTilingLoc = -1;
+
+    float metalness = 0.0f;
+    float roughness = 0.5f;
+    float occlusion = 0.5f;
+    float emissiveIntensity = 0.5f;
+    Vector2 tilingVector;
 public:
     // <Animation Name>
     sl::Signal<std::string> animationStarted;
@@ -44,6 +62,8 @@ public:
     sl::Signal<std::string, int, float> animationUpdating;
     // <Animation Name, Loops Left>
     sl::Signal<std::string, int> animationLooped;
+
+    sl::Slot<BILLBOARD_RENDER_MODE> onChangeRenderMode{this, &BillboardSprite::setRenderMode};
 
     raylib::Camera3D* camera3D;
 
@@ -66,6 +86,8 @@ public:
 
     void playAnimation(std::string animationID);
     void stopAnimation();
+
+    void setRenderMode(BILLBOARD_RENDER_MODE mode);
 
     void update(float dT) override;
     void render() override;

@@ -12,6 +12,7 @@
 #include <engine/actors/container.h>
 
 #include <engine/render/scene_renderer_3D.h>
+#include <engine/actors/3D/billboard_sprite.h>
 
 using json = nlohmann::json;
 
@@ -59,6 +60,7 @@ class Scene
         sl::Signal<> signal_render_3D;
         sl::Signal<> signal_render_3D_BILLBOARD;
         sl::Signal<> signal_render_3D_OVER;
+        sl::Signal<BILLBOARD_RENDER_MODE> signal_set_3D_BILLBOARD_RENDER_MODE;
 
         Scene();
         Scene(std::string id, json sceneData);
