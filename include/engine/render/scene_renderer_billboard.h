@@ -25,8 +25,9 @@ public:
 
     RenderingShader* billboardShader;
 
-    RenderTexture2D albedoRenderTexture;
-    RenderTexture2D normalRenderTexture;
+    raylib::RenderTexture2D albedoRenderTexture;
+    raylib::RenderTexture2D normalRenderTexture;
+    raylib::Texture2D normalTexture;
 
     int texAlbedoLoc = -1;
     int texNormalLoc = -1;

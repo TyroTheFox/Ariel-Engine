@@ -82,12 +82,15 @@ void SceneRendererBillboard::beginNormalTextureRender(raylib::Camera3D* camera) 
 void SceneRendererBillboard::endNormalTextureRender(raylib::Camera3D* camera) {
         camera->EndMode();
     ::EndTextureMode();
+
+    this->normalTexture = raylib::Texture2D(this->normalRenderTexture.texture);
 }
 
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
+    int textureActiveSlot = 1;
     camera->BeginMode();
         this->billboardShader->enableShader();
-            this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.texture);
+            this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalTexture);
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
