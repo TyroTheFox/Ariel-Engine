@@ -137,6 +137,7 @@ GENERATED += $(OBJDIR)/model_loader.o
 GENERATED += $(OBJDIR)/rendering_shader.o
 GENERATED += $(OBJDIR)/scene.o
 GENERATED += $(OBJDIR)/scene_renderer_3D.o
+GENERATED += $(OBJDIR)/scene_renderer_billboard.o
 GENERATED += $(OBJDIR)/shader_manager.o
 GENERATED += $(OBJDIR)/shape.o
 GENERATED += $(OBJDIR)/shape_creator.o
@@ -171,6 +172,7 @@ OBJECTS += $(OBJDIR)/model_loader.o
 OBJECTS += $(OBJDIR)/rendering_shader.o
 OBJECTS += $(OBJDIR)/scene.o
 OBJECTS += $(OBJDIR)/scene_renderer_3D.o
+OBJECTS += $(OBJDIR)/scene_renderer_billboard.o
 OBJECTS += $(OBJDIR)/shader_manager.o
 OBJECTS += $(OBJDIR)/shape.o
 OBJECTS += $(OBJDIR)/shape_creator.o
@@ -322,6 +324,9 @@ $(OBJDIR)/gbuffer.o: src/engine/render/gbuffer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/scene_renderer_3D.o: src/engine/render/scene_renderer_3D.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/scene_renderer_billboard.o: src/engine/render/scene_renderer_billboard.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/rendering_shader.o: src/engine/render/shader_objects/rendering_shader.cpp

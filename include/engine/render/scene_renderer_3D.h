@@ -26,14 +26,8 @@ class SceneRenderer3D {
 
         RenderingShader* gBuffer;
         RenderingShader* deferredShader;
-        RenderingShader* billboardShader;
 
         GraphicsBuffer* graphicsBuffer;
-
-        int albedoLoc = -1;
-        int normalLoc = -1;
-        RenderTexture2D albedoTexture;
-        RenderTexture2D normalTexture;
 
         SceneRenderer3D();
         ~SceneRenderer3D();
@@ -42,10 +36,8 @@ class SceneRenderer3D {
 
         void setUpRenderer();
         void beginRender(raylib::Camera3D* camera);
-        void endRenderAndProcess(raylib::Camera3D* camera);
-
-        void beginBillboardRender(raylib::Camera3D* camera);
-        void endBillboardRender(raylib::Camera3D* camera);
+        void endRender(raylib::Camera3D* camera);
+        void processRender(raylib::Camera3D* camera);
 };
 
 #endif

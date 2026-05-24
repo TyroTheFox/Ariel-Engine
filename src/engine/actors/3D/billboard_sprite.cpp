@@ -23,34 +23,6 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     this->origin = raylib::Vector2(0.5f, 0.5f);
 
     this->camera3D = new raylib::Camera3D();
-
-    ShaderManager shaderManager = ShaderManager();
-    this->deferredShader = shaderManager.getShaderPtr("deferred");
-    this->gBufferShader = shaderManager.getShaderPtr("gbuffer");
-
-    // this->tilingVector = Vector2();
-    // this->tilingVector.x = 0.5;
-    // this->tilingVector.y = 0.5;
-    
-    // this->metallicValueLoc = this->gBufferShader->getShaderLocation("metallicValue");
-    // this->roughnessValueLoc = this->gBufferShader->getShaderLocation("roughnessValue");
-    // this->aoValueLoc = this->gBufferShader->getShaderLocation("aoValue");
-    // this->emissiveIntensityLoc = this->gBufferShader->getShaderLocation("emissivePower");
-    // this->emissiveColorLoc = this->gBufferShader->getShaderLocation("emissiveColor");
-    // this->textureTilingLoc = this->gBufferShader->getShaderLocation("tiling");
-
-    // // Set old car metallic and roughness values
-    // this->gBufferShader->setShaderValue(metallicValueLoc, &this->metalness, SHADER_UNIFORM_FLOAT);
-    // this->gBufferShader->setShaderValue(roughnessValueLoc, &this->roughness, SHADER_UNIFORM_FLOAT);
-    // this->gBufferShader->setShaderValue(aoValueLoc, &this->occlusion, SHADER_UNIFORM_FLOAT);
-
-    //     // Set old car model texture tiling, emissive color and emissive intensity parameters on shader
-    // this->gBufferShader->setShaderValue(textureTilingLoc, &this->tilingVector, SHADER_UNIFORM_VEC2);
-
-    // Vector4 emissiveColor = ColorNormalize(raylib::Color::White());
-    // this->gBufferShader->setShaderValue(emissiveColorLoc, &emissiveColor, SHADER_UNIFORM_VEC4);
-
-    // this->gBufferShader->setShaderValue(emissiveIntensityLoc, &this->emissiveIntensity, SHADER_UNIFORM_FLOAT);
 }
 
 BillboardSprite::~BillboardSprite() {

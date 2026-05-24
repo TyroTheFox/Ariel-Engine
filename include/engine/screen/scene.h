@@ -12,6 +12,7 @@
 #include <engine/actors/container.h>
 
 #include <engine/render/scene_renderer_3D.h>
+#include <engine/render/scene_renderer_billboard.h>
 #include <engine/actors/3D/billboard_sprite.h>
 
 using json = nlohmann::json;
@@ -43,6 +44,7 @@ class Scene
         CameraProjection cameraProjectionMode = CAMERA_PERSPECTIVE;
 
         SceneRenderer3D* sceneRenderer3D;
+        SceneRendererBillboard* sceneRendererBillboard;
 
         void setUpCameras();
     public:

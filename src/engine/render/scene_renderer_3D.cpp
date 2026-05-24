@@ -5,19 +5,12 @@ SceneRenderer3D::SceneRenderer3D() {
 
     this->gBuffer = shadermanager.getShaderPtr("gbuffer");
     this->deferredShader = shadermanager.getShaderPtr("deferred");
-    this->billboardShader = shadermanager.getShaderPtr("billboard");
 
     this->lightList = std::vector<Light>{};
 
     this->ambientColor = raylib::Color::White();
 
     this->graphicsBuffer = new GraphicsBuffer(this->deferredShader);
-
-    this->albedoTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
-    this->normalTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    this->albedoLoc = this->billboardShader->getShaderLocation("gAlbedo");
-    this->normalLoc = this->billboardShader->getShaderLocation("gNormal");
 }
 
 SceneRenderer3D::~SceneRenderer3D() {
@@ -58,8 +51,8 @@ void SceneRenderer3D::setUpRenderer() {
 
     ::rlEnableDepthTest();
 
-    // this->graphicsBuffer->readyForDrawing();
-    // this->graphicsBuffer->endBufferDrawing();
+    this->graphicsBuffer->readyForDrawing();
+    this->graphicsBuffer->endBufferDrawing();
 }
 
 void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
@@ -77,10 +70,12 @@ void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
         this->gBuffer->enableShader();
 }
 
-void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
+void SceneRenderer3D::endRender(raylib::Camera3D* camera) {
         this->gBuffer->disableShader();
     camera->EndMode();
+}
 
+void SceneRenderer3D::processRender(raylib::Camera3D* camera) {
     this->graphicsBuffer->enableColorBlending();
     
     this->graphicsBuffer->endBufferDrawing();
@@ -99,18 +94,4 @@ void SceneRenderer3D::endRenderAndProcess(raylib::Camera3D* camera) {
     camera->EndMode();
 
     this->graphicsBuffer->blitBuffer();
-}
-
-void SceneRenderer3D::beginBillboardRender(raylib::Camera3D* camera) {
-    this->billboardShader->setShaderValue(this->albedoLoc, &this->albedoTexture, SHADER_UNIFORM_SAMPLER2D);
-    this->billboardShader->setShaderValue(this->normalLoc, &this->normalTexture, SHADER_UNIFORM_SAMPLER2D);
-
-    // Base Render Pass
-    camera->BeginMode();
-        this->billboardShader->enableShader();
-}
-
-void SceneRenderer3D::endBillboardRender(raylib::Camera3D* camera) {
-        this->billboardShader->disableShader();
-    camera->EndMode();
 }

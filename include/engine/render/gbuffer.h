@@ -29,17 +29,16 @@ typedef struct GBufferData {
 
 class GraphicsBuffer {
     private:
-        GBufferData gBufferData;
-
         int texUnitPosition = 0;
         int texUnitNormal = 1;
         int texUnitAlbedo = 2;
         int texUnitEmissive = 3;
         int texUnitMRA = 4;
     public:
+        GBufferData gBufferData;
+
         GraphicsBuffer(RenderingShader* deferredShader);
         ~GraphicsBuffer();
-
 
         void readyForDrawing();
         void enableColorBlending();

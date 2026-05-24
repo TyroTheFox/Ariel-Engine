@@ -55,6 +55,27 @@ BillboardSprite* BillboardSpriteCreator::createActor(json* actorData) const {
         }
     }
 
+    if (actorData->contains("normalTexture")) {
+        std::string id = actorData->at("normalTexture");
+        raylib::Texture2D* newTexture = assetLoader.getTexturePtr(id);
+
+        billboardSprite->setNormalTexture(newTexture);
+    }
+
+    if (actorData->contains("occlusionTexture")) {
+        std::string id = actorData->at("occlusionTexture");
+        raylib::Texture2D* newTexture = assetLoader.getTexturePtr(id);
+
+        billboardSprite->setOcclusionTexture(newTexture);
+    }
+
+    if (actorData->contains("specularTexture")) {
+        std::string id = actorData->at("specularTexture");
+        raylib::Texture2D* newTexture = assetLoader.getTexturePtr(id);
+
+        billboardSprite->setSpecularTexture(newTexture);
+    }
+
     if (actorData->contains("anchor")) {
         if (actorData->at("anchor").is_number()) {
             billboardSprite->anchorX = actorData->at("anchor");

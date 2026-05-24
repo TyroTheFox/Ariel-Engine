@@ -117,6 +117,7 @@
             "id": "test_billboard",
             "type": "billboardSprite",
             "texture": "card_atlas",
+            "normalTexture": "cards_n",
             "x": 10,
             "y": 0,
             "z": 5,

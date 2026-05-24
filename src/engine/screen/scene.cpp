@@ -6,6 +6,9 @@ Scene::Scene() {
     this->children = std::map<std::string, BaseActor*>{};
 
     this->setUpCameras();
+
+    this->sceneRenderer3D = new SceneRenderer3D();
+    this->sceneRendererBillboard = new SceneRendererBillboard();
 }
 
 Scene::Scene(std::string name, json sceneData) {
@@ -31,6 +34,7 @@ Scene::Scene(std::string name, json sceneData) {
     }
 
     this->sceneRenderer3D = new SceneRenderer3D();
+    this->sceneRendererBillboard = new SceneRendererBillboard();
 
     if (sceneData.contains("lights")) {
         json lightData = sceneData.at("lights");
@@ -97,10 +101,21 @@ Scene::Scene(std::string name, json sceneData) {
                 lightIntensity,
                 lightColor
             );
+
+            this->sceneRendererBillboard->createNewLight(
+                lightId, 
+                lightType == "Directional" ? LIGHT_DIRECTIONAL : LIGHT_POINT,
+                lightPosition,
+                lightTarget,
+                lightIntensity,
+                lightColor
+            );
         }
     }
 
     this->sceneRenderer3D->setUpRenderer();
+    this->sceneRendererBillboard->setUpRenderer();
+    this->sceneRendererBillboard->setUpLights(this->camera3D);
 }
 
 Scene::~Scene() {}
@@ -266,39 +281,26 @@ void Scene::onUpdate(float dT) const {
 }
 
 void Scene::onRender() const {
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(OCCLUSION);
-    // this->signal_render_3D_BILLBOARD.emit();
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(SPECULAR);
-    // this->signal_render_3D_BILLBOARD.emit();
-
     this->sceneRenderer3D->beginRender(this->camera3D);
         this->signal_render_3D.emit();
-    this->sceneRenderer3D->endRenderAndProcess(this->camera3D);
+    this->sceneRenderer3D->endRender(this->camera3D);
 
-    ::BeginTextureMode(this->sceneRenderer3D->albedoTexture);
-        this->camera3D->BeginMode();
-            this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-            this->signal_render_3D_BILLBOARD.emit();
-        this->camera3D->EndMode();
-    ::EndTextureMode();
+    this->sceneRenderer3D->processRender(this->camera3D);
 
-    ::BeginTextureMode(this->sceneRenderer3D->normalTexture);
-        this->camera3D->BeginMode();
-            this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
-            this->signal_render_3D_BILLBOARD.emit();
-        this->camera3D->EndMode();
-    ::EndTextureMode();
+    // this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
+    //     this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
+    //     this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
 
-    this->sceneRenderer3D->beginBillboardRender(this->camera3D);
-        ::rlActiveTextureSlot(1);
-        ::rlEnableTexture(this->sceneRenderer3D->albedoTexture.id);
+    this->sceneRendererBillboard->beginNormalTextureRender(this->camera3D);
+        this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
+        this->signal_render_3D_BILLBOARD.emit();
+    this->sceneRendererBillboard->endNormalTextureRender(this->camera3D);
 
-        ::rlActiveTextureSlot(2);
-        ::rlEnableTexture(this->sceneRenderer3D->normalTexture.id);
-
-        ::rlLoadDrawQuad();
-    this->sceneRenderer3D->endBillboardRender(this->camera3D);
+    this->sceneRendererBillboard->beginRender(this->camera3D);
+        this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
+        this->signal_render_3D_BILLBOARD.emit();
+    this->sceneRendererBillboard->endRender(this->camera3D);
 
     this->camera3D->BeginMode();
         this->signal_render_3D_OVER.emit();
