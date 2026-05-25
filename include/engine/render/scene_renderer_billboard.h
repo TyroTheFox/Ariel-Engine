@@ -24,10 +24,13 @@ public:
     raylib::Color ambientColor;
 
     RenderingShader* billboardShader;
+    RenderingShader* billboardPosition;
+    RenderingShader* gBuffer;
+    RenderingShader* mixTexture;
 
+    raylib::RenderTexture2D positionRenderTexture;
     raylib::RenderTexture2D albedoRenderTexture;
     raylib::RenderTexture2D normalRenderTexture;
-    raylib::Texture2D normalTexture;
 
     int texAlbedoLoc = -1;
     int texNormalLoc = -1;
@@ -41,6 +44,9 @@ public:
 
     void setUpRenderer();
     void setUpLights(raylib::Camera3D* camera);
+
+    void beginPositionTextureRender(raylib::Camera3D* camera);
+    void endPositionTextureRender(raylib::Camera3D* camera);
     
     void beginAlbedoTextureRender(raylib::Camera3D* camera);
     void endAlbedoTextureRender(raylib::Camera3D* camera);

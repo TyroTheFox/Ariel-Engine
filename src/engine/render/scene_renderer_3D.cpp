@@ -63,11 +63,10 @@ void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
         this->lightList.at(i).UpdateLightValues(&this->deferredShader->shaderInstance);
     }
 
-    this->graphicsBuffer->readyForDrawing();
-
     // Base Render Pass
     camera->BeginMode();
         this->gBuffer->enableShader();
+            this->graphicsBuffer->readyForDrawing();
 }
 
 void SceneRenderer3D::endRender(raylib::Camera3D* camera) {

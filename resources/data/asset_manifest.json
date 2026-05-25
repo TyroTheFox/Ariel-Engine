@@ -100,8 +100,21 @@
             "locations": []
         },
         {
+            "id": "billboard_position",
+            "vertex": "resources/shaders/glsl%i/general/billboard_position.vs",
+            "frag": "resources/shaders/glsl%i/general/billboard_position.fs",
+            "default": false,
+            "locations": []
+        },
+        {
             "id": "bloom",
             "frag": "resources/shaders/glsl%i/post_processing/bloom.fs",
+            "default": false,
+            "locations": []
+        },
+        {
+            "id": "mix_texture",
+            "frag": "resources/shaders/glsl%i/general/texture_mix.fs",
             "default": false,
             "locations": []
         }

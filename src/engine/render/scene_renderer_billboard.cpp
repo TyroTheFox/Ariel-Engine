@@ -4,6 +4,9 @@ SceneRendererBillboard::SceneRendererBillboard() {
     ShaderManager shadermanager = ShaderManager();
 
     this->billboardShader = shadermanager.getShaderPtr("billboard");
+    this->billboardPosition = shadermanager.getShaderPtr("billboard_position");
+    this->gBuffer = shadermanager.getShaderPtr("gBuffer");
+    this->mixTexture = shadermanager.getShaderPtr("mix_texture");
 
     this->lightList = std::vector<Light>{};
 
@@ -11,6 +14,7 @@ SceneRendererBillboard::SceneRendererBillboard() {
 
     this->ambientColor = raylib::Color::White();
 
+    this->positionRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->albedoRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->normalRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
@@ -64,6 +68,18 @@ void SceneRendererBillboard::setUpLights(raylib::Camera3D* camera) {
     }
 }
 
+void SceneRendererBillboard::beginPositionTextureRender(raylib::Camera3D* camera) {
+    // ::BeginTextureMode(this->positionRenderTexture);
+        camera->BeginMode();
+            this->billboardPosition->shaderInstance.BeginMode();
+}
+
+void SceneRendererBillboard::endPositionTextureRender(raylib::Camera3D* camera) {
+            this->billboardPosition->shaderInstance.EndMode();
+        camera->EndMode();
+    // ::EndTextureMode();
+}
+
 void SceneRendererBillboard::beginAlbedoTextureRender(raylib::Camera3D* camera) {
     ::BeginTextureMode(this->albedoRenderTexture);
         camera->BeginMode();
@@ -82,18 +98,15 @@ void SceneRendererBillboard::beginNormalTextureRender(raylib::Camera3D* camera) 
 void SceneRendererBillboard::endNormalTextureRender(raylib::Camera3D* camera) {
         camera->EndMode();
     ::EndTextureMode();
-
-    this->normalTexture = raylib::Texture2D(this->normalRenderTexture.texture);
 }
 
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
     int textureActiveSlot = 1;
     camera->BeginMode();
-        this->billboardShader->enableShader();
-            this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalTexture);
+        this->gBuffer->enableShader();          
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
-        this->billboardShader->disableShader();
+        this->gBuffer->disableShader();
     camera->EndMode();
 }

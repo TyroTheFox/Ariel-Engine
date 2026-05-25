@@ -47,7 +47,7 @@ out vec4 finalColor;
 void main()
 {
     vec4 DiffuseColor = texture(texture0, fragTexCoord);
-    if (DiffuseColor.a == 0.0) discard;
+    // if (DiffuseColor.a == 0.0) discard;
 
     //RGB of our normal map
 	vec3 NormalMap = texture2D(texture1, fragTexCoord).rgb;

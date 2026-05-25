@@ -52,14 +52,14 @@ void GameInstance::startGame() {
  
         // Draw
         ::BeginDrawing();
-            this->postProcessingShader->enableShader();
+            this->postProcessingShader->shaderInstance.BeginMode();
                 ::DrawTextureRec(
                     renderTexture.texture,
                     raylib::Rectangle{ 0, 0, static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height) },
                     raylib::Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
                     WHITE
                 );
-            this->postProcessingShader->disableShader();
+            this->postProcessingShader->shaderInstance.EndMode();
         ::EndDrawing();
     }
 
