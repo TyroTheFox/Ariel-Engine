@@ -21,6 +21,8 @@ class RenderingShader {
         RenderingShader(std::string vertexPath = "", std::string fragmentPath = "");
         ~RenderingShader();
 
+        void rlEnableShader();
+        void rlDisableShader();
         void enableShader();
         void disableShader();
 

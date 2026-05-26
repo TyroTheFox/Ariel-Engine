@@ -65,12 +65,12 @@ void SceneRenderer3D::beginRender(raylib::Camera3D* camera) {
 
     // Base Render Pass
     camera->BeginMode();
-        this->gBuffer->enableShader();
+        this->gBuffer->rlEnableShader();
             this->graphicsBuffer->readyForDrawing();
 }
 
 void SceneRenderer3D::endRender(raylib::Camera3D* camera) {
-        this->gBuffer->disableShader();
+        this->gBuffer->rlDisableShader();
     camera->EndMode();
 }
 
@@ -81,14 +81,14 @@ void SceneRenderer3D::processRender(raylib::Camera3D* camera) {
 
     camera->BeginMode();
         this->graphicsBuffer->disableColorBlending();
-            this->deferredShader->enableShader();
+            this->deferredShader->rlEnableShader();
                 this->graphicsBuffer->bindPositionTexture();
                 this->graphicsBuffer->bindNormalTexture();
                 this->graphicsBuffer->bindAlbedoTexture();
                 this->graphicsBuffer->bindEmissiveTexture();
                 this->graphicsBuffer->bindMRATexture();
                 ::rlLoadDrawQuad();
-            this->deferredShader->disableShader();
+            this->deferredShader->rlDisableShader();
         this->graphicsBuffer->enableColorBlending();
     camera->EndMode();
 

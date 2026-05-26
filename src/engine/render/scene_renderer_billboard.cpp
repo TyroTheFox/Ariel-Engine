@@ -17,10 +17,18 @@ SceneRendererBillboard::SceneRendererBillboard() {
     this->positionRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->albedoRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->normalRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
+    this->occlusionRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
+    this->specularRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 SceneRendererBillboard::~SceneRendererBillboard() {
     delete this->billboardShader;
+
+    UnloadRenderTexture(this->positionRenderTexture);
+    UnloadRenderTexture(this->albedoRenderTexture);
+    UnloadRenderTexture(this->normalRenderTexture);
+    UnloadRenderTexture(this->occlusionRenderTexture);
+    UnloadRenderTexture(this->specularRenderTexture);
 
     this->lightList.clear();
 }
@@ -31,8 +39,10 @@ void SceneRendererBillboard::createNewLight(std::string id, LightType type, rayl
 }
 
 void SceneRendererBillboard::setUpRenderer() {
-    this->texAlbedoLoc = this->billboardShader->getShaderLocation("texture0");
-    this->texNormalLoc = this->billboardShader->getShaderLocation("texture1");
+    this->texPositionLoc = this->billboardShader->getShaderLocation("gPosition");
+    this->texNormalLoc = this->billboardShader->getShaderLocation("gNormal");
+    this->texOcclusionLoc = this->billboardShader->getShaderLocation("gSpecular");
+    this->texSpecularLoc = this->billboardShader->getShaderLocation("gOcclusion");
 
     int gammaLoc = this->billboardShader->getShaderLocation("gamma");
     float gammaValue = GAMMA;
@@ -69,7 +79,8 @@ void SceneRendererBillboard::setUpLights(raylib::Camera3D* camera) {
 }
 
 void SceneRendererBillboard::beginPositionTextureRender(raylib::Camera3D* camera) {
-    // ::BeginTextureMode(this->positionRenderTexture);
+    ::BeginTextureMode(this->positionRenderTexture);
+        ::ClearBackground(raylib::Color::Blank());
         camera->BeginMode();
             this->billboardPosition->shaderInstance.BeginMode();
 }
@@ -77,11 +88,12 @@ void SceneRendererBillboard::beginPositionTextureRender(raylib::Camera3D* camera
 void SceneRendererBillboard::endPositionTextureRender(raylib::Camera3D* camera) {
             this->billboardPosition->shaderInstance.EndMode();
         camera->EndMode();
-    // ::EndTextureMode();
+    ::EndTextureMode();
 }
 
 void SceneRendererBillboard::beginAlbedoTextureRender(raylib::Camera3D* camera) {
     ::BeginTextureMode(this->albedoRenderTexture);
+        ::ClearBackground(raylib::Color::Blank());
         camera->BeginMode();
 }
 
@@ -92,6 +104,7 @@ void SceneRendererBillboard::endAlbedoTextureRender(raylib::Camera3D* camera) {
 
 void SceneRendererBillboard::beginNormalTextureRender(raylib::Camera3D* camera) {
     ::BeginTextureMode(this->normalRenderTexture);
+        ::ClearBackground(raylib::Color::Blank());
         camera->BeginMode();
 }
 
@@ -100,13 +113,38 @@ void SceneRendererBillboard::endNormalTextureRender(raylib::Camera3D* camera) {
     ::EndTextureMode();
 }
 
+void SceneRendererBillboard::beginOcclusionTextureRender(raylib::Camera3D* camera) {
+    ::BeginTextureMode(this->occlusionRenderTexture);
+        ::ClearBackground(raylib::Color::Blank());
+        camera->BeginMode();
+}
+
+void SceneRendererBillboard::endOcclusionTextureRender(raylib::Camera3D* camera) {
+        camera->EndMode();
+    ::EndTextureMode();
+}
+
+void SceneRendererBillboard::beginSpecularTextureRender(raylib::Camera3D* camera) {
+    ::BeginTextureMode(this->specularRenderTexture);
+        ::ClearBackground(raylib::Color::Blank());
+        camera->BeginMode();
+}
+
+void SceneRendererBillboard::endSpecularTextureRender(raylib::Camera3D* camera) {
+        camera->EndMode();
+    ::EndTextureMode();
+}
+
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
-    int textureActiveSlot = 1;
     camera->BeginMode();
-        this->gBuffer->enableShader();          
+        this->billboardShader->shaderInstance.BeginMode();
+            // this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
+            this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
+            // this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
+            // this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
-        this->gBuffer->disableShader();
+        this->billboardShader->shaderInstance.EndMode();
     camera->EndMode();
 }

@@ -25,15 +25,20 @@ public:
 
     RenderingShader* billboardShader;
     RenderingShader* billboardPosition;
+    RenderingShader* billboardNormal;
     RenderingShader* gBuffer;
     RenderingShader* mixTexture;
 
     raylib::RenderTexture2D positionRenderTexture;
     raylib::RenderTexture2D albedoRenderTexture;
     raylib::RenderTexture2D normalRenderTexture;
+    raylib::RenderTexture2D specularRenderTexture;
+    raylib::RenderTexture2D occlusionRenderTexture;
 
-    int texAlbedoLoc = -1;
+    int texPositionLoc = -1;
     int texNormalLoc = -1;
+    int texSpecularLoc = -1;
+    int texOcclusionLoc = -1;
 
     raylib::Vector3 falloff;
 
@@ -53,6 +58,12 @@ public:
 
     void beginNormalTextureRender(raylib::Camera3D* camera);
     void endNormalTextureRender(raylib::Camera3D* camera);
+
+    void beginOcclusionTextureRender(raylib::Camera3D* camera);
+    void endOcclusionTextureRender(raylib::Camera3D* camera);
+
+    void beginSpecularTextureRender(raylib::Camera3D* camera);
+    void endSpecularTextureRender(raylib::Camera3D* camera);
 
     void beginRender(raylib::Camera3D* camera);
 

@@ -24,7 +24,7 @@ BillboardSprite* BillboardSpriteCreator::createActor(json* actorData) const {
     }
 
     if (actorData->contains("z")) {
-        billboardSprite->y = actorData->at("z");
+        billboardSprite->z = actorData->at("z");
     }
 
     if (actorData->contains("visible")) {

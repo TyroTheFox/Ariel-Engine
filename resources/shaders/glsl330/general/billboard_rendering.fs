@@ -22,7 +22,7 @@ in vec4 fragColor;
 
 // Input uniform values
 uniform sampler2D texture0;
-uniform sampler2D texture1;
+uniform sampler2D gNormal;
 uniform vec4 colDiffuse;
 
 // Input uniform values
@@ -47,10 +47,10 @@ out vec4 finalColor;
 void main()
 {
     vec4 DiffuseColor = texture(texture0, fragTexCoord);
-    // if (DiffuseColor.a == 0.0) discard;
+    if (DiffuseColor.a == 0.0) discard;
 
     //RGB of our normal map
-	vec3 NormalMap = texture2D(texture1, fragTexCoord).rgb;
+	vec3 NormalMap = texture2D(gNormal, fragTexCoord).rgb;
 
     vec3 lightAccum = vec3(0.0);  // Acumulate lighting lum
     for (int i = 0; i < numOfLights; i++)
@@ -77,10 +77,10 @@ void main()
         //calculate attenuation
         float Attenuation = 1.0 / ( falloff.x + (falloff.y*D) + (falloff.z*D*D) );
 
-        lightAccum += Ambient + Diffuse * Attenuation;;
+        lightAccum += Ambient + Diffuse * Attenuation;
     }
 
     vec3 FinalColor = DiffuseColor.rgb * lightAccum;
 
-    finalColor = fragColor * vec4(FinalColor, DiffuseColor.a);
+    finalColor = vec4(FinalColor, DiffuseColor.a);
 }

@@ -12,10 +12,18 @@ RenderingShader::~RenderingShader() {
 }
 
 void RenderingShader::enableShader() {
-    ::rlEnableShader(this->shaderInstance.id);
+    this->shaderInstance.BeginMode();
 }
 
 void RenderingShader::disableShader() {
+    this->shaderInstance.EndMode();
+}
+
+void RenderingShader::rlEnableShader() {
+    ::rlEnableShader(this->shaderInstance.id);
+}
+
+void RenderingShader::rlDisableShader() {
     ::rlDisableShader();
 }
 

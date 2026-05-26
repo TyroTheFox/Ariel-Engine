@@ -12,6 +12,7 @@ private:
     sl::Slot<float> updateSlot{this, &TestScene::onUpdate};
 
     MeshModel* testCube;
+    BillboardSprite* testBillboard;
 public:
     TestScene(std::string id, json sceneData);
     ~TestScene();

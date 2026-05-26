@@ -4,6 +4,9 @@
             "x": 0,
             "y": 10,
             "z": 30,
+            "targetX": 0,
+            "targetY": 0,
+            "targetZ": 0,
             "fov": 45
         }
     },
@@ -118,10 +121,13 @@
             "type": "billboardSprite",
             "texture": "card_atlas",
             "normalTexture": "cards_n",
-            "x": 10,
-            "y": 0,
-            "z": 5,
-            "scale": 5
+            "occlusionTexture": "cards_o",
+            "specularTexture": "cards_s",
+            "x": 0,
+            "y": 5,
+            "z": -5,
+            "scale": 5,
+            "origin": 0.5
         }
     ]
 }
