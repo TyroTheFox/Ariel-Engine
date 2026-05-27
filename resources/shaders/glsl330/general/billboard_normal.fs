@@ -4,8 +4,8 @@
 in vec3 fragPosition;
 in vec2 fragTexCoord;
 in vec4 fragColor;
-out vec3 fragNormal;
-out mat3 TBN;
+in vec3 fragNormal;
+in mat3 TBN;
 
 // Input uniform values
 uniform sampler2D texture0;

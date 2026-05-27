@@ -33,7 +33,7 @@
             "color": {
                 "r": 255
             },
-            "intensity": 4
+            "intensity": 100
         },
         {
             "id": "side_light2",
@@ -47,7 +47,7 @@
             "color": {
                 "b": 255
             },
-            "intensity": 4
+            "intensity": 100
         }
     ],
     "actors": [
@@ -100,7 +100,8 @@
             "emissionTexture": "old_car_e",
             "x": 0,
             "y": 0,
-            "z": 0
+            "z": 0,
+            "visible": false
         },
         {
             "id": "test_shape_model",
@@ -123,9 +124,9 @@
             "normalTexture": "cards_n",
             "occlusionTexture": "cards_o",
             "specularTexture": "cards_s",
-            "x": 0,
-            "y": 5,
-            "z": -5,
+            "x": -5,
+            "y": 2,
+            "z": -1,
             "scale": 5,
             "origin": 0.5
         }

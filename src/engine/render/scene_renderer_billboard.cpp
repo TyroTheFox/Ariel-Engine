@@ -5,6 +5,7 @@ SceneRendererBillboard::SceneRendererBillboard() {
 
     this->billboardShader = shadermanager.getShaderPtr("billboard");
     this->billboardPosition = shadermanager.getShaderPtr("billboard_position");
+    this->billboardNormal = shadermanager.getShaderPtr("billboard_normal");
     this->gBuffer = shadermanager.getShaderPtr("gBuffer");
     this->mixTexture = shadermanager.getShaderPtr("mix_texture");
 
@@ -106,9 +107,11 @@ void SceneRendererBillboard::beginNormalTextureRender(raylib::Camera3D* camera) 
     ::BeginTextureMode(this->normalRenderTexture);
         ::ClearBackground(raylib::Color::Blank());
         camera->BeginMode();
+            this->billboardNormal->shaderInstance.BeginMode();
 }
 
 void SceneRendererBillboard::endNormalTextureRender(raylib::Camera3D* camera) {
+            this->billboardNormal->shaderInstance.EndMode();
         camera->EndMode();
     ::EndTextureMode();
 }
@@ -138,10 +141,10 @@ void SceneRendererBillboard::endSpecularTextureRender(raylib::Camera3D* camera) 
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
     camera->BeginMode();
         this->billboardShader->shaderInstance.BeginMode();
-            // this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
+            this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
-            // this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
-            // this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
+            this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
+            this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {

@@ -23,6 +23,14 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     this->origin = raylib::Vector2(0.5f, 0.5f);
 
     this->camera3D = new raylib::Camera3D();
+
+    ShaderManager shaderManager = ShaderManager();
+
+    this->billboardPosition = shaderManager.getShaderPtr("billboard_position");
+    this->billboardNormal = shaderManager.getShaderPtr("billboard_normal");
+
+    this->matModelLoc_Position = this->billboardPosition->getShaderLocation("modelMatrix");
+    this->matModelLoc_Normal = this->billboardNormal->getShaderLocation("modelMatrix");
 }
 
 BillboardSprite::~BillboardSprite() {
@@ -109,6 +117,47 @@ void BillboardSprite::stopAnimation() {
     this->loopCount = -1;
 }
 
+void BillboardSprite::calculateModelMatrix(Vector3 up, Vector3 right, Vector3 forward, Vector2 calculatedScale) {
+
+    // Vector3 rightScaled = Vector3Scale(right, calculatedScale.x);
+    // Vector3 upScaled = Vector3Scale(up, calculatedScale.y);
+
+    // Vector3 origin3D = Vector3Add(Vector3Scale(Vector3Normalize(rightScaled), origin.x), Vector3Scale(Vector3Normalize(upScaled), origin.y));
+
+    // Vector3 upRight = Vector3Add(up, right);
+
+    Matrix matScale = MatrixScale(this->getScaleX(), this->getScaleY(), this->getScaleZ());
+    Matrix matRotation = MatrixRotate(up, this->rotation*DEG2RAD);
+    Matrix matTranslation = MatrixTranslate(this->getX(), this->getY(), this->getZ());
+
+    this->modelMatrix = MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
+
+    // this->modelMatrix = MatrixIdentity();
+
+    // this->modelMatrix.SetM0(0.0f - origin3D.x + this->getX());
+    // this->modelMatrix.SetM1(0.0f - origin3D.y + this->getY());
+    // this->modelMatrix.SetM2(0.0f - origin3D.z + this->getZ());
+    
+    // this->modelMatrix.SetM4(rightScaled.x - origin3D.x + this->getX());
+    // this->modelMatrix.SetM5(rightScaled.y - origin3D.y + this->getY());
+    // this->modelMatrix.SetM6(rightScaled.z - origin3D.z + this->getZ());
+    
+    // this->modelMatrix.SetM8(upRight.x - origin3D.x + this->getX());
+    // this->modelMatrix.SetM9(upRight.y - origin3D.y + this->getY());
+    // this->modelMatrix.SetM10(upRight.z - origin3D.z + this->getZ());
+    
+    // this->modelMatrix.SetM12(upScaled.x - origin3D.x + this->getX());
+    // this->modelMatrix.SetM13(upScaled.y - origin3D.y + this->getY());
+    // this->modelMatrix.SetM14(upScaled.z - origin3D.z + this->getZ());
+
+    // this->modelMatrix.SetM3(0.0f);
+    // this->modelMatrix.SetM7(0.0f);
+    // this->modelMatrix.SetM11(0.0f);
+    // this->modelMatrix.SetM15(1.0f);
+
+    // if (this->rotation != 0.0) this->modelMatrix.Rotate(forward, this->rotation * DEG2RAD);
+}
+
 void BillboardSprite::update(float dT) {
     if (!this->playing) {
         this->currentFrameID = this->defaultAnimationID;
@@ -150,6 +199,7 @@ void BillboardSprite::render() {
     raylib::Texture2D* atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
     
     switch (this->renderMode) {
+        case POSITION:
         case DEFFUSE:
             atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
             break;
@@ -210,6 +260,16 @@ void BillboardSprite::drawBillboardTexture(raylib::Texture2D* atlasTexture) {
     
     // normalize the up vector so it's unit length
     up = Vector3Normalize(up);
+
+    this->calculateModelMatrix(up, right, forward, calculatedScale);
+
+    if (this->renderMode == POSITION) {
+        this->billboardPosition->setShaderMatrixValue(this->matModelLoc_Position, this->modelMatrix);
+    }
+
+    if (this->renderMode == NORMAL) {
+        this->billboardNormal->setShaderMatrixValue(this->matModelLoc_Normal, this->modelMatrix);
+    }
 
     atlasTexture->DrawBillboard(
         *this->camera3D, 

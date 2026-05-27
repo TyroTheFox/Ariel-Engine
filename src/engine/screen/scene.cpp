@@ -293,7 +293,7 @@ void Scene::onRender() const {
     
     this->sceneRendererBillboard->setUpLights(this->camera3D);
     
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
+    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(POSITION);
     this->sceneRendererBillboard->beginPositionTextureRender(this->camera3D);
     this->signal_render_3D_BILLBOARD.emit();
     this->sceneRendererBillboard->endPositionTextureRender(this->camera3D);

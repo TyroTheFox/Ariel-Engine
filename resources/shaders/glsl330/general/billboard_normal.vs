@@ -11,7 +11,7 @@ out vec3 fragNormal;
 out mat3 TBN;
 
 uniform mat4 mvp;
-uniform mat4 matModel;
+uniform mat4 modelMatrix;
 
 void main()
 {
@@ -19,10 +19,10 @@ void main()
     vec3 vertexBinormal = cross(vertexNormal, vertexTangent.xyz) * vertexTangent.w;
 
     // Compute fragment normal based on normal transformations
-    mat3 normalMatrix = transpose(inverse(mat3(matModel)));
+    mat3 normalMatrix = transpose(inverse(mat3(modelMatrix)));
 
     // Compute fragment position based on model transformations
-    fragPosition = vec3(matModel * vec4(vertexPosition, 1.0));
+    fragPosition = vec3(modelMatrix * vec4(vertexPosition, 1.0));
 
     fragTexCoord = vertexTexCoord * 2.0;
 

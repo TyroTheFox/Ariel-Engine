@@ -11,6 +11,7 @@
 #include <engine/render/shader_objects/shader_manager.h>
 
 enum BILLBOARD_RENDER_MODE {
+    POSITION,
     DEFFUSE,
     NORMAL,
     OCCLUSION,
@@ -34,6 +35,12 @@ private:
 
     RenderingShader* deferredShader;
     RenderingShader* gBufferShader;
+
+    RenderingShader* billboardPosition;
+    RenderingShader* billboardNormal;
+
+    int matModelLoc_Position = -1;
+    int matModelLoc_Normal = -1;
 
     bool playing;
 
@@ -65,6 +72,8 @@ public:
 
     sl::Slot<BILLBOARD_RENDER_MODE> onChangeRenderMode{this, &BillboardSprite::setRenderMode};
 
+    raylib::Matrix modelMatrix;
+
     raylib::Camera3D* camera3D;
 
     raylib::Vector2 origin;
@@ -88,6 +97,8 @@ public:
     void stopAnimation();
 
     void setRenderMode(BILLBOARD_RENDER_MODE mode);
+
+    void calculateModelMatrix(Vector3 up, Vector3 right, Vector3 forward, Vector2 calculatedScale);
 
     void update(float dT) override;
     void render() override;
