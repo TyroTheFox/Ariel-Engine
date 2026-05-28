@@ -46,20 +46,23 @@ private:
 
     int frameSpeedCount; 
     int loopCount;
-    void drawBillboardTexture(raylib::Texture2D* atlasTexture);
-
+    
     int metallicValueLoc = -1;
     int roughnessValueLoc = -1;
     int aoValueLoc = -1;
     int emissiveIntensityLoc = -1;
     int emissiveColorLoc = -1;
     int textureTilingLoc = -1;
-
+    
     float metalness = 0.0f;
     float roughness = 0.5f;
     float occlusion = 0.5f;
     float emissiveIntensity = 0.5f;
     Vector2 tilingVector;
+
+    void drawBillboardTexture(raylib::Texture2D* atlasTexture);
+    void renderBillboardTextureObject(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint);
+    Vector3 calculateNormalFromPoints(Vector3 v0, Vector3 v1, Vector3 v2);
 public:
     // <Animation Name>
     sl::Signal<std::string> animationStarted;

@@ -95,6 +95,7 @@
         },
         {
             "id": "billboard",
+            "vertex": "resources/shaders/glsl%i/general/billboard_rendering.vs",
             "frag": "resources/shaders/glsl%i/general/billboard_rendering.fs",
             "default": false,
             "locations": [

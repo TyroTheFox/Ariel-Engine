@@ -18,7 +18,6 @@ struct Light {
 
 // Input vertex attributes (from vertex shader)
 in vec2 fragTexCoord;
-in vec4 fragColor;
 
 // Input uniform values
 uniform sampler2D texture0;
@@ -40,9 +39,6 @@ uniform vec3 viewPos;
 
 uniform vec3 ambientColor;
 uniform float ambient;
-
-uniform vec2 resolution;
-uniform vec3 falloff;
 
 // Output fragment color
 out vec4 finalColor;
@@ -82,10 +78,10 @@ vec3 calculateRadiance(vec3 fragPosition, vec3 lightPosition, vec4 lightColor, f
 vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, vec3 baseRefl, float roughness, vec3 specular) {
     vec3 lightAccum = vec3(0.0);
     
-    vec3 LightDir = vec3(lights[i].position.xy - (gl_FragCoord.xy / resolution.xy), lights[i].position.z);
-    LightDir.x *= resolution.x / resolution.y;
+    // vec3 LightDir = vec3(lights[i].position.xy - (gl_FragCoord.xy / resolution.xy), lights[i].position.z);
+    // LightDir.x *= resolution.x / resolution.y;
     
-    vec3 L = normalize(LightDir);      // Compute light vector
+    vec3 L = normalize(lights[i].position - fragPosition);      // Compute light vector
     vec3 H = normalize(V + L);                             // Compute halfway bisecting vector
 
     // Cook-Torrance BRDF distribution function
@@ -165,7 +161,7 @@ void main()
 
     // finalColor = vec4(FinalColor, DiffuseColor.a);
 
-    vec3 ambientFinal = DiffuseColor.rbg * ambient;
+    vec3 ambientFinal = (ambientColor + DiffuseColor.rbg) * ambient;
 
     ambientFinal = (ambientFinal + lightAccum * OcclusionMap);
 

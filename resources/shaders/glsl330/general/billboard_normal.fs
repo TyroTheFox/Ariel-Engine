@@ -22,5 +22,5 @@ void main()
     N = normalize(texelColor.rgb * 2.0 - 1.0);
     N = normalize(N * TBN);
 
-    finalColor = vec4(N.x, N.y, N.z, 1.0);
+    finalColor = vec4(N.x, N.y, N.z, texelColor.a);
 }

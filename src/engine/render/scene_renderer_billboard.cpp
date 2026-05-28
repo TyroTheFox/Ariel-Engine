@@ -11,7 +11,7 @@ SceneRendererBillboard::SceneRendererBillboard() {
 
     this->lightList = std::vector<Light>{};
 
-    this->falloff = raylib::Vector3{0.4f, 3.0f, 20.0f};
+    // this->falloff = raylib::Vector3{0.4f, 3.0f, 20.0f};
 
     this->ambientColor = raylib::Color::White();
 
@@ -53,8 +53,8 @@ void SceneRendererBillboard::setUpRenderer() {
     float exposureValue = HDR_EXPOSURE;
     this->billboardShader->setShaderValue(exposureLoc, &exposureValue, SHADER_UNIFORM_FLOAT);
 
-    int falloffLoc = this->billboardShader->getShaderLocation("falloff");
-    this->billboardShader->setShaderValue(falloffLoc, &this->falloff, SHADER_UNIFORM_VEC3);
+    // int falloffLoc = this->billboardShader->getShaderLocation("falloff");
+    // this->billboardShader->setShaderValue(falloffLoc, &this->falloff, SHADER_UNIFORM_VEC3);
 
     int lightCountLoc = GetShaderLocation(this->billboardShader->shaderInstance, "numOfLights");
     int maxLightCount = this->lightList.size();
@@ -145,6 +145,17 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
             this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
+
+            ::DrawTextureRec(
+                this->albedoRenderTexture.texture,
+                Rectangle{ 
+                    0, 0, 
+                    static_cast<float>(this->albedoRenderTexture.texture.width), 
+                    static_cast<float>(-this->albedoRenderTexture.texture.height) 
+                },
+                Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
+                WHITE
+            );
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {

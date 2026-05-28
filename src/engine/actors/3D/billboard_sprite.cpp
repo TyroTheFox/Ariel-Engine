@@ -271,8 +271,20 @@ void BillboardSprite::drawBillboardTexture(raylib::Texture2D* atlasTexture) {
         this->billboardNormal->setShaderMatrixValue(this->matModelLoc_Normal, this->modelMatrix);
     }
 
-    atlasTexture->DrawBillboard(
-        *this->camera3D, 
+    // atlasTexture->DrawBillboard(
+    //     *this->camera3D, 
+    //     frameRect, 
+    //     raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
+    //     up, 
+    //     calculatedScale,
+    //     raylib::Vector2(0.5f, 0.5f),
+    //     this->getRotation() + (isFrameRotated ? 90 : 0),
+    //     raylib::Color::White()
+    // );
+
+    this->renderBillboardTextureObject(
+        *this->camera3D,
+        *atlasTexture, 
         frameRect, 
         raylib::Vector3(this->getX(), this->getY(), this->getZ()), 
         up, 
@@ -281,4 +293,94 @@ void BillboardSprite::drawBillboardTexture(raylib::Texture2D* atlasTexture) {
         this->getRotation() + (isFrameRotated ? 90 : 0),
         raylib::Color::White()
     );
+}
+
+void BillboardSprite::renderBillboardTextureObject(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint) {
+    // Compute the up vector and the right vector
+    Matrix matView = MatrixLookAt(camera.position, camera.target, camera.up);
+    Vector3 right = { matView.m0, matView.m4, matView.m8 };
+    right = Vector3Scale(right, size.x);
+    up = Vector3Scale(up, size.y);
+
+    // Flip the content of the billboard while maintaining the counterclockwise edge rendering order
+    if (size.x < 0.0f)
+    {
+        source.x -= size.x;
+        source.width *= -1.0;
+        right = Vector3Negate(right);
+        origin.x *= -1.0f;
+    }
+    if (size.y < 0.0f)
+    {
+        source.y -= size.y;
+        source.height *= -1.0;
+        up = Vector3Negate(up);
+        origin.y *= -1.0f;
+    }
+
+    // Draw the texture region described by source on the following rectangle in 3D space:
+    //
+    //                size.x          <--.
+    //  3 ^---------------------------+ 2 \ rotation
+    //    |                           |   /
+    //    |                           |
+    //    |   origin.x   position     |
+    // up |..............             | size.y
+    //    |             .             |
+    //    |             . origin.y    |
+    //    |             .             |
+    //  0 +---------------------------> 1
+    //                right
+    Vector3 forward;
+    if (rotation != 0.0) forward = Vector3CrossProduct(right, up);
+
+    Vector3 origin3D = Vector3Add(Vector3Scale(Vector3Normalize(right), origin.x), Vector3Scale(Vector3Normalize(up), origin.y));
+
+    Vector3 points[4];
+    points[0] = Vector3Zero();
+    points[1] = right;
+    points[2] = Vector3Add(up, right);
+    points[3] = up;
+
+    for (int i = 0; i < 4; i++)
+    {
+        points[i] = Vector3Subtract(points[i], origin3D);
+        if (rotation != 0.0) points[i] = Vector3RotateByAxisAngle(points[i], forward, rotation*DEG2RAD);
+        points[i] = Vector3Add(points[i], position);
+    }
+
+    Vector3 normals[4];
+
+    normals[0] = this->calculateNormalFromPoints(points[0], points[1], points[3]);
+    normals[1] = this->calculateNormalFromPoints(points[1], points[2], points[0]);
+    normals[2] = this->calculateNormalFromPoints(points[2], points[3], points[1]);
+    normals[3] = this->calculateNormalFromPoints(points[3], points[0], points[2]);
+
+    Vector2 texcoords[4];
+    texcoords[0] = (Vector2){ (float)source.x/texture.width, (float)(source.y + source.height)/texture.height };
+    texcoords[1] = (Vector2){ (float)(source.x + source.width)/texture.width, (float)(source.y + source.height)/texture.height };
+    texcoords[2] = (Vector2){ (float)(source.x + source.width)/texture.width, (float)source.y/texture.height };
+    texcoords[3] = (Vector2){ (float)source.x/texture.width, (float)source.y/texture.height };
+
+    rlSetTexture(texture.id);
+    rlBegin(RL_QUADS);
+
+        rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+        for (int i = 0; i < 4; i++)
+        {
+            rlTexCoord2f(texcoords[i].x, texcoords[i].y);
+            rlVertex3f(points[i].x, points[i].y, points[i].z);
+            rlNormal3f(normals[i].x, normals[i].y, normals[i].z);
+        }
+
+    rlEnd();
+    rlSetTexture(0);
+}
+
+Vector3 BillboardSprite::calculateNormalFromPoints(Vector3 v0, Vector3 v1, Vector3 v2) {
+    Vector3 edge1 = Vector3Subtract(v1, v0);
+    Vector3 edge2 = Vector3Subtract(v2, v0);
+    Vector3 normal = Vector3Normalize(Vector3CrossProduct(edge1, edge2));
+
+    return normal;
 }
