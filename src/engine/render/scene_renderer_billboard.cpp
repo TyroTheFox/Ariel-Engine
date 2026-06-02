@@ -20,6 +20,8 @@ SceneRendererBillboard::SceneRendererBillboard() {
     this->normalRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->occlusionRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->specularRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    this->finalTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 SceneRendererBillboard::~SceneRendererBillboard() {
@@ -31,6 +33,8 @@ SceneRendererBillboard::~SceneRendererBillboard() {
     UnloadRenderTexture(this->occlusionRenderTexture);
     UnloadRenderTexture(this->specularRenderTexture);
 
+    UnloadRenderTexture(this->finalTexture);
+
     this->lightList.clear();
 }
 
@@ -41,6 +45,7 @@ void SceneRendererBillboard::createNewLight(std::string id, LightType type, rayl
 
 void SceneRendererBillboard::setUpRenderer() {
     this->texPositionLoc = this->billboardShader->getShaderLocation("gPosition");
+    this->texAlbedoLoc = this->billboardNormal->getShaderLocation("gAlbedo");
     this->texNormalLoc = this->billboardShader->getShaderLocation("gNormal");
     this->texOcclusionLoc = this->billboardShader->getShaderLocation("gSpecular");
     this->texSpecularLoc = this->billboardShader->getShaderLocation("gOcclusion");
@@ -139,15 +144,17 @@ void SceneRendererBillboard::endSpecularTextureRender(raylib::Camera3D* camera) 
 }
 
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
+    raylib::Texture2D albedoTexture = raylib::Texture2D(this->albedoRenderTexture.texture);
+    this->finalTexture.BeginMode();
     camera->BeginMode();
         this->billboardShader->shaderInstance.BeginMode();
             this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
+            // this->billboardNormal->setShaderTextureValue(this->texAlbedoLoc, this->albedoRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
 
-            ::DrawTextureRec(
-                this->albedoRenderTexture.texture,
+            albedoTexture.Draw(
                 Rectangle{ 
                     0, 0, 
                     static_cast<float>(this->albedoRenderTexture.texture.width), 
@@ -156,9 +163,49 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
                 Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
                 WHITE
             );
+
+            // ::DrawTextureRec(
+            //     this->albedoRenderTexture.texture,
+            //     Rectangle{ 
+            //         0, 0, 
+            //         static_cast<float>(this->albedoRenderTexture.texture.width), 
+            //         static_cast<float>(-this->albedoRenderTexture.texture.height) 
+            //     },
+            //     Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
+            //     WHITE
+            // );
+
+            // ::rlActiveTextureSlot(this->texPositionLoc);
+            // ::rlEnableTexture(this->positionRenderTexture.GetId());
+
+            // ::rlActiveTextureSlot(this->texAlbedoLoc);
+            // ::rlEnableTexture(this->albedoRenderTexture.GetId());
+
+            // ::rlActiveTextureSlot(this->texNormalLoc);
+            // ::rlEnableTexture(this->normalRenderTexture.GetId());
+
+            // ::rlActiveTextureSlot(this->texOcclusionLoc);
+            // ::rlEnableTexture(this->occlusionRenderTexture.GetId());
+
+            // ::rlActiveTextureSlot(this->texSpecularLoc);
+            // ::rlEnableTexture(this->specularRenderTexture.GetId());
+
+            // ::rlLoadDrawQuad();
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
-        this->billboardShader->shaderInstance.EndMode();
-    camera->EndMode();
+            this->billboardShader->shaderInstance.EndMode();
+        camera->EndMode();
+    this->finalTexture.EndMode();
+
+    ::DrawTextureRec(
+        this->finalTexture.texture,
+        Rectangle{ 
+            0, 0, 
+            static_cast<float>(this->finalTexture.texture.width), 
+            static_cast<float>(-this->finalTexture.texture.height) 
+        },
+        Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
+        WHITE
+    );
 }

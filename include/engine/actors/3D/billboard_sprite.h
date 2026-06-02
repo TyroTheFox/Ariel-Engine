@@ -31,6 +31,11 @@ private:
     std::string defaultAnimationID;
     int currentFrameIndex;
 
+    raylib::Mesh mesh;
+    raylib::Material material;
+    // TODO: Make the Billboard a model instead, with the UVs manipulated to display the current frame.
+    // Use this: https://www.raylib.com/examples/models/loader.html?name=models_textured_cube
+
     SpriteAnimation* currentAnimation;
 
     RenderingShader* deferredShader;
@@ -63,6 +68,7 @@ private:
     void drawBillboardTexture(raylib::Texture2D* atlasTexture);
     void renderBillboardTextureObject(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint);
     Vector3 calculateNormalFromPoints(Vector3 v0, Vector3 v1, Vector3 v2);
+    void generateMesh();
 public:
     // <Animation Name>
     sl::Signal<std::string> animationStarted;

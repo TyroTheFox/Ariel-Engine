@@ -171,5 +171,5 @@ void main()
     // Gamma correction
     ambientFinal = pow(ambientFinal, vec3(1.0 / gamma));
 
-    finalColor = vec4(ambientFinal, 1.0);
+    finalColor = vec4(ambientFinal, Diffuse.a);
 }

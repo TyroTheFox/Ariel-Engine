@@ -35,7 +35,10 @@ public:
     raylib::RenderTexture2D specularRenderTexture;
     raylib::RenderTexture2D occlusionRenderTexture;
 
+    raylib::RenderTexture2D finalTexture;
+
     int texPositionLoc = -1;
+    int texAlbedoLoc = -1;
     int texNormalLoc = -1;
     int texSpecularLoc = -1;
     int texOcclusionLoc = -1;
