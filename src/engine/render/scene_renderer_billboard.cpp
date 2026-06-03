@@ -144,8 +144,9 @@ void SceneRendererBillboard::endSpecularTextureRender(raylib::Camera3D* camera) 
 }
 
 void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
-    raylib::Texture2D albedoTexture = raylib::Texture2D(this->albedoRenderTexture.texture);
-    this->finalTexture.BeginMode();
+    // raylib::Texture2D albedoTexture = raylib::Texture2D(this->albedoRenderTexture.texture);
+    // this->finalTexture.BeginMode();
+    // ::ClearBackground(raylib::Color::Blank());
     camera->BeginMode();
         this->billboardShader->shaderInstance.BeginMode();
             this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
@@ -154,15 +155,15 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
             this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
             this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
 
-            albedoTexture.Draw(
-                Rectangle{ 
-                    0, 0, 
-                    static_cast<float>(this->albedoRenderTexture.texture.width), 
-                    static_cast<float>(-this->albedoRenderTexture.texture.height) 
-                },
-                Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
-                WHITE
-            );
+            // albedoTexture.Draw(
+            //     Rectangle{ 
+            //         0, 0, 
+            //         static_cast<float>(this->albedoRenderTexture.texture.width), 
+            //         static_cast<float>(-this->albedoRenderTexture.texture.height) 
+            //     },
+            //     Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
+            //     WHITE
+            // );
 
             // ::DrawTextureRec(
             //     this->albedoRenderTexture.texture,
@@ -196,16 +197,37 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
             this->billboardShader->shaderInstance.EndMode();
         camera->EndMode();
-    this->finalTexture.EndMode();
+    // this->finalTexture.EndMode();
 
-    ::DrawTextureRec(
-        this->finalTexture.texture,
-        Rectangle{ 
-            0, 0, 
-            static_cast<float>(this->finalTexture.texture.width), 
-            static_cast<float>(-this->finalTexture.texture.height) 
-        },
-        Vector2{ static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) },
-        WHITE
-    );
+    // camera->BeginMode();
+        // ::rlDisableColorBlend();
+        // ::DrawTextureRec(
+        //     this->finalTexture.texture,
+        //     Rectangle{ 
+        //         0, 0, 
+        //         static_cast<float>(this->finalTexture.texture.width), 
+        //         static_cast<float>(-this->finalTexture.texture.height) 
+        //     },
+        //     Vector2{ 0, 0 },
+        //     WHITE
+        // );
+
+        // DrawTexturePro(
+        //     this->finalTexture.texture,
+        //     raylib::Rectangle{ 
+        //         0, 0, 
+        //         static_cast<float>(this->finalTexture.texture.width), 
+        //         static_cast<float>(-this->finalTexture.texture.height) 
+        //     },
+        //     raylib::Rectangle{ 
+        //         0, 0, 
+        //         static_cast<float>(this->finalTexture.texture.width), 
+        //         static_cast<float>(-this->finalTexture.texture.height) 
+        //     },
+        //     raylib::Vector2{ 0, 0 },
+        //     0,
+        //     raylib::Color::White()
+        // );
+        // ::rlEnableColorBlend();
+    // camera->EndMode();
 }

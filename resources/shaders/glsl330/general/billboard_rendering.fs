@@ -78,7 +78,7 @@ vec3 calculateRadiance(vec3 fragPosition, vec3 lightPosition, vec4 lightColor, f
 vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, vec3 baseRefl, float roughness, vec3 specular) {
     vec3 lightAccum = vec3(0.0);
     
-    // vec3 LightDir = vec3(lights[i].position.xy - (gl_FragCoord.xy / resolution.xy), lights[i].position.z);
+    // vec3 LightDir = vec3(lights[i].position.xy - (fragPosition.xy / resolution.xy), lights[i].position.z);
     // LightDir.x *= resolution.x / resolution.y;
     
     vec3 L = normalize(lights[i].position - fragPosition);      // Compute light vector
@@ -102,8 +102,11 @@ vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, 
     vec3 kD = vec3(1.0) - F;
 
     // Mult kD by the inverse of metallnes, only non-metals should have diffuse light
-    kD *= vec3(1.0) - specular;
-    lightAccum = ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * lights[i].enabled; // Angle of light has impact on result
+    kD.x *= 1.0 - specular.r;
+    kD.y *= 1.0 - specular.g;
+    kD.z *= 1.0 - specular.b;
+
+    lightAccum = albedo.rgb* lights[i].enabled; // Angle of light has impact on result
 
     return lightAccum;
 }
@@ -165,11 +168,11 @@ void main()
 
     ambientFinal = (ambientFinal + lightAccum * OcclusionMap);
 
-        // HDR tonemapping
+    // HDR tonemapping
     ambientFinal = vec3(1.0) - exp(-ambientFinal * exposure);
 
     // Gamma correction
     ambientFinal = pow(ambientFinal, vec3(1.0 / gamma));
 
-    finalColor = vec4(ambientFinal, Diffuse.a);
+    finalColor = vec4(ambientFinal, DiffuseColor.a);
 }

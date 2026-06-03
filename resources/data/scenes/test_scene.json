@@ -100,7 +100,8 @@
             "emissionTexture": "old_car_e",
             "x": 0,
             "y": 0,
-            "z": 0
+            "z": 0,
+            "scale": 0.5
         },
         {
             "id": "test_shape_model",

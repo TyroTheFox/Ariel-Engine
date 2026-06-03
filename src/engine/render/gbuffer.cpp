@@ -1,6 +1,7 @@
 #include <engine/render/gbuffer.h>
 
 GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
+    // TODO: Recreate this for Billboards
     this->gBufferData = {0};
     this->gBufferData.framebufferId = ::rlLoadFramebuffer();
     if (this->gBufferData.framebufferId == 0) TraceLog(LOG_WARNING, "Failed to create framebufferId");

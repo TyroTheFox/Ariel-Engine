@@ -31,15 +31,7 @@ private:
     std::string defaultAnimationID;
     int currentFrameIndex;
 
-    raylib::Mesh mesh;
-    raylib::Material material;
-    // TODO: Make the Billboard a model instead, with the UVs manipulated to display the current frame.
-    // Use this: https://www.raylib.com/examples/models/loader.html?name=models_textured_cube
-
     SpriteAnimation* currentAnimation;
-
-    RenderingShader* deferredShader;
-    RenderingShader* gBufferShader;
 
     RenderingShader* billboardPosition;
     RenderingShader* billboardNormal;
