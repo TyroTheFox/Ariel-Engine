@@ -297,10 +297,10 @@ void Scene::onRender() const {
     this->signal_render_3D_BILLBOARD.emit();
     this->sceneRendererBillboard->endPositionTextureRender(this->camera3D);
 
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
+    // this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
+    // this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
 
     this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
     this->sceneRendererBillboard->beginNormalTextureRender(this->camera3D);

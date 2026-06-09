@@ -36,8 +36,12 @@ private:
     RenderingShader* billboardPosition;
     RenderingShader* billboardNormal;
 
+    RenderingShader* billboardGbuffer;
+
     int matModelLoc_Position = -1;
     int matModelLoc_Normal = -1;
+
+    int matModelLoc_gBuffer = -1;
 
     bool playing;
 
@@ -61,6 +65,7 @@ private:
     void renderBillboardTextureObject(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint);
     Vector3 calculateNormalFromPoints(Vector3 v0, Vector3 v1, Vector3 v2);
     void generateMesh();
+    void setUseOfTexture(std::string uniformName, int useInt);
 public:
     // <Animation Name>
     sl::Signal<std::string> animationStarted;

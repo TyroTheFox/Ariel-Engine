@@ -20,7 +20,7 @@ struct Light {
 in vec2 fragTexCoord;
 
 // Input uniform values
-uniform sampler2D texture0;
+uniform sampler2D gAlbedo;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gOcclusion;
@@ -113,7 +113,7 @@ vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, 
 
 void main()
 {
-    vec4 DiffuseColor = texture(texture0, fragTexCoord);
+    vec4 DiffuseColor = texture(gAlbedo, fragTexCoord);
     if (DiffuseColor.a == 0.0) discard;
 
     vec3 PositionMap = texture2D(gPosition, fragTexCoord).rgb;

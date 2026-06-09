@@ -1,5 +1,7 @@
 #version 330
 
+layout (location = 0) out vec3 gPosition;
+
 // Input vertex attributes (from vertex shader)
 in vec3 fragPosition;
 in vec2 fragTexCoord;
@@ -17,5 +19,7 @@ void main()
     vec4 texelColor = texture(texture0, fragTexCoord);
     if (texelColor.a == 0.0) discard;
 
-    finalColor = vec4(fragPosition.x, fragPosition.y, fragPosition.z, 1.0);
+    gPosition = fragPosition;
+
+    finalColor = texelColor;
 }
