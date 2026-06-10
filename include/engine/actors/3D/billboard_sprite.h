@@ -42,6 +42,10 @@ private:
     int matModelLoc_Normal = -1;
 
     int matModelLoc_gBuffer = -1;
+    int defuseLoc = -1;
+    int normalLoc = -1;
+    int occlusionLoc = -1;
+    int specularLoc = -1;
 
     bool playing;
 

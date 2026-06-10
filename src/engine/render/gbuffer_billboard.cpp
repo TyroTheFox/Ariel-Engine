@@ -108,7 +108,7 @@ void GraphicsBufferBillboard::bindOcclusionTexture() {
 
 void GraphicsBufferBillboard::bindSpecularTexture() {
     ::rlActiveTextureSlot(this->texUnitSpecular);
-    ::rlEnableTexture(this->gBufferData.occlusionTextureId);
+    ::rlEnableTexture(this->gBufferData.specularTextureId);
 }
 
 void GraphicsBufferBillboard::blitBuffer() {

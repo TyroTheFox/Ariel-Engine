@@ -25,7 +25,7 @@ typedef struct GBufferBillboardData {
     unsigned int specularTextureId;
 
     unsigned int depthRenderbufferId;
-} GBufferData;
+} GBufferBillboardData;
 
 class GraphicsBufferBillboard {
     private:

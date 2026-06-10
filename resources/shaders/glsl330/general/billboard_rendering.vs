@@ -5,8 +5,6 @@ layout (location = 1) in vec2 vertexTexCoord;
 
 out vec2 fragTexCoord;
 
-uniform mat4 mvp;
-
 void main()
 {
     gl_Position = vec4(vertexPosition, 1.0);

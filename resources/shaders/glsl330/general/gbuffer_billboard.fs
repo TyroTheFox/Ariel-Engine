@@ -12,8 +12,8 @@ in vec3 fragNormal;
 in mat3 TBN;
 
 uniform sampler2D albedoMap;
-uniform sampler2D normalMap;
 uniform sampler2D specularMap;
+uniform sampler2D normalMap;
 uniform sampler2D occlusionMap;
 
 uniform int useTexAlbedo;
@@ -33,7 +33,7 @@ vec3 calculateAlbedo() {
     return albedo;
 }
 
-vec4 calculateSpecular() {
+vec3 calculateSpecular() {
     return texture(specularMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
 }
 

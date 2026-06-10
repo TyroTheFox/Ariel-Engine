@@ -292,40 +292,40 @@ void Scene::onRender() const {
     
     this->sceneRendererBillboard->setUpLights(this->camera3D);
     
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(POSITION);
-    this->sceneRendererBillboard->beginPositionTextureRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endPositionTextureRender(this->camera3D);
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(POSITION);
+    // this->sceneRendererBillboard->beginPositionTextureRender(this->camera3D);
+    // this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endPositionTextureRender(this->camera3D);
 
     // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
     // this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
     // this->signal_render_3D_BILLBOARD.emit();
     // this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
 
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
-    this->sceneRendererBillboard->beginNormalTextureRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endNormalTextureRender(this->camera3D);
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
+    // this->sceneRendererBillboard->beginNormalTextureRender(this->camera3D);
+    // this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endNormalTextureRender(this->camera3D);
 
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(OCCLUSION);
-    this->sceneRendererBillboard->beginOcclusionTextureRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endOcclusionTextureRender(this->camera3D);
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(OCCLUSION);
+    // this->sceneRendererBillboard->beginOcclusionTextureRender(this->camera3D);
+    // this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endOcclusionTextureRender(this->camera3D);
 
-        this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(SPECULAR);
-    this->sceneRendererBillboard->beginSpecularTextureRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endSpecularTextureRender(this->camera3D);
+    //     this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(SPECULAR);
+    // this->sceneRendererBillboard->beginSpecularTextureRender(this->camera3D);
+    // this->signal_render_3D_BILLBOARD.emit();
+    // this->sceneRendererBillboard->endSpecularTextureRender(this->camera3D);
 
-    this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    this->sceneRendererBillboard->beginRender(this->camera3D);
-    this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endRender(this->camera3D);
-
+    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
     // this->sceneRendererBillboard->beginRender(this->camera3D);
-    //     this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    //     this->signal_render_3D_BILLBOARD.emit();
+    // this->signal_render_3D_BILLBOARD.emit();
     // this->sceneRendererBillboard->endRender(this->camera3D);
+
+    this->sceneRendererBillboard->beginRender(this->camera3D);
+        this->signal_render_3D_BILLBOARD.emit();
+    this->sceneRendererBillboard->endRender(this->camera3D);
+    this->sceneRendererBillboard->processRender(this->camera3D);
 
     this->camera3D->BeginMode();
         this->signal_render_3D_OVER.emit();

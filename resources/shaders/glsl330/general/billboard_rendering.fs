@@ -20,9 +20,9 @@ struct Light {
 in vec2 fragTexCoord;
 
 // Input uniform values
-uniform sampler2D gAlbedo;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
+uniform sampler2D gAlbedo;
 uniform sampler2D gOcclusion;
 uniform sampler2D gSpecular;
 uniform vec4 colDiffuse;

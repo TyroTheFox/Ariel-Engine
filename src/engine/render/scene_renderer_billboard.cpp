@@ -6,15 +6,17 @@ SceneRendererBillboard::SceneRendererBillboard() {
     this->billboardShader = shadermanager.getShaderPtr("billboard");
     this->billboardPosition = shadermanager.getShaderPtr("billboard_position");
     this->billboardNormal = shadermanager.getShaderPtr("billboard_normal");
-    this->gBuffer = shadermanager.getShaderPtr("gBuffer");
+    this->gBuffer = shadermanager.getShaderPtr("gbuffer_billboard");
     this->mixTexture = shadermanager.getShaderPtr("mix_texture");
-
+    
     this->lightList = std::vector<Light>{};
-
+    
     // this->falloff = raylib::Vector3{0.4f, 3.0f, 20.0f};
-
+    
     this->ambientColor = raylib::Color::White();
 
+    this->gBufferBillboard = new GraphicsBufferBillboard(this->billboardShader);
+    
     this->positionRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->albedoRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
     this->normalRenderTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -25,6 +27,9 @@ SceneRendererBillboard::SceneRendererBillboard() {
 }
 
 SceneRendererBillboard::~SceneRendererBillboard() {
+    this->gBufferBillboard->readyForDrawing();
+    this->gBufferBillboard->endBufferDrawing();
+
     delete this->billboardShader;
 
     UnloadRenderTexture(this->positionRenderTexture);
@@ -44,11 +49,11 @@ void SceneRendererBillboard::createNewLight(std::string id, LightType type, rayl
 }
 
 void SceneRendererBillboard::setUpRenderer() {
-    this->texPositionLoc = this->billboardShader->getShaderLocation("gPosition");
-    this->texAlbedoLoc = this->billboardNormal->getShaderLocation("gAlbedo");
-    this->texNormalLoc = this->billboardShader->getShaderLocation("gNormal");
-    this->texOcclusionLoc = this->billboardShader->getShaderLocation("gSpecular");
-    this->texSpecularLoc = this->billboardShader->getShaderLocation("gOcclusion");
+    // this->texPositionLoc = this->billboardShader->getShaderLocation("gPosition");
+    // this->texAlbedoLoc = this->billboardNormal->getShaderLocation("gAlbedo");
+    // this->texNormalLoc = this->billboardShader->getShaderLocation("gNormal");
+    // this->texOcclusionLoc = this->billboardShader->getShaderLocation("gSpecular");
+    // this->texSpecularLoc = this->billboardShader->getShaderLocation("gOcclusion");
 
     int gammaLoc = this->billboardShader->getShaderLocation("gamma");
     float gammaValue = GAMMA;
@@ -73,6 +78,11 @@ void SceneRendererBillboard::setUpRenderer() {
     this->billboardShader->setShaderValue("ambientColor", &ambientColorNormalized, SHADER_UNIFORM_VEC3);
     this->billboardShader->setShaderValue("ambient", &ambientIntensity, SHADER_UNIFORM_FLOAT);
     this->billboardShader->setShaderValue("resolution", &screenResolution, SHADER_UNIFORM_VEC2);
+
+    ::rlEnableDepthTest();
+
+    this->gBufferBillboard->readyForDrawing();
+    this->gBufferBillboard->endBufferDrawing();
 }
 
 void SceneRendererBillboard::setUpLights(raylib::Camera3D* camera) {
@@ -148,12 +158,13 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
     // this->finalTexture.BeginMode();
     // ::ClearBackground(raylib::Color::Blank());
     camera->BeginMode();
-        this->billboardShader->shaderInstance.BeginMode();
-            this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
-            // this->billboardNormal->setShaderTextureValue(this->texAlbedoLoc, this->albedoRenderTexture.GetTexture());
-            this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
-            this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
-            this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
+        this->gBuffer->enableShader();
+            this->gBufferBillboard->readyForDrawing();
+            // this->billboardShader->setShaderTextureValue(this->texPositionLoc, this->positionRenderTexture.GetTexture());
+            // // this->billboardNormal->setShaderTextureValue(this->texAlbedoLoc, this->albedoRenderTexture.GetTexture());
+            // this->billboardShader->setShaderTextureValue(this->texNormalLoc, this->normalRenderTexture.GetTexture());
+            // this->billboardShader->setShaderTextureValue(this->texOcclusionLoc, this->occlusionRenderTexture.GetTexture());
+            // this->billboardShader->setShaderTextureValue(this->texSpecularLoc, this->specularRenderTexture.GetTexture());
 
             // albedoTexture.Draw(
             //     Rectangle{ 
@@ -195,8 +206,8 @@ void SceneRendererBillboard::beginRender(raylib::Camera3D* camera) {
 }
 
 void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
-            this->billboardShader->shaderInstance.EndMode();
-        camera->EndMode();
+        this->gBuffer->disableShader();
+    camera->EndMode();
     // this->finalTexture.EndMode();
 
     // camera->BeginMode();
@@ -230,4 +241,25 @@ void SceneRendererBillboard::endRender(raylib::Camera3D* camera) {
         // );
         // ::rlEnableColorBlend();
     // camera->EndMode();
+}
+
+void SceneRendererBillboard::processRender(raylib::Camera3D* camera) {
+    this->gBufferBillboard->enableColorBlending();
+    
+    this->gBufferBillboard->endBufferDrawing();
+
+    camera->BeginMode();
+        this->gBufferBillboard->disableColorBlending();
+            this->billboardShader->rlEnableShader();
+                this->gBufferBillboard->bindPositionTexture();
+                this->gBufferBillboard->bindNormalTexture();
+                this->gBufferBillboard->bindAlbedoTexture();
+                this->gBufferBillboard->bindOcclusionTexture();
+                this->gBufferBillboard->bindSpecularTexture();
+                ::rlLoadDrawQuad();
+            this->billboardShader->rlDisableShader();
+        this->gBufferBillboard->enableColorBlending();
+    camera->EndMode();
+
+    this->gBufferBillboard->blitBuffer();
 }

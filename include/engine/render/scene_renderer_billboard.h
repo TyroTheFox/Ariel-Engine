@@ -16,12 +16,15 @@
 #include "engine/data/light.h"
 
 #include <engine/render/shader_objects/shader_manager.h>
+#include <engine/render/gbuffer_billboard.h>
 
 class SceneRendererBillboard {
 private:
     std::vector<Light> lightList;
 public:
     raylib::Color ambientColor;
+
+    GraphicsBufferBillboard* gBufferBillboard;
 
     RenderingShader* billboardShader;
     RenderingShader* billboardPosition;
@@ -71,6 +74,8 @@ public:
     void beginRender(raylib::Camera3D* camera);
 
     void endRender(raylib::Camera3D* camera);
+
+    void processRender(raylib::Camera3D* camera);
 };
 
 #endif
