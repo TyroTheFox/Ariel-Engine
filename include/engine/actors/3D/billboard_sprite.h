@@ -59,7 +59,7 @@ private:
     int emissiveColorLoc = -1;
     int textureTilingLoc = -1;
     
-    float metalness = 0.0f;
+    float metalness = 0.1f;
     float roughness = 0.5f;
     float occlusion = 0.5f;
     float emissiveIntensity = 0.5f;

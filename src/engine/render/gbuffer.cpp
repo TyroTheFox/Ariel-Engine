@@ -1,6 +1,6 @@
 #include <engine/render/gbuffer.h>
 
-GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
+GraphicsBuffer::GraphicsBuffer() {
     // TODO: Recreate this for Billboards
     this->gBufferData = {0};
     this->gBufferData.framebufferId = ::rlLoadFramebuffer();
@@ -37,20 +37,6 @@ GraphicsBuffer::GraphicsBuffer(RenderingShader* deferredShader) {
     } else { 
         TraceLog(LOG_WARNING, "Framebuffer is NOT complete");
     }
-
-    deferredShader->enableShader();
-        int gPosition = rlGetLocationUniform(deferredShader->getID(), "gPosition");
-        int gNormal = rlGetLocationUniform(deferredShader->getID(), "gNormal");
-        int gAlbedo = rlGetLocationUniform(deferredShader->getID(), "gAlbedo");
-        int gEmissive = rlGetLocationUniform(deferredShader->getID(), "gEmissive");
-        int gMRA = rlGetLocationUniform(deferredShader->getID(), "gMRA");
-        
-        deferredShader->setShaderValue(gPosition, &this->texUnitPosition, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(gNormal, &this->texUnitNormal, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(gAlbedo, &this->texUnitAlbedo, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(gEmissive, &this->texUnitEmissive, RL_SHADER_UNIFORM_SAMPLER2D);
-        deferredShader->setShaderValue(gMRA, &this->texUnitMRA, RL_SHADER_UNIFORM_SAMPLER2D);
-    deferredShader->disableShader();
 }
 
 GraphicsBuffer::~GraphicsBuffer()
@@ -63,6 +49,9 @@ GraphicsBuffer::~GraphicsBuffer()
     ::rlUnloadTexture(this->gBufferData.emissiveTextureId);
     ::rlUnloadTexture(this->gBufferData.MRATextureID);
 
+    ::rlUnloadTexture(this->gBufferData.occlusionTextureId);
+    ::rlUnloadTexture(this->gBufferData.specularTextureId);
+
     ::rlUnloadTexture(this->gBufferData.depthRenderbufferId);
 }
 
@@ -70,7 +59,6 @@ void GraphicsBuffer::readyForDrawing() {
     ::rlEnableFramebuffer(this->gBufferData.framebufferId);
     ::rlClearColor(0, 0, 0, 0);
     ::rlClearScreenBuffers();  // Clear color and depth buffer
-    ::rlDisableColorBlend();
 }
 
 void GraphicsBuffer::enableColorBlending() {

@@ -37,7 +37,7 @@ private:
     int attenuationLoc;
     int intensityLoc;
 public:
-    Light(std::string id, int type, int lightsCount, raylib::Vector3 position, raylib::Vector3 target, float intensity, raylib::Color color, raylib::Shader* shader);
+    Light(std::string id, int type, int lightsCount, raylib::Vector3 position, raylib::Vector3 target, float intensity, raylib::Color color);
     ~Light();
 
     raylib::Color getColor();

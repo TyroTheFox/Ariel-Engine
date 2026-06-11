@@ -24,20 +24,27 @@ typedef struct GBufferData {
     unsigned int emissiveTextureId;
     unsigned int MRATextureID;
 
+    unsigned int occlusionTextureId;
+    unsigned int specularTextureId;
+
     unsigned int depthRenderbufferId;
 } GBufferData;
 
 class GraphicsBuffer {
     private:
+    public:
         int texUnitPosition = 0;
         int texUnitNormal = 1;
         int texUnitAlbedo = 2;
         int texUnitEmissive = 3;
         int texUnitMRA = 4;
-    public:
+
+        // int texUnitOcclusion = 5;
+        // int texUnitSpecular = 6;
+
         GBufferData gBufferData;
 
-        GraphicsBuffer(RenderingShader* deferredShader);
+        GraphicsBuffer();
         ~GraphicsBuffer();
 
         void readyForDrawing();
@@ -50,6 +57,8 @@ class GraphicsBuffer {
         void bindAlbedoTexture();
         void bindEmissiveTexture();
         void bindMRATexture();
+        // void bindOcclusionTexture();
+        // void bindSpecularTexture();
 
         void blitBuffer();
 

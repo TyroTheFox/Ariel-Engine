@@ -8,7 +8,6 @@ Scene::Scene() {
     this->setUpCameras();
 
     this->sceneRenderer3D = new SceneRenderer3D();
-    this->sceneRendererBillboard = new SceneRendererBillboard();
 }
 
 Scene::Scene(std::string name, json sceneData) {
@@ -34,7 +33,6 @@ Scene::Scene(std::string name, json sceneData) {
     }
 
     this->sceneRenderer3D = new SceneRenderer3D();
-    this->sceneRendererBillboard = new SceneRendererBillboard();
 
     if (sceneData.contains("lights")) {
         json lightData = sceneData.at("lights");
@@ -101,20 +99,10 @@ Scene::Scene(std::string name, json sceneData) {
                 lightIntensity,
                 lightColor
             );
-
-            this->sceneRendererBillboard->createNewLight(
-                lightId,
-                lightType == "Directional" ? LIGHT_DIRECTIONAL : LIGHT_POINT,
-                lightPosition,
-                lightTarget,
-                lightIntensity,
-                lightColor
-            );
         }
     }
 
     this->sceneRenderer3D->setUpRenderer();
-    this->sceneRendererBillboard->setUpRenderer();
 }
 
 Scene::~Scene() {}
@@ -280,52 +268,18 @@ void Scene::onUpdate(float dT) const {
 }
 
 void Scene::onRender() const {
-    this->sceneRenderer3D->beginRender(this->camera3D);
+    this->sceneRenderer3D->setUpLighting(this->camera3D);
+
+    this->sceneRenderer3D->beginRenderModel(this->camera3D);
+        this->sceneRenderer3D->readyBufferForDrawing();
         this->signal_render_3D.emit();
-    this->sceneRenderer3D->endRender(this->camera3D);
-    this->sceneRenderer3D->processRender(this->camera3D);
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    // this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
+    this->sceneRenderer3D->endRenderModel(this->camera3D);
     
-    this->sceneRendererBillboard->setUpLights(this->camera3D);
-    
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(POSITION);
-    // this->sceneRendererBillboard->beginPositionTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endPositionTextureRender(this->camera3D);
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    // this->sceneRendererBillboard->beginAlbedoTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endAlbedoTextureRender(this->camera3D);
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(NORMAL);
-    // this->sceneRendererBillboard->beginNormalTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endNormalTextureRender(this->camera3D);
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(OCCLUSION);
-    // this->sceneRendererBillboard->beginOcclusionTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endOcclusionTextureRender(this->camera3D);
-
-    //     this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(SPECULAR);
-    // this->sceneRendererBillboard->beginSpecularTextureRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endSpecularTextureRender(this->camera3D);
-
-    // this->signal_set_3D_BILLBOARD_RENDER_MODE.emit(DEFFUSE);
-    // this->sceneRendererBillboard->beginRender(this->camera3D);
-    // this->signal_render_3D_BILLBOARD.emit();
-    // this->sceneRendererBillboard->endRender(this->camera3D);
-
-    this->sceneRendererBillboard->beginRender(this->camera3D);
+    this->sceneRenderer3D->beginRenderBillboard(this->camera3D);
         this->signal_render_3D_BILLBOARD.emit();
-    this->sceneRendererBillboard->endRender(this->camera3D);
-    this->sceneRendererBillboard->processRender(this->camera3D);
+    this->sceneRenderer3D->endRenderBillboard(this->camera3D);
+
+    this->sceneRenderer3D->processRender(this->camera3D);
 
     this->camera3D->BeginMode();
         this->signal_render_3D_OVER.emit();

@@ -122,32 +122,6 @@
             ]
         },
         {
-            "id": "billboard",
-            "vertex": "resources/shaders/glsl%i/general/billboard_rendering.vs",
-            "frag": "resources/shaders/glsl%i/general/billboard_rendering.fs",
-            "default": false,
-            "locations": [
-                {
-                    "index": "SHADER_LOC_VECTOR_VIEW",
-                    "uniformName": "viewPos"
-                }
-            ]
-        },
-        {
-            "id": "billboard_position",
-            "vertex": "resources/shaders/glsl%i/general/billboard_position.vs",
-            "frag": "resources/shaders/glsl%i/general/billboard_position.fs",
-            "default": false,
-            "locations": []
-        },
-        {
-            "id": "billboard_normal",
-            "vertex": "resources/shaders/glsl%i/general/billboard_normal.vs",
-            "frag": "resources/shaders/glsl%i/general/billboard_normal.fs",
-            "default": false,
-            "locations": []
-        },
-        {
             "id": "bloom",
             "frag": "resources/shaders/glsl%i/post_processing/bloom.fs",
             "default": false,

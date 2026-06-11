@@ -26,13 +26,7 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
 
     ShaderManager shaderManager = ShaderManager();
 
-    this->billboardPosition = shaderManager.getShaderPtr("billboard_position");
-    this->billboardNormal = shaderManager.getShaderPtr("billboard_normal");
-
     this->billboardGbuffer = shaderManager.getShaderPtr("gbuffer_billboard");
-
-    this->matModelLoc_Position = this->billboardPosition->getShaderLocation("modelMatrix");
-    this->matModelLoc_Normal = this->billboardNormal->getShaderLocation("modelMatrix");
 
     this->matModelLoc_gBuffer = this->billboardGbuffer->getShaderLocation("modelMatrix");
 
@@ -45,8 +39,6 @@ BillboardSprite::BillboardSprite(std::string id, TextureAtlas* textureAtlas, std
     this->normalLoc = this->billboardGbuffer->getShaderLocation("normalMap");
     this->specularLoc = this->billboardGbuffer->getShaderLocation("specularMap");
     this->occlusionLoc = this->billboardGbuffer->getShaderLocation("occlusionMap");
-
-    // this->billboardGbuffer->setShaderTextureValue(this->defuseLoc, *this->textureAtlas_Deffuse->getAtlasTexture());
 }
 
 BillboardSprite::~BillboardSprite() {
@@ -65,8 +57,6 @@ void BillboardSprite::setDeffuseTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Deffuse->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->setUseOfTexture("useTexAlbedo", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->defuseLoc, *this->textureAtlas_Deffuse->getAtlasTexture());
 }
 
 void BillboardSprite::setNormalTexture(raylib::Texture2D* texturePtr) {
@@ -75,8 +65,6 @@ void BillboardSprite::setNormalTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Normal->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->setUseOfTexture("useTexNormal", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->normalLoc, *this->textureAtlas_Normal->getAtlasTexture());
 }
 
 void BillboardSprite::setOcclusionTexture(raylib::Texture2D* texturePtr) {
@@ -85,8 +73,6 @@ void BillboardSprite::setOcclusionTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Occlusion->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->setUseOfTexture("useTexOcclusion", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->occlusionLoc, *this->textureAtlas_Occlusion->getAtlasTexture());
 }
 
 void BillboardSprite::setSpecularTexture(raylib::Texture2D* texturePtr) {
@@ -95,40 +81,30 @@ void BillboardSprite::setSpecularTexture(raylib::Texture2D* texturePtr) {
     this->textureAtlas_Specular->addFrame("default", raylib::Rectangle(0, 0, textureDimentions.x, textureDimentions.y));
 
     this->setUseOfTexture("useTexSpecular", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->specularLoc, *this->textureAtlas_Specular->getAtlasTexture());
 }
 
 void BillboardSprite::setDeffuseTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Deffuse = textureAtlas;
 
     this->setUseOfTexture("useTexAlbedo", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->defuseLoc, *this->textureAtlas_Deffuse->getAtlasTexture());
 }
 
 void BillboardSprite::setNormalTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Normal = textureAtlas;
 
     this->setUseOfTexture("useTexNormal", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->normalLoc, *this->textureAtlas_Normal->getAtlasTexture());
 }
 
 void BillboardSprite::setOcclusionTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Occlusion = textureAtlas;
 
     this->setUseOfTexture("useTexOcclusion", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->occlusionLoc, *this->textureAtlas_Occlusion->getAtlasTexture());
 }
 
 void BillboardSprite::setSpecularTexture(TextureAtlas* textureAtlas) {
     this->textureAtlas_Specular = textureAtlas;
 
     this->setUseOfTexture("useTexSpecular", 1);
-
-    // this->billboardGbuffer->setShaderTextureValue(this->specularLoc, *this->textureAtlas_Specular->getAtlasTexture());
 }
 
 void BillboardSprite::setUseOfTexture(std::string uniformName, int useInt) {
@@ -170,44 +146,11 @@ void BillboardSprite::stopAnimation() {
 }
 
 void BillboardSprite::calculateModelMatrix(Vector3 up, Vector3 right, Vector3 forward, Vector2 calculatedScale) {
-
-    // Vector3 rightScaled = Vector3Scale(right, calculatedScale.x);
-    // Vector3 upScaled = Vector3Scale(up, calculatedScale.y);
-
-    // Vector3 origin3D = Vector3Add(Vector3Scale(Vector3Normalize(rightScaled), origin.x), Vector3Scale(Vector3Normalize(upScaled), origin.y));
-
-    // Vector3 upRight = Vector3Add(up, right);
-
     Matrix matScale = MatrixScale(this->getScaleX(), this->getScaleY(), this->getScaleZ());
     Matrix matRotation = MatrixRotate(up, this->rotation*DEG2RAD);
     Matrix matTranslation = MatrixTranslate(this->getX(), this->getY(), this->getZ());
 
     this->modelMatrix = MatrixMultiply(MatrixMultiply(matScale, matRotation), matTranslation);
-
-    // this->modelMatrix = MatrixIdentity();
-
-    // this->modelMatrix.SetM0(0.0f - origin3D.x + this->getX());
-    // this->modelMatrix.SetM1(0.0f - origin3D.y + this->getY());
-    // this->modelMatrix.SetM2(0.0f - origin3D.z + this->getZ());
-
-    // this->modelMatrix.SetM4(rightScaled.x - origin3D.x + this->getX());
-    // this->modelMatrix.SetM5(rightScaled.y - origin3D.y + this->getY());
-    // this->modelMatrix.SetM6(rightScaled.z - origin3D.z + this->getZ());
-
-    // this->modelMatrix.SetM8(upRight.x - origin3D.x + this->getX());
-    // this->modelMatrix.SetM9(upRight.y - origin3D.y + this->getY());
-    // this->modelMatrix.SetM10(upRight.z - origin3D.z + this->getZ());
-
-    // this->modelMatrix.SetM12(upScaled.x - origin3D.x + this->getX());
-    // this->modelMatrix.SetM13(upScaled.y - origin3D.y + this->getY());
-    // this->modelMatrix.SetM14(upScaled.z - origin3D.z + this->getZ());
-
-    // this->modelMatrix.SetM3(0.0f);
-    // this->modelMatrix.SetM7(0.0f);
-    // this->modelMatrix.SetM11(0.0f);
-    // this->modelMatrix.SetM15(1.0f);
-
-    // if (this->rotation != 0.0) this->modelMatrix.Rotate(forward, this->rotation * DEG2RAD);
 }
 
 void BillboardSprite::update(float dT) {
@@ -250,28 +193,18 @@ void BillboardSprite::render() {
 
     raylib::Texture2D* atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
 
-    // switch (this->renderMode) {
-    //     case POSITION:
-    //     case DEFFUSE:
-    //         atlasTexture = this->textureAtlas_Deffuse->getAtlasTexture();
-    //         break;
-
-    //     case NORMAL:
-    //         atlasTexture = this->textureAtlas_Normal->getAtlasTexture();
-    //         break;
-
-    //     case OCCLUSION:
-    //         atlasTexture = this->textureAtlas_Occlusion->getAtlasTexture();
-    //         break;
-
-    //     case SPECULAR:
-    //         atlasTexture = this->textureAtlas_Specular->getAtlasTexture();
-    //         break;
-    // }
-
     this->calculateRenderedPosition();
 
     if (atlasTexture->IsValid() && this->currentFrameID != "") {
+        int emissiveIntensityLoc = this->billboardGbuffer->getShaderLocation("emissivePower");
+        int metallicValueLoc = this->billboardGbuffer->getShaderLocation("metallicValue");
+        int roughnessValueLoc = this->billboardGbuffer->getShaderLocation("roughnessValue");
+        int aoValueLoc = this->billboardGbuffer->getShaderLocation("aoValue");
+
+        this->billboardGbuffer->setShaderValue(metallicValueLoc, &this->metalness, SHADER_UNIFORM_FLOAT);
+        this->billboardGbuffer->setShaderValue(roughnessValueLoc, &this->roughness, SHADER_UNIFORM_FLOAT);
+        this->billboardGbuffer->setShaderValue(aoValueLoc, &this->occlusion, SHADER_UNIFORM_FLOAT);
+
         this->drawBillboardTexture(atlasTexture);
     }
 }
@@ -315,26 +248,7 @@ void BillboardSprite::drawBillboardTexture(raylib::Texture2D* atlasTexture) {
 
     this->calculateModelMatrix(up, right, forward, calculatedScale);
 
-    // if (this->renderMode == POSITION) {
-    //     this->billboardPosition->setShaderMatrixValue(this->matModelLoc_Position, this->modelMatrix);
-    // }
-
-    // if (this->renderMode == NORMAL) {
-    //     this->billboardNormal->setShaderMatrixValue(this->matModelLoc_Normal, this->modelMatrix);
-    // }
-
     this->billboardGbuffer->setShaderMatrixValue(this->matModelLoc_gBuffer, this->modelMatrix);
-
-    // atlasTexture->DrawBillboard(
-    //     *this->camera3D,
-    //     frameRect,
-    //     raylib::Vector3(this->getX(), this->getY(), this->getZ()),
-    //     up,
-    //     calculatedScale,
-    //     raylib::Vector2(0.5f, 0.5f),
-    //     this->getRotation() + (isFrameRotated ? 90 : 0),
-    //     raylib::Color::White()
-    // );
 
     this->renderBillboardTextureObject(
         *this->camera3D,

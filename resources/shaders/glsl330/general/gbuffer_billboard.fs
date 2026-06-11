@@ -3,8 +3,8 @@
 layout (location = 0) out vec3 gPosition;
 layout (location = 1) out vec3 gNormal;
 layout (location = 2) out vec3 gAlbedo;
-layout (location = 3) out vec3 gOcclusion;
-layout (location = 4) out vec3 gSpecular;
+layout (location = 3) out vec3 gEmissive;
+layout (location = 4) out vec3 gMRA;
 
 in vec3 fragPosition;
 in vec2 fragTexCoord;
@@ -26,15 +26,21 @@ uniform int useTexOcclusion;
 
 uniform vec4 albedoColor;
 
-vec3 calculateAlbedo() {
-    vec3 albedo = texture(albedoMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
-    albedo = vec3(albedoColor.x * albedo.x, albedoColor.y * albedo.y, albedoColor.z * albedo.z);
+uniform float specularValue;
+uniform float roughnessValue;
+uniform float aoValue;
+uniform float emissivePower;
 
-    return albedo;
+vec3 calculateAlbedo() {
+    vec4 albedo = texture(albedoMap, vec2(fragTexCoord.x, fragTexCoord.y));
+    if (albedo.a == 0.0) discard;
+    vec3 albedoRGB = vec3(albedoColor.x * albedo.x, albedoColor.y * albedo.y, albedoColor.z * albedo.z);
+
+    return albedoRGB;
 }
 
-vec3 calculateSpecular() {
-    return texture(specularMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
+vec4 calculateSpecular() {
+    return texture(specularMap, vec2(fragTexCoord.x, fragTexCoord.y));
 }
 
 vec3 calculateNormal() {
@@ -45,8 +51,8 @@ vec3 calculateNormal() {
     return N;
 }
 
-vec3 calculateOcclusion() {
-    return texture(occlusionMap, vec2(fragTexCoord.x, fragTexCoord.y)).rgb;
+vec4 calculateOcclusion() {
+    return texture(occlusionMap, vec2(fragTexCoord.x, fragTexCoord.y));
 }
 
 void main()
@@ -60,9 +66,9 @@ void main()
     // and the diffuse per-fragment color
     gAlbedo = calculateAlbedo();
 
-    gSpecular = vec3(0);
+    vec4 gSpecular = vec4(0);
 
-    gOcclusion = vec3(0);
+    vec4 gOcclusion = vec4(0);
 
     if (useTexNormal == 1) {
         gNormal = calculateNormal();
@@ -75,4 +81,13 @@ void main()
     if (useTexSpecular == 1) {
         gSpecular = calculateSpecular();
     }
+
+    gEmissive = vec3(emissivePower);
+    gMRA = mix(
+        vec3(gOcclusion.x + aoValue, gOcclusion.y + aoValue, gOcclusion.z + aoValue), 
+        vec3(gSpecular.x + specularValue, gSpecular.y + specularValue, gSpecular.z + specularValue),
+        1.0
+    ).rgb;
+
+    gMRA = mix(gMRA, vec3(roughnessValue), 1.0);
 }

@@ -30,6 +30,9 @@ uniform sampler2D gAlbedo;
 uniform sampler2D gEmissive;
 uniform sampler2D gMRA;
 
+uniform sampler2D gOcclusion;
+uniform sampler2D gSpecular;
+
 // Input uniform values
 uniform int numOfLights;
 
@@ -75,7 +78,7 @@ vec3 calculateRadiance(vec3 fragPosition, vec3 lightPosition, vec4 lightColor, f
     return radiance;
 }
 
-vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, vec3 baseRefl, float roughness, float metallic) {
+vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, vec3 baseRefl, float roughness, vec3 metallic) {
     vec3 lightAccum = vec3(0.0);
     
     vec3 L = normalize(lights[i].position - fragPosition);      // Compute light vector
@@ -99,7 +102,10 @@ vec3 calculateLightAccum(int i, vec3 fragPosition, vec3 albedo, vec3 N, vec3 V, 
     vec3 kD = vec3(1.0) - F;
 
     // Mult kD by the inverse of metallnes, only non-metals should have diffuse light
-    kD *= 1.0 - metallic;
+    kD.x *= 1.0 - metallic.r;
+    kD.y *= 1.0 - metallic.g;
+    kD.z *= 1.0 - metallic.b;
+
     lightAccum = ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * lights[i].enabled; // Angle of light has impact on result
 
     return lightAccum;
@@ -118,16 +124,25 @@ vec3 ComputePBR()
 
     vec3 emissive = texture(gEmissive, texCoord).rgb;
 
+    // vec3 SpecularMap = texture2D(gSpecular, texCoord).rgb;
+
+    // vec3 OcclusionMap = texture2D(gOcclusion, texCoord).rgb;
+
     vec3 N = normalize(fragNormal);
     vec3 V = normalize(viewPos - fragPosition);
 
+    vec3 baseRefl = vec3(0);
+    vec3 metallicVec = vec3(0);
+
     // If  dia-electric use base reflectivity of 0.04 otherwise ut is a metal use albedo as base reflectivity
-    vec3 baseRefl = mix(vec3(0.04), albedo.rgb, metallic);
+    baseRefl = mix(vec3(0.04), albedo.rgb, metallic);
+    metallicVec = vec3(metallic, metallic, metallic);
+
     vec3 lightAccum = vec3(0.0);  // Acumulate lighting lum
 
     for (int i = 0; i < numOfLights; i++)
     {
-        lightAccum += calculateLightAccum(i, fragPosition, albedo, N, V, baseRefl, roughness, metallic);
+        lightAccum += calculateLightAccum(i, fragPosition, albedo, N, V, baseRefl, roughness, metallicVec);
     }
 
     vec3 ambientFinal = (ambientColor + albedo) * ambient * vec3(0.03);

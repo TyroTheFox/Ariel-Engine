@@ -98,7 +98,7 @@
             "metalnessTexture": "old_car_mra",
             "normalTexture": "old_car_n",
             "emissionTexture": "old_car_e",
-            "x": 0,
+            "x": 10,
             "y": 0,
             "z": 0,
             "scale": 0.5
@@ -124,9 +124,9 @@
             "normalTexture": "cards_n",
             "occlusionTexture": "cards_o",
             "specularTexture": "cards_s",
-            "x": -5,
-            "y": 2,
-            "z": -1,
+            "x": 0,
+            "y": 0,
+            "z": -5,
             "scale": 5,
             "origin": 0.5
         }

@@ -25,6 +25,7 @@ class SceneRenderer3D {
         raylib::Color ambientColor;
 
         RenderingShader* gBuffer;
+        RenderingShader* gBufferBill;
         RenderingShader* deferredShader;
 
         GraphicsBuffer* graphicsBuffer;
@@ -35,8 +36,16 @@ class SceneRenderer3D {
         void createNewLight(std::string id, LightType type, raylib::Vector3 position, raylib::Vector3 target, float intensity = 10.0f, raylib::Color color = raylib::Color::RayWhite());
 
         void setUpRenderer();
-        void beginRender(raylib::Camera3D* camera);
-        void endRender(raylib::Camera3D* camera);
+        void setUpRendererShader(RenderingShader* shader);
+        void clearRenderer();
+        void setUpLighting(raylib::Camera3D* camera);
+        void updatingLighting(raylib::Camera3D* camera, RenderingShader* shader);
+
+        void readyBufferForDrawing();
+        void beginRenderBillboard(raylib::Camera3D* camera);
+        void endRenderBillboard(raylib::Camera3D* camera);
+        void beginRenderModel(raylib::Camera3D* camera);
+        void endRenderModel(raylib::Camera3D* camera);
         void processRender(raylib::Camera3D* camera);
 };
 

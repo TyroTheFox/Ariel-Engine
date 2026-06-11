@@ -27,7 +27,6 @@ uniform vec2 offset;
 uniform vec4 albedoColor;
 uniform vec4 emissiveColor;
 
-uniform float normalValue;
 uniform float metallicValue;
 uniform float roughnessValue;
 uniform float aoValue;
