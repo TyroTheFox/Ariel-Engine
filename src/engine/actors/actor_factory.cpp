@@ -12,6 +12,8 @@ ActorFactory::ActorFactory() {
     this->addNewCreator("mesh", new MeshCreator());
     this->addNewCreator("shapeMesh", new ShapeMeshCreator());
     this->addNewCreator("billboardSprite", new BillboardSpriteCreator());
+
+    this->addNewCreator("label", new LabelCreator());
 }
 
 ActorFactory::~ActorFactory(){
