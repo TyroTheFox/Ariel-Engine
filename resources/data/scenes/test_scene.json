@@ -129,6 +129,13 @@
             "z": -5,
             "scale": 5,
             "origin": 0.5
+        },
+        {
+            "id": "testLabel",
+            "type": "label",
+            "text": "BADGER BADGER BADGER!",
+            "x": 300,
+            "y": 300
         }
     ]
 }

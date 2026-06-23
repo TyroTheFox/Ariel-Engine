@@ -7,6 +7,8 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 */
 
+#define RAYGUI_IMPLEMENTATION
+
 #include <string>
 
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
