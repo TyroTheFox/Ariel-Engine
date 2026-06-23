@@ -340,27 +340,6 @@ void BillboardSprite::renderBillboardTextureObject(Camera camera, Texture2D text
 
     rlSetTexture(texture.id);
 
-    // Deffuse
-    // int DEFFUSE = MATERIAL_MAP_ALBEDO;
-    // rlActiveTextureSlot(DEFFUSE);
-    // rlEnableTexture(texture.id);
-    // rlSetUniform(RL_SHADER_LOC_MAP_ALBEDO, &DEFFUSE, SHADER_UNIFORM_INT, 1);
-
-    // int SPECULAR = MATERIAL_MAP_METALNESS;
-    // rlActiveTextureSlot(SPECULAR);
-    // rlEnableTexture(SPECULARTEXID);
-    // rlSetUniform(RL_SHADER_LOC_MAP_SPECULAR, &SPECULAR, SHADER_UNIFORM_INT, 1);
-
-    // int NORMAL = MATERIAL_MAP_NORMAL;
-    // rlActiveTextureSlot(NORMAL);
-    // rlEnableTexture(NORMALTEXID);
-    // rlSetUniform(RL_SHADER_LOC_MAP_NORMAL, &NORMAL, SHADER_UNIFORM_INT, 1);
-
-    // int OCCLUSION = MATERIAL_MAP_OCCLUSION;
-    // rlActiveTextureSlot(OCCLUSION);
-    // rlEnableTexture(OCCLUSIONTEXID);
-    // rlSetUniform(RL_SHADER_LOC_MAP_OCCLUSION, &OCCLUSION, SHADER_UNIFORM_INT, 1);
-
     rlBegin(RL_QUADS);
 
         rlColor4ub(tint.r, tint.g, tint.b, tint.a);
@@ -373,15 +352,6 @@ void BillboardSprite::renderBillboardTextureObject(Camera camera, Texture2D text
 
     rlEnd();
     rlSetTexture(0);
-
-    // rlActiveTextureSlot(DEFFUSE);
-    // rlDisableTexture();
-    // rlActiveTextureSlot(SPECULAR);
-    // rlDisableTexture();
-    // rlActiveTextureSlot(NORMAL);
-    // rlDisableTexture();
-    // rlActiveTextureSlot(OCCLUSION);
-    // rlDisableTexture();
 }
 
 Vector3 BillboardSprite::calculateNormalFromPoints(Vector3 v0, Vector3 v1, Vector3 v2) {

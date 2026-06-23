@@ -30,9 +30,6 @@ uniform sampler2D gAlbedo;
 uniform sampler2D gEmissive;
 uniform sampler2D gMRA;
 
-uniform sampler2D gOcclusion;
-uniform sampler2D gSpecular;
-
 // Input uniform values
 uniform int numOfLights;
 
@@ -123,10 +120,6 @@ vec3 ComputePBR()
     float ao = texture(gMRA, texCoord).b;
 
     vec3 emissive = texture(gEmissive, texCoord).rgb;
-
-    // vec3 SpecularMap = texture2D(gSpecular, texCoord).rgb;
-
-    // vec3 OcclusionMap = texture2D(gOcclusion, texCoord).rgb;
 
     vec3 N = normalize(fragNormal);
     vec3 V = normalize(viewPos - fragPosition);
