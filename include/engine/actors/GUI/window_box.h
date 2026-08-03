@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef WINDOW_BOX_H
+#define WINDOW_BOX_H
 
 #include <string>
 #include <string.h>  
@@ -10,21 +10,14 @@
 
 #include <engine/actors/base_actor.h>
 
-class Label : public BaseActor
+class WindowBox : public BaseActor
 {
 private:
-    std::string text;
-    float fontSize;
-    int padding;
-
     void setDefaults();
-    const char **GetTextLines(const char *text, int *count);
 public:
-    void setText(std::string text);
-
-    Label(std::string id);
-    ~Label();
-
+    WindowBox(std::string id);
+    ~WindowBox();
+    
     void update(float dT) override;
     void render() override;
 };

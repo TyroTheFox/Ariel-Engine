@@ -67,6 +67,7 @@ class Scene
         ~Scene();
 
         void addActor(BaseActor* actor);
+        void addChildActor(BaseActor* actor);
         void removeActor(std::string id);
         BaseActor* getActorByID(std::string id);
 

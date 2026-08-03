@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #include <string>
 #include <string.h>  
@@ -10,7 +10,7 @@
 
 #include <engine/actors/base_actor.h>
 
-class Label : public BaseActor
+class Button : public BaseActor
 {
 private:
     std::string text;
@@ -20,10 +20,14 @@ private:
     void setDefaults();
     const char **GetTextLines(const char *text, int *count);
 public:
+    sl::Signal<> button_pushed;
+    bool pushed = false;
+    
+    Button(std::string id);
+    ~Button();
+    
     void setText(std::string text);
-
-    Label(std::string id);
-    ~Label();
+    void connectActorSlot(sl::Slot<>* slot);
 
     void update(float dT) override;
     void render() override;

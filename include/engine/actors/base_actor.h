@@ -7,6 +7,8 @@
 
 #include <sling.h>
 
+#include <raygui-4.0/src/raygui.h>
+
 enum ActorRenderType {
     ACTOR_2D, // 2D Actors rendered after 3D assets
     ACTOR_3D, // 3D Actors rendered using the gBuffer (typically meshes)

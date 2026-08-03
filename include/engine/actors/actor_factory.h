@@ -9,6 +9,8 @@
 
 #include <engine/utility/json_handler.h>
 
+#include <engine/creators/container_creator.h>
+
 #include <engine/creators/2D/sprite_creator.h>
 #include <engine/creators/2D/text_creator.h>
 #include <engine/creators/2D/animated_sprite_creator.h>
@@ -19,6 +21,8 @@
 #include <engine/creators/3D/billboard_sprite_creator.h>
 
 #include <engine/creators/GUI/label_creator.h>
+#include <engine/creators/GUI/button_creator.h>
+#include <engine/creators/GUI/window_box_creator.h>
 
 using json = nlohmann::json;
 

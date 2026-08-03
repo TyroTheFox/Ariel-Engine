@@ -30,6 +30,18 @@ Scene::Scene(std::string name, json sceneData) {
         newActor->attachedScene = this;
 
         this->addActor(newActor);
+
+        if (entry.contains("children")) {
+            json childrenData = entry.at("children");
+
+            for (auto& childData : childrenData) {
+                auto newChild = actorFactory.createActor(&childData);
+                newChild->id = actorId;
+                newChild->attachedScene = this;
+                static_cast<Container*>(newActor)->addChildren(newChild);
+                this->addChildActor(newChild);
+            }
+        }
     }
 
     this->sceneRenderer3D = new SceneRenderer3D();
@@ -200,6 +212,30 @@ void Scene::setUpCameras() {
 void Scene::addActor(BaseActor* actor) {
     this->children.insert({actor->id, actor});
     this->baseContainer->addChildren(actor);
+    this->signal_update.connect(actor->onUpdate);
+
+    switch(actor->getActorRenderType()) {
+        case ACTOR_2D:
+            this->signal_render_2D.connect(actor->onRender);
+        break;
+
+        case ACTOR_3D:
+            this->signal_render_3D.connect(actor->onRender);
+        break;
+
+        case ACTOR_3D_BILLBOARD:
+            this->signal_render_3D_BILLBOARD.connect(actor->onRender);
+            this->signal_set_3D_BILLBOARD_RENDER_MODE.connect(dynamic_cast<BillboardSprite*>(actor)->onChangeRenderMode);
+        break;
+
+        case ACTOR_3D_OVER:
+            this->signal_render_3D_OVER.connect(actor->onRender);
+        break;
+    }
+}
+
+void Scene::addChildActor(BaseActor* actor) {
+    this->children.insert({actor->id, actor});
     this->signal_update.connect(actor->onUpdate);
 
     switch(actor->getActorRenderType()) {

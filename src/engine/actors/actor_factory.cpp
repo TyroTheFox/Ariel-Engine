@@ -4,6 +4,8 @@ ActorFactory::ActorFactory() {
     this->jsonReader = new JSONHandler();
     this->actorCreators = std::map<std::string, void*>{};
 
+    this->addNewCreator("container", new ContainerCreator());
+
     this->addNewCreator("sprite", new SpriteCreator());
     this->addNewCreator("text", new TextCreator());
     this->addNewCreator("animatedSprite", new AnimatedSpriteCreator());
@@ -14,6 +16,8 @@ ActorFactory::ActorFactory() {
     this->addNewCreator("billboardSprite", new BillboardSpriteCreator());
 
     this->addNewCreator("label", new LabelCreator());
+    this->addNewCreator("button", new ButtonCreator());
+    this->addNewCreator("windowBox", new WindowBoxCreator());
 }
 
 ActorFactory::~ActorFactory(){

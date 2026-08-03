@@ -131,11 +131,32 @@
             "origin": 0.5
         },
         {
+            "id": "text_box",
+            "type": "windowBox",
+            "x": 300,
+            "y": 300
+        },
+        {
             "id": "testLabel",
             "type": "label",
             "text": "BADGER BADGER BADGER!",
             "x": 300,
             "y": 300
+        },
+        {
+            "id": "textContainer",
+            "type": "container",
+            "x": 400,
+            "y": 500,
+            "children": [
+                {
+                    "id": "test_sprite",
+                    "type": "sprite",
+                    "texture": "test",
+                    "x": 10,
+                    "y": 10
+                }
+            ]
         }
     ]
 }
