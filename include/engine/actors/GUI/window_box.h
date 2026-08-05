@@ -8,9 +8,9 @@
 #include <raylibcpp/raylib-cpp.hpp>
 #include <raylib.h>
 
-#include <engine/actors/base_actor.h>
+#include <engine/actors/container.h>
 
-class WindowBox : public BaseActor
+class WindowBox : public Container
 {
 private:
     void setDefaults();

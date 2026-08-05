@@ -13,8 +13,9 @@ void WindowBox::setDefaults() {
     this->actorRenderType = ACTOR_2D;
 }
 
-void WindowBox::update(float dT)
-{
+void WindowBox::update(float dT) {
+    this->renderedWidth = this->width * this->getScaleX();
+    this->renderedHeight = this->height * this->getScaleY();
 }
 
 void WindowBox::render() {
@@ -27,8 +28,8 @@ void WindowBox::render() {
     GuiWindowBox((Rectangle) {
             this->getX(), 
             this->getY(), 
-            this->getScaleX(), 
-            this->getScaleY()
+            this->renderedWidth, 
+            this->renderedHeight
         },
         this->id.c_str()
     );

@@ -81,6 +81,14 @@ bool BaseActor::getVisible() {
     return this->renderedVisible;
 }
 
+float BaseActor::getWidth() {
+    return this->renderedWidth;
+}
+
+float BaseActor::getHeight() {
+    return this->renderedHeight;
+}
+
 ActorRenderType BaseActor::getActorRenderType() {
     return this->actorRenderType;
 }
@@ -92,9 +100,18 @@ void BaseActor::render() {}
 void BaseActor::calculateRenderedPosition() {
     BaseActor* objectParent = this->parent;
 
+    this->renderedWidth = this->width * this->getScaleX();
+    this->renderedHeight = this->height * this->getScaleY();
+
     if (objectParent != nullptr) {
-        this->renderedX = objectParent->getX();
-        this->renderedY = objectParent->getY();
+        if (this->relativePosMode) {
+            this->renderedX = objectParent->getWidth() * objectParent->getX();
+            this->renderedY = objectParent->getHeight() * objectParent->getY();
+        } else {
+            this->renderedX = objectParent->getX();
+            this->renderedY = objectParent->getY();
+        }
+        
         this->renderedZ = objectParent->getZ();
 
         this->renderedScaleX = objectParent->getScaleX();

@@ -133,15 +133,26 @@
         {
             "id": "text_box",
             "type": "windowBox",
-            "x": 300,
-            "y": 300
-        },
-        {
-            "id": "testLabel",
-            "type": "label",
-            "text": "BADGER BADGER BADGER!",
-            "x": 300,
-            "y": 300
+            "x": 100,
+            "y": 400,
+            "width": 300,
+            "height": 300,
+            "children": [
+                {
+                    "id": "testLabel",
+                    "type": "label",
+                    "text": "BADGER BADGER BADGER!",
+                    "x": 0,
+                    "y": 20
+                },
+                {
+                    "id": "test_sprite",
+                    "type": "sprite",
+                    "texture": "test",
+                    "x": 20,
+                    "y": 70
+                }
+            ]
         },
         {
             "id": "textContainer",

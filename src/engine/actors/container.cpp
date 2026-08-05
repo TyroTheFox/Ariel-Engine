@@ -1,5 +1,10 @@
 #include <engine/actors/container.h>
 
+Container::Container() {
+    this->id = "Container";
+    this->children = std::map<std::string, BaseActor*>{};
+}
+
 Container::Container(std::string name) {
     this->id = name;
     this->children = std::map<std::string, BaseActor*>{};

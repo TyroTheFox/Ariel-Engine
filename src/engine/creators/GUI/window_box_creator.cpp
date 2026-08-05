@@ -16,6 +16,14 @@ WindowBox* WindowBoxCreator::createActor(json* actorData) const {
         windowBox->y = actorData->at("y");
     }
 
+    if (actorData->contains("width")) {
+        windowBox->width = actorData->at("width");
+    }
+
+    if (actorData->contains("height")) {
+        windowBox->height = actorData->at("height");
+    }
+
     if (actorData->contains("visible")) {
         windowBox->visible = actorData->at("visible");
     }

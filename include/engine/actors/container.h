@@ -13,11 +13,13 @@
 class Container: public BaseActor
 {
 private:
+protected:
     std::map<std::string, BaseActor*> children;
 public:
     sl::Signal<> childAdded;
     sl::Signal<> childRemoved;  
 
+    Container();
     Container(std::string name);
 
     ~Container();

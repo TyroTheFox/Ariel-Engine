@@ -30,6 +30,9 @@ class BaseActor {
 
         bool renderedVisible;
 
+        float renderedWidth = 0;
+        float renderedHeight = 0;
+
         ActorRenderType actorRenderType = ACTOR_2D;
     public:
         std::string id;
@@ -44,6 +47,8 @@ class BaseActor {
         float pivotX;
         float pivotY;
         float pivotZ;
+
+        float relativePosMode = false;
         
         float scaleX;
         float scaleY;
@@ -54,6 +59,9 @@ class BaseActor {
         float anchorZ;
         
         float rotation;
+
+        float height = 100;
+        float width = 100;
         
         bool visible;
         
@@ -74,6 +82,9 @@ class BaseActor {
         float getAnchorX();
         float getAnchorY();
         float getAnchorZ();
+
+        float getWidth();
+        float getHeight();
 
         float getRotation();
 
