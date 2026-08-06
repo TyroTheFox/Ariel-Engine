@@ -16,6 +16,10 @@ Label* LabelCreator::createActor(json* actorData) const {
         label->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        label->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         label->visible = actorData->at("visible");
     }

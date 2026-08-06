@@ -48,9 +48,9 @@ void Button::render() {
     if (GuiButton(
         (Rectangle) {
             this->getX() + this->padding, 
-            this->getY() + (textSize.y * this->getScaleY()), 
-            this->getScaleX() + this->padding * textSize.x, 
-            textSize.y * lineCount
+            this->getY() + (textSize.y * this->getScaleY()) + this->padding, 
+            (textSize.x * this->getScaleX()) + this->padding, 
+            (textSize.y * lineCount * this->getScaleY()) + this->padding
         },
         this->text.c_str()
     )) {

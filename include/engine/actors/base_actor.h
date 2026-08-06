@@ -37,6 +37,7 @@ class BaseActor {
     public:
         std::string id;
         std::string actorType;
+        bool isBaseContainer = false;
         
         sl::Slot<float> onUpdate{this, &BaseActor::update};
         sl::Slot<> onRender{this, &BaseActor::render};

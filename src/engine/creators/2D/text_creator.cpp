@@ -23,6 +23,10 @@ Text* TextCreator::createActor(json* actorData) const {
         text->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        text->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         text->visible = actorData->at("visible");
     }

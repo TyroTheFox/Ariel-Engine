@@ -103,15 +103,9 @@ void BaseActor::calculateRenderedPosition() {
     this->renderedWidth = this->width * this->getScaleX();
     this->renderedHeight = this->height * this->getScaleY();
 
-    if (objectParent != nullptr) {
-        if (this->relativePosMode) {
-            this->renderedX = objectParent->getWidth() * objectParent->getX();
-            this->renderedY = objectParent->getHeight() * objectParent->getY();
-        } else {
-            this->renderedX = objectParent->getX();
-            this->renderedY = objectParent->getY();
-        }
-        
+    if (objectParent != nullptr) {        
+        this->renderedX = objectParent->getX();
+        this->renderedY = objectParent->getY();
         this->renderedZ = objectParent->getZ();
 
         this->renderedScaleX = objectParent->getScaleX();
@@ -125,8 +119,19 @@ void BaseActor::calculateRenderedPosition() {
         this->renderedVisible = true;
     }
 
-    this->renderedX += this->x + this->pivotX;
-    this->renderedY += this->y + this->pivotY;
+    if (this->relativePosMode) {
+        if (objectParent->isBaseContainer) {
+            this->renderedX += (GetScreenWidth() * this->x) + this->pivotX;
+            this->renderedY += (GetScreenHeight() * this->y) + this->pivotY;
+        } else {
+            this->renderedX += (objectParent->getWidth() * this->x) + this->pivotX;
+            this->renderedY += (objectParent->getHeight() * this->y) + this->pivotY;
+        }
+    } else {
+        this->renderedX += this->x + this->pivotX;
+        this->renderedY += this->y + this->pivotY;
+    }
+
     this->renderedZ += this->z + this->pivotZ;
 
     this->renderedScaleX *= this->scaleX;

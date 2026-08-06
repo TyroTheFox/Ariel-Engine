@@ -21,6 +21,10 @@ ShapeMesh* ShapeMeshCreator::createActor(json* actorData) const {
         mesh->y = actorData->at("z");
     }
 
+    if (actorData->contains("relativePos")) {
+        mesh->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         mesh->visible = actorData->at("visible");
     }

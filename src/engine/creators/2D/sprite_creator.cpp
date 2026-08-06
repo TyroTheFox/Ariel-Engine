@@ -21,6 +21,10 @@ Sprite* SpriteCreator::createActor(json* actorData) const {
         sprite->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        sprite->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         sprite->visible = actorData->at("visible");
     }

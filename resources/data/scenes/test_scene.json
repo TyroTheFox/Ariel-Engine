@@ -133,8 +133,9 @@
         {
             "id": "text_box",
             "type": "windowBox",
-            "x": 100,
-            "y": 400,
+            "x": 0.1,
+            "y": 0.5,
+            "relativePos": true,
             "width": 300,
             "height": 300,
             "children": [
@@ -143,14 +144,24 @@
                     "type": "label",
                     "text": "BADGER BADGER BADGER!",
                     "x": 0,
-                    "y": 20
+                    "y": 0.1,
+                    "relativePos": true
                 },
                 {
                     "id": "test_sprite",
                     "type": "sprite",
                     "texture": "test",
-                    "x": 20,
-                    "y": 70
+                    "x": 0.5,
+                    "y": 0.3,
+                    "relativePos": true
+                }, 
+                {
+                    "id": "test_button",
+                    "type": "button",
+                    "text": "PUSH DA BUTTON!!",
+                    "x": 0.1,
+                    "y": 0.5,
+                    "relativePos": true
                 }
             ]
         },

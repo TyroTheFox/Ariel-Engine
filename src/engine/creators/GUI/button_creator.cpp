@@ -16,6 +16,10 @@ Button* ButtonCreator::createActor(json* actorData) const {
         button->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        button->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         button->visible = actorData->at("visible");
     }

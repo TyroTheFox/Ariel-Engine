@@ -16,6 +16,10 @@ Container* ContainerCreator::createActor(json* actorData) const {
         container->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        container->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         container->visible = actorData->at("visible");
     }

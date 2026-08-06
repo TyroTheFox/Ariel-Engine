@@ -8,6 +8,8 @@ Scene::Scene() {
     this->setUpCameras();
 
     this->sceneRenderer3D = new SceneRenderer3D();
+
+    this->baseContainer->isBaseContainer = true; 
 }
 
 Scene::Scene(std::string name, json sceneData) {
@@ -21,6 +23,8 @@ Scene::Scene(std::string name, json sceneData) {
     this->actorData = &sceneData.at("actors");
 
     this->setUpCameras();
+
+    this->baseContainer->isBaseContainer = true; 
 
     for (json entry : sceneData.at("actors")) {
         std::string actorId = entry.at("id");

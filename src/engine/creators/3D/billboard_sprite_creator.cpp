@@ -27,6 +27,10 @@ BillboardSprite* BillboardSpriteCreator::createActor(json* actorData) const {
         billboardSprite->z = actorData->at("z");
     }
 
+    if (actorData->contains("relativePos")) {
+        billboardSprite->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         billboardSprite->visible = actorData->at("visible");
     }

@@ -16,6 +16,10 @@ Shape* ShapeCreator::createActor(json* actorData) const {
         shape->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        shape->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         shape->visible = actorData->at("visible");
     }

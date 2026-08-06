@@ -24,6 +24,10 @@ AnimatedSprite* AnimatedSpriteCreator::createActor(json* actorData) const {
         animatedSprite->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        animatedSprite->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("visible")) {
         animatedSprite->visible = actorData->at("visible");
     }

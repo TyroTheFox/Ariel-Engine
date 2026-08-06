@@ -16,6 +16,10 @@ WindowBox* WindowBoxCreator::createActor(json* actorData) const {
         windowBox->y = actorData->at("y");
     }
 
+    if (actorData->contains("relativePos")) {
+        windowBox->relativePosMode = actorData->at("relativePos");
+    }
+
     if (actorData->contains("width")) {
         windowBox->width = actorData->at("width");
     }
